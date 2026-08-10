@@ -1,0 +1,50 @@
+{{/* Course hub: at /docs/ this lists every topic (category) as a collapsible
+     accordion of lessons. Inside a single topic (e.g. /docs/javascript/) —
+     a page with no subsections — it falls through to a flat lesson list. */}}
+{{ define "main" }}
+<div class="row justify-content-center">
+  <div class="col-md-12 col-lg-10 col-xl-8">
+    <article>
+      <h1 class="text-center">{{ .Title }}</h1>
+      {{ with .Content }}<div class="text-center lead-content">{{ . }}</div>{{ end }}
+
+      {{ $topics := .Sections.ByWeight }}
+      {{ if gt (len $topics) 0 }}
+        <div class="course-outline">
+          {{ range $topics }}
+            {{ $lessons := where .Pages "Slug" "like" "-content$" }}
+            <details class="topic-accordion">
+              <summary>
+                <span class="topic-accordion-title">{{ .Title }}</span>
+                <span class="topic-accordion-count">{{ len $lessons }} שיעורים</span>
+              </summary>
+              <ul class="lesson-list">
+                {{ range $lessons.ByWeight }}
+                  <li>
+                    <a href="{{ .RelPermalink }}">
+                      {{ with .Params.summary }}<span class="lesson-badge">{{ . }}</span>{{ end }}
+                      <span>{{ .Title }}</span>
+                    </a>
+                  </li>
+                {{ end }}
+              </ul>
+            </details>
+          {{ end }}
+        </div>
+      {{ else }}
+        {{ $lessons := where .Pages "Slug" "like" "-content$" }}
+        <ul class="lesson-list lesson-list-flat">
+          {{ range $lessons.ByWeight }}
+            <li>
+              <a href="{{ .RelPermalink }}">
+                {{ with .Params.summary }}<span class="lesson-badge">{{ . }}</span>{{ end }}
+                <span>{{ .Title }}</span>
+              </a>
+            </li>
+          {{ end }}
+        </ul>
+      {{ end }}
+    </article>
+  </div>
+</div>
+{{ end }}

@@ -1,0 +1,69 @@
+[[main]]
+  name = "הקורס"
+  url = "/docs/"
+  weight = 10
+
+[[sidebar_docs]]
+  name = "JavaScript"
+  pageRef = "/docs/javascript"
+  weight = 10
+
+[[sidebar_docs]]
+  name = "Git"
+  pageRef = "/docs/git"
+  weight = 20
+
+[[sidebar_docs]]
+  name = "Server"
+  pageRef = "/docs/server"
+  weight = 25
+
+[[sidebar_docs]]
+  name = "Databases"
+  pageRef = "/docs/databases"
+  weight = 30
+
+[[sidebar_docs]]
+  name = "Docker"
+  pageRef = "/docs/docker"
+  weight = 35
+
+[[sidebar_docs]]
+  name = "Testing"
+  pageRef = "/docs/testing"
+  weight = 40
+
+[[sidebar_docs]]
+  name = "HTML"
+  pageRef = "/docs/html"
+  weight = 45
+
+[[sidebar_docs]]
+  name = "CSS"
+  pageRef = "/docs/css"
+  weight = 50
+
+[[sidebar_docs]]
+  name = "DOM"
+  pageRef = "/docs/dom"
+  weight = 55
+
+[[sidebar_docs]]
+  name = "TypeScript"
+  pageRef = "/docs/typescript"
+  weight = 60
+
+[[sidebar_docs]]
+  name = "React"
+  pageRef = "/docs/react"
+  weight = 65
+
+[[sidebar_docs]]
+  name = "React + Server"
+  pageRef = "/docs/react-server"
+  weight = 70
+
+[[footer]]
+  name = "מדיניות פרטיות"
+  url = "/privacy/"
+  weight = 10

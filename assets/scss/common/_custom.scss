@@ -1,0 +1,347 @@
+// Put your custom SCSS code here
+
+// The theme caps the docs content+TOC area at a fixed 1200px even in fluid
+// container mode, leaving huge empty gutters on wide desktop screens. Let it
+// use most of the viewport instead, with an upper bound so lines don't get
+// absurdly long on ultra-wide monitors.
+.container-fw {
+  // unquote() forces the (deprecated) libsass compiler to pass this through
+  // as literal CSS instead of trying (and failing) to evaluate min() itself
+  // across incompatible px/vw units.
+  max-width: unquote("min(92vw, 1800px)") !important;
+}
+
+// Hebrew RTL support
+html {
+  direction: rtl;
+}
+
+body {
+  font-family:
+    "Segoe UI",
+    "Arial Hebrew",
+    Arial,
+    Tahoma,
+    sans-serif;
+
+  // Sticky footer: on short pages (a lesson with little content, the 404
+  // page) the footer used to sit right under the content instead of
+  // pinned to the bottom of the viewport. body becomes a full-height flex
+  // column, and .wrap (the header→footer content area, from baseof.html)
+  // grows to fill whatever space is left, pushing the footer down to the
+  // bottom on short pages while staying in normal flow (not fixed/absolute)
+  // so it still scrolls below on long pages instead of overlapping content.
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.wrap {
+  flex: 1 0 auto;
+}
+
+// Code blocks stay LTR (Python code, English identifiers)
+pre,
+code,
+kbd,
+samp {
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: embed;
+}
+
+// Tables of glossary/complexity read more naturally kept LTR-neutral for numbers/mixed content
+table {
+  text-align: right;
+}
+
+// ---- Readability polish for lesson content ----
+.docs-content {
+  font-size: 1.05rem;
+
+  p {
+    line-height: 1.85;
+    margin-bottom: 1.15rem;
+  }
+
+  h2 {
+    margin-top: 2.75rem;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    margin-top: 1.85rem;
+    margin-bottom: 0.85rem;
+  }
+
+  hr {
+    margin: 2.5rem 0;
+    opacity: 0.5;
+  }
+
+  pre {
+    border-radius: 0.6rem;
+    padding: 1rem 1.25rem;
+  }
+
+  code {
+    border-radius: 0.3rem;
+    padding: 0.15rem 0.4rem;
+  }
+
+  table {
+    margin: 1.5rem 0;
+  }
+}
+
+.lead-content {
+  opacity: 0.85;
+  margin-bottom: 1rem;
+}
+
+// ---- Homepage course-picker card ----
+.course-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2.5rem 2rem;
+  border-radius: 1rem;
+  border: 1px solid var(--bs-border-color);
+  text-decoration: none;
+  color: inherit;
+  background: var(--bs-body-bg);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    color: inherit;
+  }
+}
+
+.course-card-icon {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+}
+
+.course-card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
+}
+
+.course-card-desc {
+  opacity: 0.75;
+  margin-bottom: 1.25rem;
+}
+
+.course-card-cta {
+  font-weight: 600;
+  color: var(--bs-primary);
+}
+
+// ---- Topic / lesson accordion (course hub at /docs/) ----
+.course-outline {
+  margin-top: 2rem;
+}
+
+.topic-accordion {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  background: var(--bs-body-bg);
+
+  > summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      // The theme's global `details summary::after` rule (components/_details.scss)
+      // absolutely-positions its chevron at physical `right: 1rem`, ignoring
+      // dir="rtl" — that pins it on top of our right-aligned Hebrew text no
+      // matter what flex/gap rules we add here. Cancel that positioning so
+      // this pseudo-element rejoins the flex row and space-between/gap place
+      // it correctly at the far (inline-end) side instead.
+      position: relative;
+      right: 0;
+      content: "+";
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--bs-secondary-color);
+      transition: transform 0.15s ease;
+      margin-inline-start: auto;
+    }
+  }
+
+  &[open] > summary::after {
+    transform: rotate(45deg);
+  }
+}
+
+.topic-accordion-count {
+  font-size: 0.85rem;
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+// ---- Sidebar section-nav accordion (left/right nav tree) ----
+// Same root cause as .topic-accordion above: the theme's global
+// `details summary::after` rule absolutely-positions its chevron at physical
+// `right: 1rem` regardless of dir="rtl", so it sits on top of our
+// right-aligned label. Cancel that positioning so our "+"/rotate marker
+// rejoins the flex row and lands at the correct (far/inline-end) side.
+.section-nav {
+  summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      position: relative;
+      right: 0;
+      content: "+";
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--bs-secondary-color, currentColor);
+      transition: transform 0.15s ease;
+      flex-shrink: 0;
+    }
+  }
+
+  details[open] > summary::after {
+    transform: rotate(45deg);
+  }
+}
+
+.lesson-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 1.25rem 1rem;
+}
+
+.lesson-list li + li {
+  border-top: 1px solid rgba(127, 127, 127, 0.18);
+}
+
+.lesson-list a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0.25rem;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    color: var(--bs-primary);
+  }
+}
+
+.lesson-badge {
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+.lesson-list-flat {
+  margin-top: 1.5rem;
+}
+
+// ---- Responsive: wide content must scroll inside itself, never the page ----
+// Markdown tables and Mermaid diagrams can be wider than a phone screen
+// (many columns / many sequence-diagram participants). Both render hooks
+// (layouts/_markup/render-table.html, render-codeblock-mermaid.html) wrap
+// their output in these classes so the overflow is contained locally instead
+// of forcing the whole page to scroll horizontally.
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1.5rem 0;
+
+  table {
+    margin: 0;
+  }
+}
+
+.mermaid-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1.5rem 0;
+  // Mermaid sizes its generated <svg> to the diagram's natural width; on a
+  // narrow viewport that can exceed 100%, so let it keep its own width and
+  // scroll within this wrapper rather than shrink-distort or overflow the page.
+  display: flex;
+
+  .mermaid svg {
+    min-width: min-content;
+  }
+}
+
+// Live HTML/CSS/JS demo blocks embedded in lesson content: guarantee they
+// never force page-level horizontal scroll on small screens, regardless of
+// what fixed widths an individual demo's inline styles use.
+.demo-live {
+  overflow-x: auto;
+  max-width: 100%;
+
+  img,
+  svg,
+  video,
+  iframe {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .docs-content {
+    font-size: 1rem;
+  }
+
+  .course-card {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .topic-accordion > summary {
+    padding: 0.85rem 1rem;
+    font-size: 1.02rem;
+    flex-wrap: wrap;
+  }
+
+  .demo-live {
+    padding: 0.9rem !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .course-card-title {
+    font-size: 1.25rem;
+  }
+
+  .topic-accordion-count {
+    font-size: 0.78rem;
+  }
+}
+
