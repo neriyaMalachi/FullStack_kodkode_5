@@ -143,3 +143,9 @@ MVC/DDD מפרידים קוד שרת לשלוש שכבות: Controller (HTTP ב�
 4. ודאו שכל ה-endpoints הקיימים (`GET`/`POST`/`PUT`/`DELETE`) עדיין עובדים בדיוק כמו קודם
 
 **בדיקה:** `curl http://localhost:3000/tasks`, `curl -X POST http://localhost:3000/tasks -H "Content-Type: application/json" -d '{"title":"קניות"}'` וכו' מחזירים בדיוק את אותן תגובות כמו לפני הריפקטור; `taskController.js` לא מכיל אף התייחסות ישירה למערך המשימות.
+
+---
+
+## מה בפרק הבא
+
+בפרק הבא — **הפרויקט המסכם האחרון בקורס**: מקשיחים את Task Manager API לרמת production אמיתית עם כל חמשת הנושאים ביחידה יחד — Logging, Validation, OWASP, JWT, ו-MVC.

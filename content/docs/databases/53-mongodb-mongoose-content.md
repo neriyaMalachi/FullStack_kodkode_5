@@ -134,3 +134,9 @@ Mongoose עוטף את MongoDB Native Driver בשכבת Schema (מבנה + valid
 4. פונקציה נוספת `findUserByEmail(email)` שמשתמשת ב-`User.findOne()`
 
 **בדיקה:** `registerUser({ name: "דנה", email: "dana@test.com", age: 25 })` מחזירה משתמש עם `_id`; `registerUser({ email: "x@test.com" })` (בלי `name`) מחזירה הודעת שגיאה ברורה במקום לזרוק חריגה לא-מטופלת; `findUserByEmail("dana@test.com")` אחרי הרישום הראשון מחזירה את אותו document (לא `null`).
+
+---
+
+## מה בפרק הבא
+
+בפרק הבא — **פרויקט מסכם ליחידת בסיסי הנתונים**: מעצבים את אותו תחום נתונים פעמיים — פעם רלציונית עם SQL ו-JOIN, פעם עם MongoDB ו-Mongoose — כדי להרגיש בפועל מתי כל גישה מתאימה.

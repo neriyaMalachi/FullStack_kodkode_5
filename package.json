@@ -13,8 +13,7 @@
     "dev": ".tools\\hugo.exe server --disableFastRender --noHTTPCache",
     "format": "prettier **/** -w -c",
     "build": "hugo --minify --gc --baseURL \"https://${VERCEL_URL}\"",
-    "preview": "vite preview --outDir public"
-  },
+    "preview": "vite preview --outDir public"  },
   "dependencies": {
     "@tabler/icons": "^3.36.1",
     "@thulite/doks-core": "^1.9.3",

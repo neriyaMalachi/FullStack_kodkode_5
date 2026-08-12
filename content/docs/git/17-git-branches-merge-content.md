@@ -235,3 +235,9 @@ git commit -m "Resolve merge conflict in shared.txt"
    ```
 
 **בדיקה שהצלחתם:** `git log --oneline` על `main` מראה את כל ה-commits (כולל השניים מהענף), ו-`git branch` (בלי `-d`) כבר לא מציג את `feature-greeting` ברשימה — הוא נמחק אחרי שנוצל בהצלחה.
+
+---
+
+## מה בפרק הבא
+
+בפרק הבא — **פרויקט מסכם ליחידת Git**: זרימת עבודה מלאה מ-repository מקומי, דרך GitHub, ענף עם קונפליקט אמיתי, ועד Pull Request ומיזוג סופי.

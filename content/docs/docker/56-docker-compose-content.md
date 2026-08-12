@@ -143,3 +143,9 @@ Docker Compose מתאר בקובץ YAML אחד את כל ה-Services (קונטי
 4. קוד ה-`app` מתחבר ל-DB לפי שם ה-Service (`db`), לא `localhost`
 
 **בדיקה:** `docker compose up` מפעיל את שני הקונטיינרים בפקודה אחת; `curl http://localhost:3000/tasks` מחזיר תשובה תקינה מהשרת שרץ בתוך Docker, מגובה DB שגם הוא רץ בתוך Docker; `docker compose down` ואז `docker compose up` שוב עדיין מציג את אותם נתונים (הודות ל-Volume).
+
+---
+
+## מה בפרק הבא
+
+בפרק הבא — **פרויקט מסכם ליחידת Docker**: Dockerfile רב-שלבי ל-Image קטן יותר, מורץ יחד עם מסד נתונים דרך Compose, עם כל הקונפיגורציה מגיעה מקובץ `.env` בלבד.
