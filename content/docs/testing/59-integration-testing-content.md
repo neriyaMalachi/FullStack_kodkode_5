@@ -1,5 +1,5 @@
 ---
-title: "Integration Testing"
+title: "Integration Testing (בונוס)"
 slug: "59-integration-testing-content"
 description: "בודקים שכמה חלקים — לא רק פונקציה בודדת — עובדים נכון יחד, בדיוק כמו משתמש אמיתי."
 summary: "📖 שיעור"

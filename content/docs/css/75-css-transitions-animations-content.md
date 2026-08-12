@@ -1,5 +1,5 @@
 ---
-title: "Transitions & Animations"
+title: "Transitions & Animations (בונוס)"
 slug: "75-css-transitions-animations-content"
 description: "תנועה חלקה בין מצבים — משינוי מיידי ומקפצני לשינוי הדרגתי ומהוקצע, בלי JavaScript."
 summary: "📖 שיעור"

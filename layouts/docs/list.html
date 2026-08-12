@@ -10,20 +10,43 @@
 
       {{ $topics := .Sections.ByWeight }}
       {{ if gt (len $topics) 0 }}
+        {{/* Local, account-free progress tracking (localStorage only, see
+        assets/js/progress.js) — an overall course-wide bar/count, filled in
+        client-side after page load, plus a reset control. */}}
+        {{ $allIds := slice }}
+        {{ range $topics }}
+          {{ range (where .Pages "Slug" "like" "-content$") }}
+            {{ $allIds = $allIds | append .RelPermalink }}
+          {{ end }}
+        {{ end }}
+        <div class="course-progress-summary" data-all-lessons="{{ delimit $allIds "," }}">
+          <div class="course-progress-bar"><div class="course-progress-bar-fill"></div></div>
+          <div class="course-progress-summary-row">
+            <span class="course-progress-text"></span>
+            <button type="button" class="lesson-reset-progress">איפוס התקדמות</button>
+          </div>
+        </div>
         <div class="course-outline">
           {{ range $topics }}
             {{ $lessons := where .Pages "Slug" "like" "-content$" }}
+            {{ $topicIds := slice }}
+            {{ range $lessons.ByWeight }}
+              {{ $topicIds = $topicIds | append .RelPermalink }}
+            {{ end }}
             <details class="topic-accordion">
               <summary>
                 <span class="topic-accordion-title">{{ .Title }}</span>
-                <span class="topic-accordion-count">{{ len $lessons }} שיעורים</span>
+                <span class="topic-accordion-count" data-topic-lessons="{{ delimit $topicIds "," }}">
+                  <span class="topic-accordion-count-text">{{ len $lessons }} שיעורים</span>
+                </span>
               </summary>
               <ul class="lesson-list">
                 {{ range $lessons.ByWeight }}
                   <li>
-                    <a href="{{ .RelPermalink }}">
+                    <a href="{{ .RelPermalink }}" data-lesson="{{ .RelPermalink }}">
                       {{ with .Params.summary }}<span class="lesson-badge">{{ . }}</span>{{ end }}
                       <span>{{ .Title }}</span>
+                      <span class="lesson-complete-indicator" aria-hidden="true"></span>
                     </a>
                   </li>
                 {{ end }}
@@ -36,9 +59,10 @@
         <ul class="lesson-list lesson-list-flat">
           {{ range $lessons.ByWeight }}
             <li>
-              <a href="{{ .RelPermalink }}">
+              <a href="{{ .RelPermalink }}" data-lesson="{{ .RelPermalink }}">
                 {{ with .Params.summary }}<span class="lesson-badge">{{ . }}</span>{{ end }}
                 <span>{{ .Title }}</span>
+                <span class="lesson-complete-indicator" aria-hidden="true"></span>
               </a>
             </li>
           {{ end }}

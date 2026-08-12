@@ -40,6 +40,63 @@ body {
   flex: 1 0 auto;
 }
 
+// ---- Desktop drag-to-resize sidebar (see assets/js/sidebar-resize.js) ----
+// Only relevant at the lg+ breakpoint where .docs-sidebar is actually shown
+// (it's d-none below lg). --sidebar-width defaults to the theme's original
+// col-lg-5/col-xl-4 percentage-based width; JS overrides it with a fixed px
+// value once the user drags the handle, and remembers it in localStorage.
+@media (min-width: 992px) {
+  .docs-sidebar {
+    --sidebar-width: 41.6667%;
+    flex: 0 0 var(--sidebar-width);
+    width: var(--sidebar-width);
+    max-width: 45vw;
+    position: relative;
+  }
+}
+
+@media (min-width: 1200px) {
+  .docs-sidebar {
+    --sidebar-width: 33.3333%;
+  }
+}
+
+.docs-sidebar-resize-handle {
+  // Always-visible affordance (a subtle divider, same weight as other
+  // borders on the page) rather than something invisible until you happen
+  // to hover over it — a draggable boundary should be discoverable at a
+  // glance. Hover/drag then thickens it and switches to the accent color,
+  // the same progression already used for .lesson-list a:hover elsewhere.
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline-end: -6px;
+  width: 12px;
+  cursor: ew-resize;
+  z-index: 10;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    inset-inline-start: 5px;
+    width: 1px;
+    background: var(--bs-border-color);
+    transition:
+      background-color 0.15s ease,
+      width 0.15s ease,
+      inset-inline-start 0.15s ease;
+  }
+
+  &:hover::after,
+  &.is-dragging::after {
+    inset-inline-start: 4px;
+    width: 3px;
+    background: var(--bs-primary);
+  }
+}
+
 // Code blocks stay LTR (Python code, English identifiers)
 pre,
 code,
@@ -269,6 +326,103 @@ table {
   margin-top: 1.5rem;
 }
 
+// ---- Local progress tracking (localStorage only, no accounts) ----
+// See assets/js/progress.js — all of this is populated/toggled client-side
+// after page load; server-rendered markup always starts "incomplete".
+.lesson-header-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+}
+
+.lesson-complete-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 2rem;
+  padding: 0.4rem 0.9rem;
+  background: var(--bs-body-bg);
+  color: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+
+  &.is-complete {
+    background: rgba(var(--bs-success-rgb, 25, 135, 84), 0.12);
+    border-color: var(--bs-success, var(--bs-primary));
+    color: var(--bs-success, var(--bs-primary));
+  }
+}
+
+.lesson-page-progress-text {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.lesson-complete-indicator {
+  display: none;
+  color: var(--bs-success, var(--bs-primary));
+  font-weight: 700;
+  margin-inline-start: 0.4rem;
+
+  &::before {
+    content: "✓";
+  }
+}
+
+.is-complete .lesson-complete-indicator {
+  display: inline-block;
+}
+
+.lesson-list li.is-complete {
+  background: rgba(var(--bs-success-rgb, 25, 135, 84), 0.06);
+}
+
+.course-progress-summary {
+  margin: 1.5rem 0 2rem;
+}
+
+.course-progress-bar {
+  height: 0.5rem;
+  border-radius: 1rem;
+  background: var(--bs-border-color);
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.course-progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--bs-primary);
+  transition: width 0.2s ease;
+}
+
+.course-progress-summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.course-progress-text {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.lesson-reset-progress {
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  color: var(--bs-secondary-color);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
 // ---- Responsive: wide content must scroll inside itself, never the page ----
 // Markdown tables and Mermaid diagrams can be wider than a phone screen
 // (many columns / many sequence-diagram participants). Both render hooks
@@ -342,6 +496,11 @@ table {
 
   .topic-accordion-count {
     font-size: 0.78rem;
+  }
+
+  .course-progress-text,
+  .lesson-page-progress-text {
+    font-size: 0.8rem;
   }
 }
 

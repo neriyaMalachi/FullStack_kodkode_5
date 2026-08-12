@@ -97,7 +97,7 @@ skipped. To override this behavior, set $skipHome to false below.
       </ul>
     </details>
     {{- else }}
-      <a {{- with $ariaCurrent }} aria-current="{{ . }}" {{- end }} href="{{- $node.Page.RelPermalink }}">{{ $linkContent }}</a>
+      <a {{- with $ariaCurrent }} aria-current="{{ . }}" {{- end }} href="{{- $node.Page.RelPermalink }}" data-lesson="{{ $node.Page.RelPermalink }}">{{ $linkContent }}<span class="lesson-complete-indicator" aria-hidden="true"></span></a>
     {{- end }}
   </li>
 {{- end }}

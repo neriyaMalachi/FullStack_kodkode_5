@@ -6,6 +6,12 @@
 				{{ partial "sidebar/section-switcher.html" . }}
 			{{ end -}}
 			{{ partial "sidebar/section-menu.html" . }}
+			{{/* Desktop-only drag-to-resize handle (mobile never shows this
+			column at all — d-none d-lg-block above). See
+			assets/js/sidebar-resize.js: tracks the drag, writes the chosen
+			width as a CSS custom property, and remembers it in localStorage
+			so it stays put across page loads/navigation. */}}
+			<div class="docs-sidebar-resize-handle" role="separator" aria-orientation="vertical" aria-label="שנה את רוחב התפריט הצדדי"></div>
 		</div>
 		{{ end -}}
 		{{ if and (eq site.Params.doks.containerBreakpoint "fluid") (in .Site.Params.mainSections .Type) }}
@@ -40,9 +46,36 @@
 					<h1>{{ .Title }}</h1>
 					<!-- <p class="lead">{{ .Params.lead | safeHTML }}</p> -->
 				</div>
-				{{ if site.Params.doks.aiButtons -}}
-				<div>
-					{{ partial "main/ai-buttons.html" . }}
+				{{ $isLesson := strings.HasSuffix .Slug "-content" }}
+				{{ if or site.Params.doks.aiButtons $isLesson -}}
+				<div class="page-header-actions d-flex flex-column gap-2">
+					{{ if site.Params.doks.aiButtons -}}
+					<div>
+						{{ partial "main/ai-buttons.html" . }}
+					</div>
+					{{ end -}}
+					{{ if $isLesson -}}
+					{{/* Local, account-free progress tracking (localStorage only, see
+					assets/js/progress.js) — every lesson gets a mark-as-complete
+					toggle plus a running "X / 105 completed" counter across the
+					whole course, filled in client-side after page load. */}}
+					{{ $docsPage := site.GetPage "/docs" }}
+					{{ $allIds := slice }}
+					{{ range $docsPage.Sections }}
+						{{ range (where .Pages "Slug" "like" "-content$") }}
+							{{ $allIds = $allIds | append .RelPermalink }}
+						{{ end }}
+					{{ end }}
+					<div class="lesson-header-progress">
+						<button type="button" class="lesson-complete-toggle" data-lesson="{{ .RelPermalink }}" aria-pressed="false">
+							<span class="lesson-complete-icon">✓</span>
+							<span class="lesson-complete-label">סמן כנלמד</span>
+						</button>
+						<div class="lesson-page-progress" data-all-lessons="{{ delimit $allIds "," }}">
+							<span class="lesson-page-progress-text"></span>
+						</div>
+					</div>
+					{{ end -}}
 				</div>
 				{{ end -}}
 			</div>

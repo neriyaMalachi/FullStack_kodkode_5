@@ -63,6 +63,11 @@
   pageRef = "/docs/react-server"
   weight = 70
 
+[[sidebar_docs]]
+  name = "הוספות"
+  pageRef = "/docs/additions"
+  weight = 75
+
 [[footer]]
   name = "מדיניות פרטיות"
   url = "/privacy/"

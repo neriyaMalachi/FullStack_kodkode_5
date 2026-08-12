@@ -1,5 +1,11 @@
 {{/* Put your custom <script></script> tags here */}}
 
+{{/* Local, account-free progress tracking (localStorage only) — see assets/js/progress.js */}}
+{{ partial "footer/esbuild" (dict "src" "js/progress.js" "load" "async" "transpile" false) -}}
+
+{{/* Desktop drag-to-resize for the docs sidebar — see assets/js/sidebar-resize.js */}}
+{{ partial "footer/esbuild" (dict "src" "js/sidebar-resize.js" "load" "async" "transpile" false) -}}
+
 {{/* EXAMPLE - only load script for production
 {{ if eq (hugo.Environment) "production" -}}
   {{ partial "footer/esbuild" (dict "src" "js/instantpage.js" "load" "async" "transpile" false) -}}
