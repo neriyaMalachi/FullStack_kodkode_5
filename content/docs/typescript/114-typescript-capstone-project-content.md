@@ -70,6 +70,17 @@ export async function fetchBooksBySubject(subject: string): Promise<RawWork[]> {
 }
 ```
 
+```mermaid
+flowchart LR
+    RAW["RawWork<br/>(מה-API החיצוני)"] -->|"createBook(): Book"| BOOK["Book<br/>(interface שלנו)"]
+    subgraph tsc["בדיקת tsc"]
+        CHECK{"האם RawWork תואם<br/>את מה ש-createBook מצפה?"}
+    end
+    RAW --> CHECK
+    CHECK -->|"שדה חסר/טיפוס שגוי"| FAIL["❌ קומפילציה נכשלת"]
+    CHECK -->|"הכל תואם"| BOOK
+```
+
 ## הסבר עיקרי
 
 `interface` מחליף "תיאור חופשי" בחוזה קבוע — בגרסת JavaScript, שום דבר לא מכריח ש-`createBook` תמיד מחזירה אובייקט עם בדיוק `title`/`author`/`year`/`view` — טעות (שדה חסר, שם שדה שגוי) הייתה מתגלה רק כשמנסים להשתמש בשדה החסר, בזמן ריצה. עם `interface Book`, כל מקום בקוד שמצפה ל-`Book` בודק את זה **בקומפילציה** — לפני שהקוד רץ בכלל.

@@ -62,6 +62,26 @@ useEffect(() => {
 }, []);
 ```
 
+```mermaid
+sequenceDiagram
+    participant U as משתמש א'
+    participant R as React (Axios)
+    participant S as Express Server
+    participant U2 as משתמש ב' (טאב אחר)
+
+    U->>R: התחברות (Login)
+    R->>S: POST /login
+    S-->>R: JWT token
+    R->>R: שמירה ב-localStorage
+    Note over R: כל בקשה הבאה — Interceptor מוסיף Authorization
+
+    U->>R: הוספת משימה חדשה
+    R->>S: POST /tasks (עם Bearer token)
+    S->>S: requireAuth + Zod validation
+    S-->>R: 201 Created
+    S->>U2: io.emit("taskAdded") — בזמן אמת
+```
+
 ## הסבר עיקרי
 
 Interceptor פותר בעיה שהייתה חוזרת בכל קריאת רשת — בלי Interceptor, כל קריאת `fetch`/`axios` הייתה צריכה להוסיף ידנית את ה-token ל-headers — קל לשכוח באחת מהן. עם Interceptor אחד ב-`api.js`, **כל** קריאה שמשתמשת ב-`api` (במקום `axios` הגולמי) מקבלת אוטומטית את ה-token, בלי לחזור על הקוד בכל endpoint.

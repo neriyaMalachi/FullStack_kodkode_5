@@ -12,7 +12,7 @@
     "create": ".tools\\hugo.exe new",
     "dev": ".tools\\hugo.exe server --disableFastRender --noHTTPCache",
     "format": "prettier **/** -w -c",
-    "build": "hugo --minify --gc --baseURL \"https://${VERCEL_URL}\"",
+    "build": "if [ \"$VERCEL_ENV\" = \"production\" ] || [ -z \"$VERCEL_URL\" ]; then SITE_BASEURL=\"https://kodkode.nm-ambition.com/\"; else SITE_BASEURL=\"https://$VERCEL_URL/\"; fi && hugo --minify --gc --baseURL \"$SITE_BASEURL\"",
     "preview": "vite preview --outDir public"  },
   "dependencies": {
     "@tabler/icons": "^3.36.1",

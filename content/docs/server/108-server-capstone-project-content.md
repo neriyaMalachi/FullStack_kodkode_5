@@ -59,6 +59,17 @@ app.use((err, req, res, next) => {        // Error-Handling Middleware — תמ�
 app.listen(process.env.PORT || 3000);
 ```
 
+```mermaid
+flowchart LR
+    REQ["בקשה נכנסת"] --> LOG["Middleware לוג"]
+    LOG --> JSON["express.json()"]
+    JSON --> ROUTER["tasksRouter<br/>(/tasks)"]
+    ROUTER -->|"נמצא route תואם"| RES["תשובה תקינה"]
+    ROUTER -->|"שום route לא תפס"| NF["404 Handler"]
+    ROUTER -->|"route זרק שגיאה"| ERR["Error-Handling<br/>Middleware"]
+    ERR --> RES2["תשובת שגיאה JSON"]
+```
+
 ## הסבר עיקרי
 
 הרכבה מלאה, לא רק כתיבה — כל לקח ביחידה בנה **חלק אחד** מה-pipeline: `express.json()` (Body) הופך גוף בקשה ל-`req.body` שימושי, Router מפריד את ה-routes של `/tasks` לקובץ נפרד, Middleware הלוג רץ על **כל** בקשה לפני שהיא מגיעה ל-route, ו-Error-Handling Middleware תופס **כל** שגיאה שקורית בכל route, במקום שכל route יטפל בשגיאות בעצמו. זה בדיוק ההבדל בין "לדעת לכתוב endpoint בודד" לבין "לבנות שרת אמיתי" — הרכבת החלקים לפי סדר נכון.

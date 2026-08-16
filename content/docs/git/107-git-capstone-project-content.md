@@ -44,6 +44,18 @@ git push -u origin feature-x              # 5. שליחת הענף ל-GitHub
 # 7. מיזוג (עם פתרון קונפליקט אם צריך)
 ```
 
+```mermaid
+gitGraph
+    commit id: "git init + push"
+    commit id: "config.txt v1.0"
+    branch bump-version
+    checkout bump-version
+    commit id: "v1.1 (בענף)"
+    checkout main
+    commit id: "v1.0.1 (על main!)"
+    merge bump-version id: "פתרון קונפליקט + PR"
+```
+
 ## הסבר עיקרי
 
 מקומי קודם, מרוחק אחר-כך — כל repository מתחיל מקומי (`git init`, מיחידת Basics) — ה-commits הראשונים קיימים רק על המחשב שלכם. `git remote add origin <url>` מחבר אותו לרפוזיטורי ריק ב-GitHub, ו-`git push` שולח את ההיסטוריה לשם בפעם הראשונה. מהרגע הזה, אותו repository "חי" בשני מקומות: מקומית ובענן.

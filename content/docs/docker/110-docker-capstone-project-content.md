@@ -66,6 +66,18 @@ volumes:
   db-data:
 ```
 
+```mermaid
+flowchart TB
+    subgraph Build["בניית ה-Image (Multi-Stage)"]
+        S1["שלב 1: node:20<br/>npm ci + כל הקוד"] -->|"COPY --from=build<br/>רק מה שצריך"| S2["שלב 2: node:20-alpine<br/>Image סופי קטן"]
+    end
+    ENV[".env<br/>DB_PASSWORD=..."] -.->|"${DB_PASSWORD}"| COMPOSE
+    subgraph COMPOSE["docker compose up"]
+        APP["app<br/>(מה-Image הסופי)"] -->|"depends_on"| DB["db<br/>postgres:16"]
+        DB --> VOL[("Volume<br/>db-data")]
+    end
+```
+
 ## הסבר עיקרי
 
 Multi-Stage חוסך משקל בלי לוותר על שום דבר — שלב הבנייה (`build`) מתקין את **כל** התלויות (כולל כלי פיתוח כבדים), אבל שלב הריצה מעתיק ממנו רק את הקבצים המוגמרים (`COPY --from=build`). ה-Image הסופי לא מכיל את כלי הבנייה בכלל — קטן יותר, ומשטח-התקפה קטן יותר (פחות תוכנה מותקנת = פחות פגיעויות אפשריות).

@@ -60,6 +60,20 @@ router.post(
 );
 ```
 
+```mermaid
+flowchart LR
+    REQ["בקשה נכנסת"] --> LOG["Logger<br/>(info: כל בקשה)"]
+    LOG --> AUTH{"requireAuth<br/>JWT תקין?"}
+    AUTH -->|"לא"| E401["401"]
+    AUTH -->|"כן"| VAL{"validateCreateTask<br/>Zod תקין?"}
+    VAL -->|"לא"| E400["400"]
+    VAL -->|"כן"| CTRL["Controller"]
+    CTRL --> SVC["Service<br/>לוגיקה עסקית"]
+    SVC --> REPO["Repository<br/>גישה לנתונים"]
+    REPO --> RES["201 + Logger (info)"]
+    SVC -.->|"שגיאה"| ERRLOG["Logger (error)"]
+```
+
 ## הסבר עיקרי
 
 סדר ה-middleware הוא בדיוק סדר ההגנה — `requireAuth` רץ **לפני** `validateCreateTask`, שרץ **לפני** ה-Controller — כל שכבה "שומרת" על הבאה אחריה: אם אין טוקן תקין, הבקשה נעצרת לפני שהיא בכלל מגיעה לבדיקת ולידציה; אם הקלט לא תקין, היא נעצרת לפני שמגיעה ל-Controller ול-Service. ה-Controller "רואה" רק בקשות שכבר עברו שני שערי הגנה.

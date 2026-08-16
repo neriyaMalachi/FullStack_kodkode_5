@@ -61,6 +61,13 @@ export function createBook(rawWork) {
 }
 ```
 
+```mermaid
+flowchart LR
+    API["api.js<br/>fetchBooksBySubject()<br/>יודע רק על fetch"] -->|"מערך גולמי"| INDEX["index.js<br/>מרכיב הכל יחד"]
+    LIB["library.js<br/>createBook()<br/>Factory + Closure"] -->|"אובייקט Book"| INDEX
+    INDEX -->|"filter + sort"| OUT["קטלוג ממוין ומסונן<br/>console.log"]
+```
+
 ## הסבר עיקרי
 
 מודולים מפרקים את הפרויקט לפי אחריות — `api.js` **לא יודע כלום** על מבנה "ספר" בפרויקט שלנו, הוא רק יודע לדבר עם ה-API החיצוני ולהחזיר מערך גולמי. `library.js` **לא יודע כלום** על `fetch` — הוא רק יודע להפוך אובייקט גולמי לאובייקט "ספר" מוכר. זו בדיוק החלוקה מיחידת Clean Code: כל קובץ עושה דבר אחד, וקל להחליף/לבדוק כל חלק בנפרד.

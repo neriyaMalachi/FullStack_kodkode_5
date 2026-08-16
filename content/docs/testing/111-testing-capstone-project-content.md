@@ -54,6 +54,17 @@ test("createTask דוחה משימה בלי כותרת בלי לפנות ל-Repo
 });
 ```
 
+```mermaid
+flowchart TB
+    A["Integration Tests<br/>מעטים — שרת אמיתי + HTTP אמיתי"]
+    B["Server Unit Tests<br/>יותר — לוגיקה עם Mocks"]
+    C["Unit Tests<br/>הכי הרבה — פונקציות טהורות, מהירות"]
+    A --- B --- C
+    style A stroke-width:1px
+    style B stroke-width:2px
+    style C stroke-width:3px
+```
+
 ## הסבר עיקרי
 
 שלוש שכבות, שלוש שאלות שונות — Unit Test על `isValidTask` שואל: "האם הלוגיקה הטהורה נכונה?" — בלי DB, בלי שרת, בלי שום דבר חיצוני. Server Unit Test על `taskService` שואל: "האם הלוגיקה העסקית משתמשת נכון בתלויות שלה?" — עם `fakeRepo` מזויף, בלי DB אמיתי. Integration Test שואל: "האם כל השרשרת — Router, Middleware, Service, DB אמיתי — באמת עובדת יחד?" — עם שרת אמיתי מורם ובקשת HTTP אמיתית.

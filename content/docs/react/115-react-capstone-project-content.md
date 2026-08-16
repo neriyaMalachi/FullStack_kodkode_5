@@ -69,6 +69,18 @@ function App() {
 }
 ```
 
+```mermaid
+flowchart TD
+    APP["App<br/>ThemeContext.Provider"] --> ROUTER["BrowserRouter"]
+    ROUTER --> EB["ErrorBoundary"]
+    EB -->|"/"| LIST["TaskListPage"]
+    EB -->|"/tasks/:id"| DETAIL["TaskDetailsPage"]
+    HOOK["useTasks()<br/>fetch + state"] -.->|"tasks, loading, error"| LIST
+    HOOK -.-> DETAIL
+    LIST -->|"React.memo"| ITEM["TaskItem<br/>(כרטיס בודד)"]
+    SERVER[("שרת Express<br/>מהיחידה הקודמת")] -.->|"fetch"| HOOK
+```
+
 ## הסבר עיקרי
 
 Custom Hook מפריד "מה מוצג" מ"איך משיגים את הנתונים" — `TaskListPage` קוראת ל-`useTasks()` ומקבלת `{ tasks, loading, error }` — היא לא יודעת כלום על `fetch`, כתובת ה-API, או טיפול בשגיאות רשת. אם מחר צריך לשנות איך המשימות נטענות (למשל: להוסיף caching), משנים רק את `useTasks`, ואף קומפוננטת UI לא זזה.

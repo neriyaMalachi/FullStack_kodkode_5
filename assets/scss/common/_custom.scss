@@ -51,7 +51,13 @@ body {
     flex: 0 0 var(--sidebar-width);
     width: var(--sidebar-width);
     max-width: 45vw;
-    position: relative;
+    // No position override here — the theme already sets `position: sticky`
+    // on this element (see node_modules/@thulite/doks-core .../_global.scss),
+    // which keeps the sidebar pinned while only its inner .docs-links nav
+    // scrolls independently. `sticky` still establishes a valid containing
+    // block for the absolutely-positioned .docs-sidebar-resize-handle below,
+    // so nothing else needs to change. Setting `position: relative` here
+    // used to silently override the theme's `sticky` — that was the bug.
   }
 }
 

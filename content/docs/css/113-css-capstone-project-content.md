@@ -59,6 +59,40 @@ params:
 }
 ```
 
+## הדגמה חיה
+
+<div class="demo-live" style="direction:rtl;border:1px solid #d1d5db;border-radius:10px;padding:1.25rem;margin:1.25rem 0;background:#fafafa;color:#111827;">
+<p style="font-weight:600;margin:0 0 0.9rem;color:#6b7280;font-size:0.85rem;">🔴 הדגמה חיה — אותו HTML בדיוק מהפרויקט המסכם של יחידת HTML, עכשיו עם Flexbox+Grid+משתנים — הצרו את חלון הדפדפן כדי לראות את ה-Media Query בפעולה</p>
+<style>
+.demo-css-cap { --color-primary: #2563eb; --color-bg: #ffffff; --spacing-md: 0.9rem; background: var(--color-bg); border-radius: 8px; padding: var(--spacing-md); }
+.demo-css-cap-header { display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-md); border-bottom: 2px solid var(--color-primary); padding-bottom: 0.6rem; margin-bottom: var(--spacing-md); }
+.demo-css-cap-header h4 { margin: 0; }
+.demo-css-cap-badge { background: var(--color-primary); color: #fff; border-radius: 999px; padding: 0.2rem 0.7rem; font-size: 0.8rem; }
+.demo-css-cap-layout { display: grid; grid-template-columns: 2fr 1fr; gap: var(--spacing-md); }
+.demo-css-cap-btn { background: var(--color-primary); color: #fff; border: none; border-radius: 6px; padding: 0.5rem 1rem; cursor: pointer; transition: transform 0.15s ease, opacity 0.15s ease; }
+.demo-css-cap-btn:hover { opacity: 0.85; transform: translateY(-2px); }
+@media (max-width: 480px) {
+  .demo-css-cap-layout { grid-template-columns: 1fr; }
+}
+</style>
+<div class="demo-css-cap">
+  <div class="demo-css-cap-header">
+    <h4>עוגיות שוקולד צ'יפס</h4>
+    <span class="demo-css-cap-badge">⭐ 4.8</span>
+  </div>
+  <div class="demo-css-cap-layout">
+    <div>
+      <p style="margin:0 0 0.6rem;">מתכון קלאסי, פריך מבחוץ ורך מבפנים.</p>
+      <button class="demo-css-cap-btn" type="button">הוסף למועדפים</button>
+    </div>
+    <table style="border-collapse:collapse;width:100%;">
+      <thead><tr><th style="border:1px solid #d1d5db;padding:0.3rem;">רכיב</th><th style="border:1px solid #d1d5db;padding:0.3rem;">כמות</th></tr></thead>
+      <tbody><tr><td style="border:1px solid #d1d5db;padding:0.3rem;">קלוריות</td><td style="border:1px solid #d1d5db;padding:0.3rem;">210</td></tr></tbody>
+    </table>
+  </div>
+</div>
+</div>
+
 ## הסבר עיקרי
 
 Flexbox ו-Grid לא מתחרים — כל אחד לתפקיד שלו — כותרת העמוד (לוגו + כפתור) היא שורה חד-ממדית — בדיוק בשביל זה Flexbox קיים. פריסת העמוד השלמה (תוכן ראשי + תפריט צדדי) היא רשת דו-ממדית עם עמודות ושורות — בדיוק בשביל זה Grid קיים. פרויקט אמיתי כמעט תמיד משתמש **בשניהם יחד**, כל אחד במקום שמתאים לו.

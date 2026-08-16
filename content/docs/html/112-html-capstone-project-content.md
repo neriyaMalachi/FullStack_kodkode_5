@@ -67,6 +67,39 @@ params:
 </article>
 ```
 
+## הדגמה חיה
+
+<div class="demo-live" style="direction:rtl;border:1px solid #d1d5db;border-radius:10px;padding:1.25rem;margin:1.25rem 0;background:#fafafa;color:#111827;">
+<p style="font-weight:600;margin:0 0 0.9rem;color:#6b7280;font-size:0.85rem;">🔴 הדגמה חיה — בדיוק ה-HTML למעלה, בלי שום CSS — כך זה נראה "גולמי", לפני יחידת CSS הבאה</p>
+<article>
+  <header style="border-bottom:1px solid #d1d5db;padding-bottom:0.5rem;margin-bottom:0.75rem;">
+    <h3 style="margin:0 0 0.5rem;">עוגיות שוקולד צ'יפס</h3>
+    <div style="width:100%;max-width:280px;height:140px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;color:#6b7280;font-size:0.85rem;border-radius:6px;">🍪 תמונת עוגיות (alt: "עוגיות שוקולד צ'יפס טריות על צלחת עץ")</div>
+  </header>
+  <section style="margin-bottom:1rem;">
+    <h4>ערכים תזונתיים (למנה)</h4>
+    <table style="border-collapse:collapse;">
+      <thead><tr><th style="border:1px solid #d1d5db;padding:0.3rem 0.6rem;">רכיב</th><th style="border:1px solid #d1d5db;padding:0.3rem 0.6rem;">כמות</th></tr></thead>
+      <tbody>
+        <tr><td style="border:1px solid #d1d5db;padding:0.3rem 0.6rem;">קלוריות</td><td style="border:1px solid #d1d5db;padding:0.3rem 0.6rem;">210</td></tr>
+        <tr><td style="border:1px solid #d1d5db;padding:0.3rem 0.6rem;">שומן</td><td style="border:1px solid #d1d5db;padding:0.3rem 0.6rem;">9 גרם</td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section>
+    <h4>השאירו ביקורת</h4>
+    <form onsubmit="event.preventDefault(); this.querySelector('.demo-html-sent').hidden=false;" style="display:flex;flex-direction:column;gap:0.5rem;max-width:300px;">
+      <label for="demo-html-name">שם:</label>
+      <input type="text" id="demo-html-name" required style="padding:0.4rem;border:1px solid #d1d5db;border-radius:4px;">
+      <label for="demo-html-rating">דירוג (1–5):</label>
+      <input type="number" id="demo-html-rating" min="1" max="5" required style="padding:0.4rem;border:1px solid #d1d5db;border-radius:4px;">
+      <button type="submit" style="background:#2563eb;color:#fff;border:none;border-radius:6px;padding:0.5rem;cursor:pointer;">שליחה</button>
+      <span class="demo-html-sent" hidden style="color:#16a34a;font-size:0.85rem;">✓ נשלח (הדגמה בלבד — נסו לשלוח בלי למלא שדה חובה ותראו את ולידציית הדפדפן)</span>
+    </form>
+  </section>
+</article>
+</div>
+
 ## הסבר עיקרי
 
 כל חלק בעמוד "מסביר את עצמו" למכונה — קורא מסך שנתקל ב-`<header>` יודע שזו כותרת העמוד; שנתקל ב-`<table>` יודע להכריז "טבלה עם 2 עמודות" ולא רק לקרוא טקסט רץ; שנתקל ב-`<label for="rating">` יודע לקשר את המילה "דירוג" לשדה הספציפי הזה. אף אחד מהדברים האלה לא היה קורה עם `<div>` גנרי בכל מקום — הסמנטיקה **היא** הנגישות, לא תוספת נפרדת לה.

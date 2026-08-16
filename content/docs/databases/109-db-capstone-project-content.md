@@ -56,6 +56,25 @@ const postSchema = new mongoose.Schema({
 const posts = await Post.find().populate("author"); // "JOIN" של Mongoose
 ```
 
+```mermaid
+erDiagram
+    USERS ||--o{ POSTS : "user_id (FK)"
+    POSTS ||--o{ COMMENTS : "post_id (FK)"
+    USERS ||--o{ COMMENTS : "user_id (FK)"
+```
+
+```mermaid
+flowchart LR
+    subgraph רלציוני
+        U1["users"] -->|"FK: user_id"| P1["posts"]
+        P1 -->|"FK: post_id"| C1["comments (טבלה נפרדת)"]
+    end
+    subgraph MongoDB
+        U2["User document"] -.->|"Reference + populate()"| P2["Post document"]
+        P2 -->|"Embedding"| C2["comments: [...]<br/>(מערך בתוך ה-Post)"]
+    end
+```
+
 ## הסבר עיקרי
 
 אותה בעיה, שתי גישות שונות — ב-SQL, `posts.user_id` **חייב** להצביע על שורה קיימת ב-`users` (Foreign Key אוכף את זה ברמת מסד הנתונים עצמו) — ו-`JOIN` הוא הדרך היחידה לקבל "פוסט + שם הכותב" בשאילתה אחת. ב-MongoDB, `Post` יכול להחזיק `author` כ-Reference (דומה ל-FK, עם `populate()` שמדמה JOIN) — או, לחלופין, **להטמיע** את פרטי הכותב ישירות בתוך ה-document של הפוסט (Embedding), אם רוב הקריאות ממילא צריכות את שניהם ביחד.
