@@ -46,7 +46,7 @@ params:
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     subgraph Container["display: flex"]
         direction LR
         I1["Item 1"]

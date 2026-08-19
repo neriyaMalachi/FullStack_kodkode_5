@@ -1,12 +1,12 @@
 ---
 title: "Closures"
-slug: "10-js-closures-content"
+slug: "11-js-closures-content"
 description: "Closure הוא פונקציה שזוכרת את המשתנים מהסביבה שבה נוצרה, גם אחרי שזו הסתיימה."
 summary: "📖 שיעור"
 date: 2026-08-09T00:00:00+02:00
 lastmod: 2026-08-09T00:00:00+02:00
 draft: false
-weight: 101
+weight: 111
 toc: true
 sidebar:
   collapsed: true

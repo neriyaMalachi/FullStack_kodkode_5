@@ -1,12 +1,12 @@
 ---
 title: "Object Methods"
-slug: "9-js-object-methods-content"
+slug: "10-js-object-methods-content"
 description: "מתודות סטטיות כמו Object.keys/entries הופכות אובייקט לאיטרבילי ונוח לעיבוד."
 summary: "📖 שיעור"
 date: 2026-08-09T00:00:00+02:00
 lastmod: 2026-08-09T00:00:00+02:00
 draft: false
-weight: 91
+weight: 101
 toc: true
 sidebar:
   collapsed: true
@@ -44,7 +44,7 @@ Object.entries(user); // [["name","Dana"], ["age",28]]
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     O["{ name: 'Dana', age: 28 }"] -->|"Object.keys"| K["['name', 'age']"]
     O -->|"Object.values"| V["['Dana', 28]"]
     O -->|"Object.entries"| E["[['name','Dana'], ['age',28]]"]

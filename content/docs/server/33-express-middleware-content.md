@@ -50,7 +50,7 @@ app.get("/users", (req, res) => {
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     Req["בקשה נכנסת"] --> MW1["logger(req,res,next)"]
     MW1 -->|"next()"| MW2["middleware נוסף (אם יש)"]
     MW2 -->|"next()"| Handler["route handler"]

@@ -1,12 +1,12 @@
 ---
 title: "Clean Code"
-slug: "13-js-clean-code-content"
+slug: "14-js-clean-code-content"
 description: "קוד נקי הוא קוד שקל לקרוא ולתחזק — שמות ברורים, פונקציות קטנות, בלי כפילות."
 summary: "📖 שיעור"
 date: 2026-08-09T00:00:00+02:00
 lastmod: 2026-08-09T00:00:00+02:00
 draft: false
-weight: 131
+weight: 141
 toc: true
 sidebar:
   collapsed: true

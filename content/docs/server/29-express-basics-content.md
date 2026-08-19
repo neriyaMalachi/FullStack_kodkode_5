@@ -49,7 +49,7 @@ app.listen(3000, () => console.log("השרת רץ על פורט 3000"));
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     Req["GET /users"] --> App["app (Express)"]
     App -->|"מתאים לפי Method+URL"| H["app.get('/users', handler)"]
     H --> Res["res.json([...])"]

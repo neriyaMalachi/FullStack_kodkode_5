@@ -44,7 +44,7 @@ git log --oneline           # מציג היסטוריה תמציתית
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     A["Working Directory
     הקבצים על הדיסק"] -->|"git add"| B["Staging Area
     מוכן ל-commit הבא"]

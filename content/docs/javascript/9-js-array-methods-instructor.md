@@ -1,12 +1,12 @@
 ---
 title: "מערך שיעור: Array Methods — שיטות מערך"
-slug: "8-js-array-methods-instructor"
+slug: "9-js-array-methods-instructor"
 description: "משך: 2 שעות אקדמיות (90 דקות)."
 summary: "📋 מערך מרצה"
 date: 2026-08-06T00:00:00+02:00
 lastmod: 2026-08-06T00:00:00+02:00
 draft: false
-weight: 80
+weight: 90
 toc: true
 sidebar:
   collapsed: true

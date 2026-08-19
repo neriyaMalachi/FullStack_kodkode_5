@@ -45,7 +45,7 @@ git pull origin main    # מביא שינויים חדשים שאחרים שלח
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     subgraph Local["המחשב שלכם"]
         R["Repository מקומי"]
     end

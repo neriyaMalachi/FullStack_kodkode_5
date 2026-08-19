@@ -35,7 +35,7 @@ params:
 • Replica Set — כמה עותקים מסונכרנים של אותם הנתונים, לזמינות גבוהה — אם שרת אחד נופל, אחר ממשיך לשרת בקשות
 
 ```mermaid
-flowchart LR
+flowchart RL
     App["הקוד שלכם - Node.js"] -->|"Connection String + Database User"| NA{"Network Access - IP מורשה?"}
     NA -->|מורשה| Cluster["MongoDB Atlas Cluster"]
     Cluster --> R1[("עותק 1")]

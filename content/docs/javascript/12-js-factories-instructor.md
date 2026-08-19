@@ -1,12 +1,12 @@
 ---
 title: "מערך שיעור: Factory Functions"
-slug: "11-js-factories-instructor"
+slug: "12-js-factories-instructor"
 description: "משך: 2 שעות אקדמיות (90 דקות)."
 summary: "📋 מערך מרצה"
 date: 2026-08-06T00:00:00+02:00
 lastmod: 2026-08-06T00:00:00+02:00
 draft: false
-weight: 110
+weight: 120
 toc: true
 sidebar:
   collapsed: true

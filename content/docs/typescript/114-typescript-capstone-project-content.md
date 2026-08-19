@@ -71,7 +71,7 @@ export async function fetchBooksBySubject(subject: string): Promise<RawWork[]> {
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     RAW["RawWork<br/>(מה-API החיצוני)"] -->|"createBook(): Book"| BOOK["Book<br/>(interface שלנו)"]
     subgraph tsc["בדיקת tsc"]
         CHECK{"האם RawWork תואם<br/>את מה ש-createBook מצפה?"}

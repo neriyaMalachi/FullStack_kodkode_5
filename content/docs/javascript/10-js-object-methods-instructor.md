@@ -1,12 +1,12 @@
 ---
 title: "מערך שיעור: Object Methods — מתודות Object"
-slug: "9-js-object-methods-instructor"
+slug: "10-js-object-methods-instructor"
 description: "משך: 2 שעות אקדמיות (90 דקות)."
 summary: "📋 מערך מרצה"
 date: 2026-08-06T00:00:00+02:00
 lastmod: 2026-08-06T00:00:00+02:00
 draft: false
-weight: 90
+weight: 100
 toc: true
 sidebar:
   collapsed: true

@@ -47,7 +47,7 @@ function TaskList({ tasks }) {
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     subgraph arr["מערך tasks"]
         A1["id:1 קניות"]
         A2["id:2 לימוד"]

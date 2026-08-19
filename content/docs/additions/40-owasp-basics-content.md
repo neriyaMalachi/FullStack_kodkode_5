@@ -47,7 +47,7 @@ app.use("/api/", limiter);
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     Req["בקשה נכנסת"] --> RL["Rate Limiting
     נגד Brute Force"]
     RL --> HM["Helmet

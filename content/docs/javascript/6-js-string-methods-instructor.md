@@ -1,12 +1,12 @@
 ---
 title: "מערך שיעור: String Methods"
-slug: "5-js-string-methods-instructor"
+slug: "6-js-string-methods-instructor"
 description: "משך: 2 שעות אקדמיות (90 דקות)."
 summary: "📋 מערך מרצה"
 date: 2026-08-06T00:00:00+02:00
 lastmod: 2026-08-06T00:00:00+02:00
 draft: false
-weight: 50
+weight: 60
 toc: true
 sidebar:
   collapsed: true

@@ -35,7 +35,7 @@ params:
 • SQL Editor — ממשק בדפדפן להרצת פקודות SQL ישירות על המסד, מבלי להתקין כלי חיצוני
 
 ```mermaid
-flowchart LR
+flowchart RL
     A["הקוד שלכם (Node.js)"] -->|Connection String| B["Supabase"]
     B --> C[("PostgreSQL")]
     D["דפדפן — Table/SQL Editor"] --> B

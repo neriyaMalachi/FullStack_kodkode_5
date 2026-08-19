@@ -1,12 +1,12 @@
 ---
 title: "Conditions & Loops"
-slug: "3-js-conditions-loops-content"
+slug: "4-js-conditions-loops-content"
 description: "תנאים בוחרים איזה קוד רץ; לולאות חוזרות על קוד בלי לשכפל אותו ידנית."
 summary: "📖 שיעור"
 date: 2026-08-09T00:00:00+02:00
 lastmod: 2026-08-09T00:00:00+02:00
 draft: false
-weight: 31
+weight: 41
 toc: true
 sidebar:
   collapsed: true
@@ -52,7 +52,7 @@ flowchart TD
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     Init["i = 0"] --> Check{"i < 3?"}
     Check -->|true| Run["הרץ את גוף הלולאה"]
     Run --> Update["i++"]

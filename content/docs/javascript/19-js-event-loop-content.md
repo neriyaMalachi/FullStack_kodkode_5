@@ -42,7 +42,7 @@ console.log("2");
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     CS["Call Stack
     (LIFO) — מה רץ עכשיו"] -->|"fetch() מופנה החוצה"| WA["Web API
     מטפל בבקשת הרשת ברקע"]
@@ -50,6 +50,110 @@ flowchart LR
     (FIFO) — ממתין לתור"]
     CQ -->|"Event Loop: Call Stack ריק?"| CS
 ```
+
+## הדגמה חיה
+
+<div class="demo-live event-loop-demo" dir="ltr">
+<style>
+.event-loop-demo { border: 1px solid var(--bs-border-color); border-radius: .5rem; padding: 1rem 1.25rem; margin: 1.5rem 0; text-align: left; }
+.event-loop-demo .el-boards { display: flex; gap: 1rem; flex-wrap: wrap; margin-block: 1rem; }
+.event-loop-demo .el-board { flex: 1; min-width: 170px; border: 2px dashed var(--bs-border-color); border-radius: .5rem; padding: .75rem; min-height: 150px; position: relative; transition: box-shadow .3s ease, border-color .3s ease; }
+.event-loop-demo .el-board.el-start { border-color: var(--bs-primary); border-style: solid; }
+.event-loop-demo .el-board.el-active { border-color: var(--bs-primary); box-shadow: 0 0 0 4px rgba(var(--bs-primary-rgb, 13,110,253), .25); }
+.event-loop-demo .el-board h4 { font-size: .85rem; margin: 0 0 .5rem; opacity: .75; }
+.event-loop-demo .el-step-num { display: inline-flex; align-items: center; justify-content: center; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--bs-primary); color: #fff; font-size: .75rem; font-weight: 700; margin-right: .4rem; }
+.event-loop-demo .el-start-badge { position: absolute; top: -.7rem; right: .5rem; background: var(--bs-primary); color: #fff; font-size: .7rem; padding: .1rem .5rem; border-radius: 1rem; }
+.event-loop-demo .el-flow-hint { font-size: .85rem; opacity: .75; margin-bottom: .25rem; }
+.event-loop-demo .el-chip { display: inline-block; padding: .3rem .6rem; border-radius: .35rem; font-size: .8rem; margin: .2rem; color: #fff; opacity: 0; transform: scale(.7); transition: all .35s ease; }
+.event-loop-demo .el-chip.show { opacity: 1; transform: scale(1); }
+.event-loop-demo .el-chip.stack { background: #6f42c1; }
+.event-loop-demo .el-chip.webapi { background: #fd7e14; }
+.event-loop-demo .el-chip.queue { background: #20c997; }
+.event-loop-demo .el-log { font-family: monospace; font-size: .85rem; background: var(--bs-tertiary-bg, #f1f3f5); border-radius: .35rem; padding: .6rem .75rem; min-height: 130px; max-height: 220px; overflow-y: auto; }
+.event-loop-demo .el-log-line { opacity: .4; padding: .15rem 0; transition: opacity .3s ease; }
+.event-loop-demo .el-log-line.el-current { opacity: 1; font-weight: 600; }
+.event-loop-demo .el-btn { border: none; border-radius: .35rem; padding: .5rem 1rem; background: var(--bs-primary); color: #fff; cursor: pointer; font-size: .9rem; }
+.event-loop-demo .el-btn:disabled { opacity: .5; cursor: not-allowed; }
+</style>
+
+<p>Click <strong>"▶ Run animation"</strong> and watch <code>fetch</code>'s real journey between the three pieces, following the code example above — instead of imagining it, you'll see it happen. Runs slowly, step by step.</p>
+
+<button type="button" class="el-btn" onclick="window.__runEventLoopDemo(this)">▶ Run animation</button>
+
+<p class="el-flow-hint">🔢 Follow the numbers — everything always starts at <strong>① Call Stack</strong>, marked with a solid blue border:</p>
+
+<div class="el-boards">
+  <div class="el-board el-start"><span class="el-start-badge">START HERE</span><h4><span class="el-step-num">1</span>📚 Call Stack (LIFO)</h4><div class="el-stack-zone"></div></div>
+  <div class="el-board"><h4><span class="el-step-num">2</span>🌐 Web API</h4><div class="el-webapi-zone"></div></div>
+  <div class="el-board"><h4><span class="el-step-num">3</span>📥 Callback Queue (FIFO)</h4><div class="el-queue-zone"></div></div>
+</div>
+
+<div class="el-log" data-el-log><div class="el-log-line el-current">Click "▶ Run animation" to start...</div></div>
+
+<script>
+(function () {
+  window.__runEventLoopDemo = function (btn) {
+    var demo = btn.closest('.event-loop-demo');
+    var stackZone = demo.querySelector('.el-stack-zone');
+    var webapiZone = demo.querySelector('.el-webapi-zone');
+    var queueZone = demo.querySelector('.el-queue-zone');
+    var log = demo.querySelector('[data-el-log]');
+    var boards = demo.querySelectorAll('.el-board');
+
+    btn.disabled = true;
+    stackZone.innerHTML = '';
+    webapiZone.innerHTML = '';
+    queueZone.innerHTML = '';
+    log.innerHTML = '';
+
+    function addChip(zone, cls, text) {
+      var chip = document.createElement('span');
+      chip.className = 'el-chip ' + cls;
+      chip.textContent = text;
+      zone.appendChild(chip);
+      requestAnimationFrame(function () { chip.classList.add('show'); });
+    }
+    function clearZone(zone) { zone.innerHTML = ''; }
+    function highlight(zone) {
+      boards.forEach(function (b) { b.classList.remove('el-active'); });
+      if (zone) zone.closest('.el-board').classList.add('el-active');
+    }
+    function addLine(text) {
+      var prev = log.querySelector('.el-current');
+      if (prev) prev.classList.remove('el-current');
+      var line = document.createElement('div');
+      line.className = 'el-log-line el-current';
+      line.textContent = text;
+      log.appendChild(line);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    // Slow, evenly-paced steps — about 1.8s apart, ~16s total, plenty of time to read each line
+    var steps = [
+      { t: 0,     text: '▶ console.log("1") enters the Call Stack and runs immediately',            action: function () { addChip(stackZone, 'stack', 'console.log("1")'); highlight(stackZone); } },
+      { t: 1800,  text: '✓ console.log("1") finishes and leaves the Stack — printed: 1',             action: function () { clearZone(stackZone); } },
+      { t: 3600,  text: '▶ fetch(...) enters the Call Stack briefly',                                 action: function () { addChip(stackZone, 'stack', 'fetch(...)'); highlight(stackZone); } },
+      { t: 5400,  text: '↪ fetch is handed off to the Web API in the background — it leaves the Stack right away!', action: function () { clearZone(stackZone); addChip(webapiZone, 'webapi', 'waiting for response...'); highlight(webapiZone); } },
+      { t: 7200,  text: '▶ console.log("2") enters and runs immediately — the code did NOT wait for fetch!', action: function () { addChip(stackZone, 'stack', 'console.log("2")'); highlight(stackZone); } },
+      { t: 9000,  text: '✓ console.log("2") finishes — printed: 2',                                   action: function () { clearZone(stackZone); } },
+      { t: 10800, text: '📩 The server response arrives! The callback moves to the Callback Queue — it does NOT run yet', action: function () { clearZone(webapiZone); addChip(queueZone, 'queue', 'handle(response)'); highlight(queueZone); } },
+      { t: 12600, text: '🔁 Event Loop checks: "Is the Stack empty?" — Yes! It moves the callback in',  action: function () { highlight(queueZone); } },
+      { t: 14400, text: '▶ handle(response) finally runs — only now, after all the synchronous code',  action: function () { clearZone(queueZone); addChip(stackZone, 'stack', 'handle(response)'); highlight(stackZone); } },
+      { t: 16200, text: '✓ Done. Actual print order: 1, 2, then handle(response) — always in this order.', action: function () { clearZone(stackZone); highlight(null); } }
+    ];
+
+    steps.forEach(function (step) {
+      setTimeout(function () {
+        step.action();
+        addLine(step.text);
+      }, step.t);
+    });
+
+    setTimeout(function () { btn.disabled = false; }, 17000);
+  };
+})();
+</script>
+</div>
 
 ## הסבר עיקרי
 

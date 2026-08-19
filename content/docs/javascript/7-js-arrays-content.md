@@ -1,12 +1,12 @@
 ---
 title: "Arrays"
-slug: "6-js-arrays-content"
+slug: "7-js-arrays-content"
 description: "מערך שומר רשימה מסודרת של ערכים תחת שם אחד, נגישים לפי אינדקס."
 summary: "📖 שיעור"
 date: 2026-08-09T00:00:00+02:00
 lastmod: 2026-08-09T00:00:00+02:00
 draft: false
-weight: 61
+weight: 71
 toc: true
 sidebar:
   collapsed: true
@@ -44,7 +44,7 @@ fruits.length;  // 3
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     subgraph fruits["fruits (length: 3)"]
         direction LR
         I0["index 0

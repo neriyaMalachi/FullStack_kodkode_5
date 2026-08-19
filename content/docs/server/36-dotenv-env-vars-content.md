@@ -54,7 +54,7 @@ DB_SECRET=super-secret-key-123
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     Env[".env
     (מקומי, לא ב-Git)"] -->|"dotenv/config"| PE["process.env"]
     PE --> Code["הקוד קורא

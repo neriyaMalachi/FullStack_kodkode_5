@@ -1,12 +1,12 @@
 ---
 title: "מערך שיעור: Debugging"
-slug: "14-js-debugging-instructor"
+slug: "15-js-debugging-instructor"
 description: "משך: 2 שעות אקדמיות (90 דקות)."
 summary: "📋 מערך מרצה"
 date: 2026-08-06T00:00:00+02:00
 lastmod: 2026-08-06T00:00:00+02:00
 draft: false
-weight: 140
+weight: 150
 toc: true
 sidebar:
   collapsed: true

@@ -1,12 +1,12 @@
 ---
 title: "מערך שיעור: Closures — פונקציה שזוכרת את סביבתה"
-slug: "10-js-closures-instructor"
+slug: "11-js-closures-instructor"
 description: "משך: 2 שעות אקדמיות (90 דקות)."
 summary: "📋 מערך מרצה"
 date: 2026-08-06T00:00:00+02:00
 lastmod: 2026-08-06T00:00:00+02:00
 draft: false
-weight: 100
+weight: 110
 toc: true
 sidebar:
   collapsed: true

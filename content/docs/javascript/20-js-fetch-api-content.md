@@ -40,7 +40,7 @@ console.log(result); // Promise { <pending> } — עדיין לא הנתונים
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     A["fetch('/api/users')"] --> B["Promise מוחזר מיד
     (הכרטיס - עדיין pending)"]
     B -.בזמן שממתינים.-> C["...קוד אחר ממשיך לרוץ..."]

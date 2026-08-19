@@ -47,7 +47,7 @@ app.post("/users", (req, res) => {
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     Req["POST /users
     body: raw JSON"] --> MW["express.json()
     מפרסר את ה-Stream"]
@@ -61,7 +61,7 @@ flowchart LR
 
 הסדר קריטי — `app.use(express.json())` **חייב** להירשם **לפני** ה-routes שמשתמשים ב-`req.body`. Express מריץ middleware ו-routes בדיוק לפי סדר הרישום שלהם בקוד — אם `express.json()` נרשם **אחרי** route מסוים, ל-route ההוא `req.body` יהיה `undefined`.
 
-Content-Type כתנאי — `express.json()` בודק את ה-`Content-Type` header של הבקשה הנכנסת; אם הוא לא `application/json`, ה-middleware **מדלג** ולא מפרסר כלום — `req.body` יישאר ריק. חשוב לוודא שהלקוח (`fetch`, בשיעורי ה-JavaScript) שולח את ה-header הנכון.
+Content-Type כתנאי — `express.json()` בודק את ה-`Content-Type` header של הבקשה הנכנסת; אם הוא לא `application/json`, ה-middleware **מדלג** ולא מפרסר כלום — `req.body` נשאר `undefined`, **לא** אובייקט ריק `{}`. זו נקודה שמבלבלת בפועל: קוד שמניח שיש תמיד אובייקט (גם ריק) וכותב `req.body.name` יזרוק `TypeError: Cannot read properties of undefined` — לא רק "יקבל `undefined`" בשקט. חשוב לוודא שהלקוח (`fetch`, בשיעורי ה-JavaScript) שולח את ה-header הנכון, ואם יש חשש שבקשה תגיע בלי `Content-Type` תקין, להגן על הקוד עם בדיקה מפורשת (`req.body ?? {}`) לפני שניגשים לשדות שבתוכו.
 
 ## יתרונות
 
@@ -69,7 +69,7 @@ Content-Type כתנאי — `express.json()` בודק את ה-`Content-Type` hea
 
 ## חסרונות
 
-חובה לזכור את סדר הרישום (לפני ה-routes); שכחת `Content-Type` נכון בצד הלקוח גורמת ל-`req.body` ריק בלי הודעת שגיאה ברורה.
+חובה לזכור את סדר הרישום (לפני ה-routes); שכחת `Content-Type` נכון בצד הלקוח גורמת ל-`req.body` שנשאר `undefined` בלי הודעת שגיאה ברורה — ועלול לגרום ל-`TypeError` אם ניגשים לשדה בתוכו בלי בדיקה.
 
 ## נקודות חשובות למבחן / ראיון עבודה
 
@@ -117,7 +117,7 @@ Content-Type כתנאי — `express.json()` בודק את ה-`Content-Type` hea
 
 **המשימה:** שלחו בקשת POST **בלי** `Content-Type: application/json` (למשל `curl -X POST -d '{"x":1}' http://localhost:3000/echo` בלי `-H`), ובדקו מה `req.body` מכיל.
 
-**בדיקה:** `req.body` הוא אובייקט ריק `{}` — `express.json()` מדלג על פרסור כשה-`Content-Type` לא תואם.
+**בדיקה:** `req.body` הוא `undefined` — **לא** אובייקט ריק `{}` — כי `express.json()` מדלג על פרסור לגמרי כשה-`Content-Type` לא תואם, ולא מציב שום ערך.
 
 ---
 

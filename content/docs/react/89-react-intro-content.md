@@ -43,7 +43,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(<Greeting />);
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     A["Component function<br/>מחזיר JSX"] --> B["Virtual DOM<br/>תמונה חדשה בזיכרון"]
     B --> C{"React משווה<br/>לתמונה הקודמת (Diffing)"}
     C -->|"נמצא הבדל"| D["מעדכן רק את זה<br/>ב-DOM האמיתי"]

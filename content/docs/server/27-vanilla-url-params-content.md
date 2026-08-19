@@ -51,7 +51,7 @@ const server = http.createServer((req, res) => {
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     A["/users/42?role=admin"] --> B["new URL(...)"]
     B --> C["pathname: /users/42"]
     B --> D["searchParams: role=admin"]

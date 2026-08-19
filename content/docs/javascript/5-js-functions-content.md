@@ -1,12 +1,12 @@
 ---
 title: "Functions"
-slug: "4-js-functions-content"
+slug: "5-js-functions-content"
 description: "פונקציה היא בלוק קוד עם שם שנכתב פעם אחת ונקרא שוב ושוב — הבסיס ל-DRY."
 summary: "📖 שיעור"
 date: 2026-08-09T00:00:00+02:00
 lastmod: 2026-08-09T00:00:00+02:00
 draft: false
-weight: 41
+weight: 51
 toc: true
 sidebar:
   collapsed: true
@@ -44,7 +44,7 @@ add(2, 3); // 5
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     Args["add(2, 3)
     ארגומנטים"] --> Params["a=2, b=3
     פרמטרים בתוך הפונקציה"]

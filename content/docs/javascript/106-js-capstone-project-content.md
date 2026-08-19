@@ -62,7 +62,7 @@ export function createBook(rawWork) {
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     API["api.js<br/>fetchBooksBySubject()<br/>יודע רק על fetch"] -->|"מערך גולמי"| INDEX["index.js<br/>מרכיב הכל יחד"]
     LIB["library.js<br/>createBook()<br/>Factory + Closure"] -->|"אובייקט Book"| INDEX
     INDEX -->|"filter + sort"| OUT["קטלוג ממוין ומסונן<br/>console.log"]

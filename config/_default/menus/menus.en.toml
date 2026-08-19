@@ -19,13 +19,13 @@
   weight = 25
 
 [[sidebar_docs]]
-  name = "Databases"
-  pageRef = "/docs/databases"
+  name = "Docker"
+  pageRef = "/docs/docker"
   weight = 30
 
 [[sidebar_docs]]
-  name = "Docker"
-  pageRef = "/docs/docker"
+  name = "Databases"
+  pageRef = "/docs/databases"
   weight = 35
 
 [[sidebar_docs]]

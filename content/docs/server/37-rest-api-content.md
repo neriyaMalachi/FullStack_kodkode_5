@@ -45,7 +45,7 @@ router.delete("/tasks/:id", deleteTask); // Delete
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     subgraph Resource["/tasks (משאב — שם עצם)"]
         direction TB
         G["GET → Read"]

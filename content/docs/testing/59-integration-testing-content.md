@@ -54,7 +54,7 @@ describe("GET /tasks", () => {
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     Test["request(app).get('/tasks')"] --> Router["Router"]
     Router --> MW["Middleware"]
     MW --> Handler["Route Handler"]

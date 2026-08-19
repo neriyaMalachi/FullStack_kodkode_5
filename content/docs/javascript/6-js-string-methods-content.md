@@ -1,12 +1,12 @@
 ---
 title: "String Methods"
-slug: "5-js-string-methods-content"
+slug: "6-js-string-methods-content"
 description: "מתודות מחרוזת מובנות הופכות עיבוד טקסט ידני לשורת קוד אחת קריאה."
 summary: "📖 שיעור"
 date: 2026-08-09T00:00:00+02:00
 lastmod: 2026-08-09T00:00:00+02:00
 draft: false
-weight: 51
+weight: 61
 toc: true
 sidebar:
   collapsed: true
@@ -45,7 +45,7 @@ params:
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     Original["'hello'
     המחרוזת המקורית"] -->|".toUpperCase()"| New["'HELLO'
     מחרוזת חדשה מוחזרת"]

@@ -1,12 +1,12 @@
 ---
 title: "מערך שיעור: Clean Code"
-slug: "13-js-clean-code-instructor"
+slug: "14-js-clean-code-instructor"
 description: "משך: 2 שעות אקדמיות (90 דקות)."
 summary: "📋 מערך מרצה"
 date: 2026-08-06T00:00:00+02:00
 lastmod: 2026-08-06T00:00:00+02:00
 draft: false
-weight: 130
+weight: 140
 toc: true
 sidebar:
   collapsed: true

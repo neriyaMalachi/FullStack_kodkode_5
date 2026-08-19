@@ -61,7 +61,7 @@ router.post(
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     REQ["בקשה נכנסת"] --> LOG["Logger<br/>(info: כל בקשה)"]
     LOG --> AUTH{"requireAuth<br/>JWT תקין?"}
     AUTH -->|"לא"| E401["401"]

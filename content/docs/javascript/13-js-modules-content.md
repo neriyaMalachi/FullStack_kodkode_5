@@ -1,12 +1,12 @@
 ---
 title: "Modules (ESM)"
-slug: "12-js-modules-content"
+slug: "13-js-modules-content"
 description: "Modules מחלקים קוד לקבצים נפרדים עם import/export, כל אחד עם scope מבודד."
 summary: "📖 שיעור"
 date: 2026-08-09T00:00:00+02:00
 lastmod: 2026-08-09T00:00:00+02:00
 draft: false
-weight: 121
+weight: 131
 toc: true
 sidebar:
   collapsed: true
@@ -42,7 +42,7 @@ import multiply, { add } from "./math.js";
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     subgraph math["math.js"]
         add["export const add"]
         mul["export default multiply"]

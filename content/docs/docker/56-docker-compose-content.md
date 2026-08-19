@@ -54,7 +54,7 @@ volumes:
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     subgraph Compose["docker compose up"]
         App["Service: app
         (מה-Dockerfile)"]

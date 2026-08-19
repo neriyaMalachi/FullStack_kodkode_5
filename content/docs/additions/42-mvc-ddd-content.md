@@ -56,7 +56,7 @@ export function createTaskHandler(req, res) {
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     Req["HTTP Request"] --> Ctrl["Controller
     req/res בלבד"]
     Ctrl --> Svc["Service

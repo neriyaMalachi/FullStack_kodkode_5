@@ -47,7 +47,7 @@ params:
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     A["static
     זרימה רגילה"] --> B["relative
     זרימה + הזזה יחסית לעצמו"]

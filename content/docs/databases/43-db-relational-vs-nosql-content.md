@@ -37,7 +37,7 @@ params:
 • ACID — קבוצת ערבויות (Atomicity, Consistency, Isolation, Durability) שרוב מסדי הנתונים הרלציוניים מספקים באופן מובנה
 
 ```mermaid
-flowchart LR
+flowchart RL
     subgraph SQL["רלציוני (SQL) — טבלת tasks"]
         direction TB
         R1["id: 1 | title: קניות | done: false"]

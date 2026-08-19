@@ -55,7 +55,7 @@ test("getOpenTasks מחזיר רק משימות פתוחות", () => {
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     Test["הבדיקה"] --> Fake["fakeRepo.findAll = mock.fn(...)"]
     Fake -->|"מוזרק כפרמטר"| Svc["getOpenTasks(fakeRepo)"]
     Svc --> Result["result — נבדק עם assert"]

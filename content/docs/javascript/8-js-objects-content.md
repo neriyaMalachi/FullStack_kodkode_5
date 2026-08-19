@@ -1,12 +1,12 @@
 ---
 title: "Objects"
-slug: "7-js-objects-content"
+slug: "8-js-objects-content"
 description: "Object מאחד נתונים קשורים תחת ישות אחת, בזוגות key-value."
 summary: "📖 שיעור"
 date: 2026-08-09T00:00:00+02:00
 lastmod: 2026-08-09T00:00:00+02:00
 draft: false
-weight: 71
+weight: 81
 toc: true
 sidebar:
   collapsed: true
@@ -43,7 +43,7 @@ user["email"];  // "dana@mail.com" — bracket notation
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     subgraph user["user (Object)"]
         direction TB
         K1["name → 'Dana'"]

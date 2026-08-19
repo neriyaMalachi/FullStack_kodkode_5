@@ -48,7 +48,7 @@ app.get("*", (req, res) => {
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     A["קוד React<br/>(.jsx, .css)"] -->|"npm run build"| B["dist/<br/>קבצים סטטיים מוכנים"]
     B --> C["express.static('dist')"]
     subgraph server["סדר ה-routes בשרת — חובה בסדר הזה"]

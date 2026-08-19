@@ -1,12 +1,12 @@
 ---
 title: "מערך שיעור: Arrays (מערכים)"
-slug: "6-js-arrays-instructor"
+slug: "7-js-arrays-instructor"
 description: "משך: 2 שעות אקדמיות (90 דקות)."
 summary: "📋 מערך מרצה"
 date: 2026-08-06T00:00:00+02:00
 lastmod: 2026-08-06T00:00:00+02:00
 draft: false
-weight: 60
+weight: 70
 toc: true
 sidebar:
   collapsed: true

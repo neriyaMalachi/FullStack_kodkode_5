@@ -1,12 +1,12 @@
 ---
 title: "Array Methods"
-slug: "8-js-array-methods-content"
+slug: "9-js-array-methods-content"
 description: "מתודות מערך כמו map/filter/reduce מחליפות לולאות ידניות בתחביר פונקציונלי קריא."
 summary: "📖 שיעור"
 date: 2026-08-09T00:00:00+02:00
 lastmod: 2026-08-09T00:00:00+02:00
 draft: false
-weight: 81
+weight: 91
 toc: true
 sidebar:
   collapsed: true
@@ -42,7 +42,7 @@ nums.reduce((sum, n) => sum + n, 0); // 10
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     A["[1, 2, 3, 4]"] -->|"map(n => n*2)"| B["[2, 4, 6, 8]
     אותו אורך"]
     A -->|"filter(n => n%2===0)"| C["[2, 4]

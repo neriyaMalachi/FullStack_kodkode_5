@@ -1,12 +1,12 @@
 ---
 title: "Debugging"
-slug: "14-js-debugging-content"
+slug: "15-js-debugging-content"
 description: "Debugging שיטתי משתמש ב-console.table ו-breakpoints, לא רק console.log מפוזר."
 summary: "📖 שיעור"
 date: 2026-08-09T00:00:00+02:00
 lastmod: 2026-08-09T00:00:00+02:00
 draft: false
-weight: 141
+weight: 151
 toc: true
 sidebar:
   collapsed: true
@@ -43,7 +43,7 @@ console.table([
 ```
 
 ```mermaid
-flowchart LR
+flowchart RL
     A["שגיאה בקוד"] --> B["Breakpoint / debugger
     עוצר ביצוע בשורה מדויקת"]
     B --> C["בדיקת משתנים

@@ -1,12 +1,12 @@
 ---
 title: "Factory Functions"
-slug: "11-js-factories-content"
+slug: "12-js-factories-content"
 description: "פונקציה רגילה שיוצרת ומחזירה object חדש בכל קריאה — בלי new, בלי this מיוחד."
 summary: "📖 שיעור"
 date: 2026-08-09T00:00:00+02:00
 lastmod: 2026-08-09T00:00:00+02:00
 draft: false
-weight: 111
+weight: 121
 toc: true
 sidebar:
   collapsed: true
