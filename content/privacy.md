@@ -1,9 +1,9 @@
 ---
-title: "Privacy Policy"
-description: "Learn how we collect, use, and protect your personal data, what rights you have over your information, and how to contact us with questions."
+title: "מדיניות פרטיות ותנאי שימוש"
+description: "האתר מיועד רק לתלמידי הקורס — אין להעביר את הקישור לאחרים. גם מדיניות הפרטיות שלנו מוסברת כאן."
 summary: ""
 date: 2023-09-07T17:19:07+02:00
-lastmod: 2026-02-16T15:33:59+01:00
+lastmod: 2026-08-20T00:00:00+02:00
 draft: false
 type: "legal"
 params:
@@ -14,8 +14,20 @@ params:
     robots: "" # custom robot tags (optional)
 ---
 
-We value your privacy and are committed to protecting your personal data. This Privacy Policy explains what information we collect, how we use it, and the choices you have.
+## למי מיועד האתר
 
-We only collect the information necessary to provide and improve our services, such as basic usage analytics and any details you choose to share with us (for example, via forms or support requests). We do not sell your personal data.
+אתר זה (kodkod | FullStack) הוא חומר לימוד פנימי המיועד **אך ורק לתלמידים הרשומים לקורס**. הגישה אליו ניתנת לכם באופן אישי לצורך הלמידה במסגרת הקורס בלבד.
 
-If you have any questions about this policy or how we handle your data, please contact us using the details provided on this site.
+**אין להעביר, לשתף או לפרסם את הקישור לאתר** לאנשים שאינם רשומים לקורס — לא בקבוצות, לא ברשתות חברתיות ולא בכל אמצעי אחר. התוכן פותח והותאם במיוחד לקורס הזה, וכל שימוש בו מחוץ למסגרת הלימודית שלכם (כולל העתקה, הפצה מחדש או שימוש מסחרי) אסור ללא אישור מפורש מראש.
+
+אם גיליתם שהקישור הגיע לידי מישהו שאינו תלמיד בקורס, נשמח שתעדכנו אותנו.
+
+## מה אנחנו אוספים
+
+האתר אינו דורש הרשמה או חשבון משתמש. מעקב ההתקדמות שלכם בקורס (סימון שיעורים כ"נלמד") נשמר **מקומית בדפדפן שלכם בלבד** (localStorage) — המידע הזה לא נשלח לשום שרת ולא נגיש לנו או לאף אחד אחר. אם תנקו את נתוני הדפדפן או תעברו למחשב אחר, ההתקדמות המקומית תימחק.
+
+מעבר לכך, אנו עשויים לאסוף נתוני שימוש בסיסיים ואנונימיים (כגון סטטיסטיקת ביקורים) לצורך שיפור האתר. אנחנו לא מוכרים ולא משתפים את המידע שלכם עם צדדים שלישיים.
+
+## יצירת קשר
+
+שאלות לגבי מדיניות זו, או בקשה להסרת גישה — ניתן לפנות אלינו בפרטי הקשר המופיעים באתר הקורס.
