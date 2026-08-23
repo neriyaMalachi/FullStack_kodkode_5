@@ -24,6 +24,7 @@ const purgecss = purgeCSSPlugin({
     ],
     safelist: [
         'active',
+        'is-complete', // progress.js — added client-side from localStorage, never present in server-rendered HTML
         'btn-clipboard', // clipboards.js
         'clipboard', // clipboards.js
         'disabled',

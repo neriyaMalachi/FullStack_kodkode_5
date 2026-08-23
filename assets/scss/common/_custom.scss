@@ -385,7 +385,35 @@ table {
 }
 
 .lesson-list li.is-complete {
-  background: rgba(var(--bs-success-rgb, 25, 135, 84), 0.06);
+  background: rgba(var(--bs-success-rgb, 25, 135, 84), 0.1);
+
+  // .lesson-list a sets color:inherit, so completed rows need their own
+  // override here to actually show green/bold — otherwise only the faint
+  // background and the small checkmark indicator changed, which is easy
+  // to miss while scanning the hub page from outside a lesson.
+  a {
+    color: var(--bs-success, var(--bs-primary));
+    font-weight: 700;
+  }
+}
+
+// Sidebar (docs-links) lesson links: mark completed lessons with bold,
+// success-colored text so progress is visible while scanning the tree,
+// not just via the small checkmark indicator.
+.docs-links a.is-complete {
+  color: var(--bs-success, var(--bs-primary));
+  font-weight: 700;
+}
+
+// The Doks theme highlights the *currently open* sidebar item with its own
+// higher-specificity rule (`.section-nav li.active a`, incl. a dark-mode
+// variant) that otherwise wins over the rule above whenever the lesson
+// you're reading is also the one you just marked complete — the single
+// most common case a student will actually see. This rule out-specifies
+// both variants so "complete" always wins over "currently open".
+.docs-links li.active.is-complete a {
+  color: var(--bs-success, var(--bs-primary)) !important;
+  font-weight: 700;
 }
 
 .course-progress-summary {
