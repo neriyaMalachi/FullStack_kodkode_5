@@ -6,6 +6,9 @@
 {{/* Desktop drag-to-resize for the docs sidebar — see assets/js/sidebar-resize.js */}}
 {{ partial "footer/esbuild" (dict "src" "js/sidebar-resize.js" "load" "async" "transpile" false) -}}
 
+{{/* Only one docs sidebar category open at a time — see assets/js/sidebar-accordion.js */}}
+{{ partial "footer/esbuild" (dict "src" "js/sidebar-accordion.js" "load" "async" "transpile" false) -}}
+
 {{/* EXAMPLE - only load script for production
 {{ if eq (hugo.Environment) "production" -}}
   {{ partial "footer/esbuild" (dict "src" "js/instantpage.js" "load" "async" "transpile" false) -}}
