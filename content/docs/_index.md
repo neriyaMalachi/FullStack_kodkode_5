@@ -9,7 +9,7 @@ weight: 999
 toc: true
 params:
   seo:
-    title: ""
+    title: "kodkod | FullStack"
     description: ""
     canonical: ""
     robots: ""
