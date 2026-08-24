@@ -18,143 +18,31 @@ params:
     robots: ""
 ---
 
-## מה זה?
+## הגדרת הפרויקט
 
-זהו הפרויקט המסכם של יחידת Docker: לוקחים את הידע מכל שלושת השיעורים — Dockerfile (בניית Image), Docker Compose (הרצת כמה קונטיינרים יחד) — ומוסיפים שלב אחד קדימה: **Dockerfile רב-שלבי (Multi-Stage)** לImage קטן ונקי יותר, ו**קובץ `.env`** שמעביר קונפיגורציה ל-Compose בלי לכתוב אף ערך קשיח.
+זהו הפרויקט המסכם של יחידת Docker: לוקחים את הידע מכל שלושת השיעורים — Dockerfile (בניית Image), Docker Compose (הרצת כמה קונטיינרים יחד) — ומוסיפים שלב אחד קדימה: **Dockerfile רב-שלבי (Multi-Stage)** ל-Image קטן ונקי יותר, ו**קובץ `.env`** שמעביר קונפיגורציה ל-Compose בלי לכתוב אף ערך קשיח. שלב הבנייה מתקין את כל התלויות, ושלב הריצה הסופי מעתיק ממנו רק את מה שבאמת צריך — Image קטן יותר, ומשטח-התקפה קטן יותר. זו בדיוק ההגדרה של "מוכן ל-production" בעולם ה-containers.
 
-## מילות מפתח שחשוב לזכור
+## מה צריך להיות מוכן בסוף
 
-• Multi-Stage Build — Dockerfile עם כמה בלוקי `FROM`; שלב אחד מתקין ובונה, ושלב סופי **קטן** מעתיק ממנו רק מה שבאמת צריך בזמן ריצה
+**דרישות:**
+1. Dockerfile רב-שלבי לשרת ה-Node שלכם — שלב בנייה + שלב ריצה קטן (`node:20-alpine`), עם `COPY --from=<שלב הבנייה>` בשלב הסופי
+2. `.dockerignore` שחוסם `node_modules`, `.env`, ו-`.git`
+3. `docker-compose.yml` עם Service `app` (מה-Dockerfile) ו-Service `db` (`postgres:16` או `mongo:7`), עם `depends_on` ו-`volumes` לשמירת נתונים
+4. כל סיסמה/פורט/כתובת מגיעים מקובץ `.env` דרך `${VAR}` — אף ערך קשיח ב-`docker-compose.yml`
+5. `.env` מופיע ב-`.gitignore` ואינו מחובר לריפו
 
-• `.dockerignore` — כמו `.gitignore`, אבל קובע מה **לא** נכנס להקשר הבנייה (`node_modules`, `.env`, `.git`) — Image קטן יותר, ובלי דליפת סודות
+**קריטריוני הצלחה:**
 
-• `.env` + `docker-compose.yml` — Compose קורא אוטומטית קובץ `.env` באותה תיקייה, ומזריק את הערכים דרך `${VAR}` בתוך ה-YAML
+• `docker compose up --build` מריץ את שני השירותים בהצלחה, והאפליקציה מגיבה ב-`curl` על הפורט שמוגדר ב-`.env`
 
-```dockerfile
-# Stage 1: build — has all the dev tools, but this image gets discarded at the end
-FROM node:20 AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
+• `docker images` מראה שה-Image של ה-`app` קטן משמעותית ממה שהיה בגרסה בשלב-אחד
 
-# Stage 2: run — small final image, without the extra build tools
-FROM node:20-alpine
-WORKDIR /app
-COPY --from=build /app .
-CMD ["node", "server.js"]
-```
+• שינוי סיסמה ב-`.env` והרצה מחדש של `docker compose up` מעדכנים את שני השירותים בלי לגעת ב-YAML בכלל
 
-```yaml
-# docker-compose.yml — reads values from .env automatically
-services:
-  app:
-    build: .
-    environment:
-      - DB_HOST=db
-      - DB_PASSWORD=${DB_PASSWORD}   # comes from the .env file
-    depends_on:
-      - db
-  db:
-    image: postgres:16
-    environment:
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-    volumes:
-      - db-data:/var/lib/postgresql/data
+• אין שום ערך קשיח (סיסמה, פורט, כתובת) כתוב ישירות ב-`docker-compose.yml`
 
-volumes:
-  db-data:
-```
-
-```mermaid
-flowchart TB
-    subgraph Build["Building the Image (Multi-Stage)"]
-        S1["Stage 1: node:20<br/>npm ci + all the code"] -->|"COPY --from=build<br/>only what's needed"| S2["Stage 2: node:20-alpine<br/>small final image"]
-    end
-    ENV[".env<br/>DB_PASSWORD=..."] -.->|"${DB_PASSWORD}"| COMPOSE
-    subgraph COMPOSE["docker compose up"]
-        APP["app<br/>(from the final image)"] -->|"depends_on"| DB["db<br/>postgres:16"]
-        DB --> VOL[("Volume<br/>db-data")]
-    end
-```
-
-## הסבר עיקרי
-
-Multi-Stage חוסך משקל בלי לוותר על שום דבר — שלב הבנייה (`build`) מתקין את **כל** התלויות (כולל כלי פיתוח כבדים), אבל שלב הריצה מעתיק ממנו רק את הקבצים המוגמרים (`COPY --from=build`). ה-Image הסופי לא מכיל את כלי הבנייה בכלל — קטן יותר, ומשטח-התקפה קטן יותר (פחות תוכנה מותקנת = פחות פגיעויות אפשריות).
-
-`.env` עובד עם Compose בלי קוד נוסף — Docker Compose **קורא אוטומטית** קובץ בשם `.env` באותה תיקייה כמו `docker-compose.yml`, ומחליף כל `${DB_PASSWORD}` בתוך ה-YAML בערך המתאים. זו בדיוק אותה עקרון dotenv מיחידת Server — קונפיגורציה נפרדת מקוד — רק שכאן זה קורה ברמת ה-orchestration, לפני שהקונטיינרים בכלל עולים.
-
-`.dockerignore` מונע שתי בעיות בבת אחת — בלי אותו, `docker build` שולח את **כל** תיקיית הפרויקט (כולל `node_modules` ענק ו-`.env` עם סודות) להקשר הבנייה — גם אם ה-Dockerfile לא באמת צריך אותם. `.dockerignore` חוסם את זה: בנייה מהירה יותר, ובלי סיכון שסוד מ-`.env` "יידלף" בטעות לתוך שכבה של ה-Image.
-
-## יתרונות
-
-Multi-Stage נותן Image קטן ומאובטח יותר בלי לשנות שום קוד אפליקציה; `.env` + Compose מפרידים סודות/קונפיגורציה מה-YAML עצמו, כך שאפשר לשתף `docker-compose.yml` (ב-Git) בלי לחשוף סיסמאות; `.dockerignore` מייעל את הבנייה ומונע דליפת קבצים רגישים.
-
-## חסרונות
-
-Dockerfile רב-שלבי מורכב יותר לקריאה מ-Dockerfile פשוט בשלב אחד; קובץ `.env` חייב להישאר **מחוץ** ל-Git (ב-`.gitignore`) — אם מישהו מוסיף אותו בטעות, הסודות נחשפים בהיסטוריה.
-
-## נקודות חשובות
-
-• Multi-Stage Build משתמש בכמה `FROM` בקובץ אחד; `COPY --from=<stage>` מעתיק רק מה שצריך לשלב הסופי
-
-• Compose קורא `.env` **אוטומטית** מאותה תיקייה — אין צורך בדגל מיוחד
-
-• `.dockerignore` חוסם קבצים מהקשר הבנייה, במקביל ל-`.gitignore` לגבי Git
-
-• קובץ `.env` צריך להיות ב-`.gitignore` תמיד — לעולם לא מחובר לריפו
-
-## טעויות נפוצות
-
-• לשכוח `.dockerignore` ואז לתהות למה בניית ה-Image לוקחת דקות ארוכות (שולח `node_modules` שלם בכל פעם)
-
-• לכתוב סיסמה ישירות ב-`docker-compose.yml` במקום ב-`${VAR}` שמגיע מ-`.env`
-
-• לשכוח `COPY --from=build` בשלב האחרון, ואז לגלות שה-Image הסופי לא מכיל את הקוד בכלל
-
-• להוסיף `.env` בטעות ל-Git (בלי `.gitignore` מתאים) — חשיפת סודות בהיסטוריה, גם אם מוחקים את הקובץ אחר-כך
-
-## סיכום
-
-הפרויקט המסכם בונה Dockerfile רב-שלבי ל-Image קטן ונקי, מריץ אותו יחד עם מסד נתונים דרך `docker compose`, ומעביר את כל הקונפיגורציה (סיסמאות, כתובות) דרך קובץ `.env` שנקרא אוטומטית — בלי אף ערך קשיח בקוד או ב-YAML. זו בדיוק ההגדרה של "מוכן ל-production" בעולם ה-containers.
-
-## דוקומנטציה רשמית
+## דוקומנטציה רשמית מותרת
 
 [Docker Docs — Multi-stage builds](https://docs.docker.com/build/building/multi-stage/)
 
 [Docker Compose — Environment variables](https://docs.docker.com/compose/how-tos/environment-variables/)
-
----
-
-## תרגילים
-
-### תרגיל 1 — הפיכת Dockerfile לרב-שלבי
-
-**המשימה:** קחו Dockerfile בשלב אחד (מהשיעור הקודם) והפכו אותו לרב-שלבי — שלב `build` ושלב ריצה נפרד.
-
-**בדיקה:** `docker images` מראה שגודל ה-Image החדש קטן משמעותית מהגרסה בשלב-אחד.
-
-### תרגיל 2 — קונפיגורציה דרך `.env`
-
-**המשימה:** צרו קובץ `.env` עם `APP_PORT=4000`, והשתמשו בו ב-`docker-compose.yml` דרך `${APP_PORT}` בהגדרת `ports`.
-
-**בדיקה:** שינוי הערך ב-`.env` ל-`5000` והרצת `docker compose up` מחדש משנה בפועל על איזה פורט האפליקציה נגישה — בלי לגעת ב-YAML.
-
----
-
-## פרויקט מסכם
-
-**המשימה:** בנו סביבת `docker compose` מלאה, עם Dockerfile רב-שלבי וקונפיגורציה דרך `.env` בלבד.
-
-**דרישות:**
-1. Dockerfile רב-שלבי לשרת ה-Node שלכם — שלב בנייה + שלב ריצה קטן (`node:20-alpine`)
-2. `.dockerignore` שחוסם `node_modules`, `.env`, ו-`.git`
-3. `docker-compose.yml` עם Service `app` (מה-Dockerfile) ו-Service `db` (`postgres:16` או `mongo:7`), עם `depends_on` ו-`volumes` לשמירת נתונים
-4. כל סיסמה/פורט/כתובת מגיעים מקובץ `.env` דרך `${VAR}` — אף ערך קשיח ב-`docker-compose.yml`
-5. `.env` מופיע ב-`.gitignore`
-
-**בדיקה:** `docker compose up --build` מריץ את שני השירותים בהצלחה, והאפליקציה מגיבה ב-`curl` על הפורט שמוגדר ב-`.env`; `docker images` מראה שה-Image של ה-`app` קטן משמעותית ממה שהיה בגרסה בשלב-אחד; שינוי סיסמה ב-`.env` ו-`docker compose up` מחדש מעדכן את שני השירותים בלי לגעת ב-YAML בכלל.
-
-## מה בפרק הבא
-
-בפרק הבא נתחיל יחידה חדשה — **בסיסי נתונים**. עד עכשיו כל הנתונים בשרת שלנו חיו במערך זמני בזיכרון — כל הפעלה מחדש של השרת מוחקת הכל. ביחידת בסיסי הנתונים נלמד לשמור נתונים **לצמיתות**, גם אחרי שהשרת נכבה — הבסיס לכל אפליקציה אמיתית, ועם הכלים שלמדתם כאן תוכלו גם להריץ את מסד הנתונים עצמו כקונטיינר Docker.

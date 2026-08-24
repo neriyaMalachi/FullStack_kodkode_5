@@ -18,158 +18,31 @@ params:
     robots: ""
 ---
 
-## מה זה?
+## הגדרת הפרויקט
 
-זהו הפרויקט המסכם של יחידת CSS: לוקחים את עמוד "פרופיל המתכון" הסמנטי מהפרויקט המסכם של יחידת HTML — עדיין בלי שום עיצוב — ומלבישים אותו בעיצוב מלא: משתני CSS לצבעי-על עקביים, Flexbox לפריסת ניווט/כרטיסים, Grid לפריסת עמוד רחבה, פסאודו-סלקטורים למצבי אינטראקציה, ותגובתיות מלאה למסכים שונים. אותו HTML **בדיוק** מהיחידה הקודמת — בלי לגעת בו — רק CSS חדש.
+זהו הפרויקט המסכם של יחידת CSS: לוקחים את עמוד "פרופיל המתכון" הסמנטי מהפרויקט המסכם של יחידת HTML — עדיין בלי שום עיצוב — ומלבישים אותו בעיצוב מלא: משתני CSS לצבעי-על עקביים, Flexbox לפריסת ניווט/כרטיסים, Grid לפריסת עמוד רחבה, פסאודו-סלקטורים למצבי אינטראקציה, ותגובתיות מלאה למסכים שונים. אותו HTML **בדיוק** מהיחידה הקודמת — בלי לגעת בו — רק CSS חדש. Flexbox (פריסה חד-ממדית) ו-Grid (פריסה דו-ממדית) לא מתחרים — פרויקט אמיתי כמעט תמיד משתמש בשניהם יחד, כל אחד במקום שמתאים לו.
 
-## מילות מפתח שחשוב לזכור
-
-• CSS Variables (`--שם`) — ערכים מרכזיים (צבעים, מרווחים) שמוגדרים פעם אחת ב-`:root`, ומשמשים בכל הקובץ עם `var(--שם)`
-
-• Flexbox — פריסה חד-ממדית (שורה או עמודה) — מתאים לניווט, שורת כפתורים, כרטיסים ברוחב משתנה
-
-• Grid — פריסה דו-ממדית (שורות **ו**עמודות יחד) — מתאים למבנה עמוד שלם
-
-• Media Query — `@media (max-width: ...)` — כללי CSS שחלים רק מתחת לרוחב מסך מסוים
-
-```css
-:root {
-  --color-primary: #2563eb;
-  --color-bg: #f8fafc;
-  --spacing-md: 1rem;
-}
-
-.recipe-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--spacing-md);
-}
-
-.recipe-layout {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: var(--spacing-md);
-}
-
-@media (max-width: 640px) {
-  .recipe-layout {
-    grid-template-columns: 1fr; /* narrow screen — one column instead of two */
-  }
-}
-```
-
-## הדגמה חיה
-
-<div class="demo-live" style="direction:rtl;border:1px solid #d1d5db;border-radius:10px;padding:1.25rem;margin:1.25rem 0;background:#fafafa;color:#111827;">
-<p style="font-weight:600;margin:0 0 0.9rem;color:#6b7280;font-size:0.85rem;">🔴 הדגמה חיה — אותו HTML בדיוק מהפרויקט המסכם של יחידת HTML, עכשיו עם Flexbox+Grid+משתנים — הצרו את חלון הדפדפן כדי לראות את ה-Media Query בפעולה</p>
-<style>
-.demo-css-cap { --color-primary: #2563eb; --color-bg: #ffffff; --spacing-md: 0.9rem; background: var(--color-bg); border-radius: 8px; padding: var(--spacing-md); }
-.demo-css-cap-header { display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-md); border-bottom: 2px solid var(--color-primary); padding-bottom: 0.6rem; margin-bottom: var(--spacing-md); }
-.demo-css-cap-header h4 { margin: 0; }
-.demo-css-cap-badge { background: var(--color-primary); color: #fff; border-radius: 999px; padding: 0.2rem 0.7rem; font-size: 0.8rem; }
-.demo-css-cap-layout { display: grid; grid-template-columns: 2fr 1fr; gap: var(--spacing-md); }
-.demo-css-cap-btn { background: var(--color-primary); color: #fff; border: none; border-radius: 6px; padding: 0.5rem 1rem; cursor: pointer; transition: transform 0.15s ease, opacity 0.15s ease; }
-.demo-css-cap-btn:hover { opacity: 0.85; transform: translateY(-2px); }
-@media (max-width: 480px) {
-  .demo-css-cap-layout { grid-template-columns: 1fr; }
-}
-</style>
-<div class="demo-css-cap">
-  <div class="demo-css-cap-header">
-    <h4>עוגיות שוקולד צ'יפס</h4>
-    <span class="demo-css-cap-badge">⭐ 4.8</span>
-  </div>
-  <div class="demo-css-cap-layout">
-    <div>
-      <p style="margin:0 0 0.6rem;">מתכון קלאסי, פריך מבחוץ ורך מבפנים.</p>
-      <button class="demo-css-cap-btn" type="button">הוסף למועדפים</button>
-    </div>
-    <table style="border-collapse:collapse;width:100%;">
-      <thead><tr><th style="border:1px solid #d1d5db;padding:0.3rem;">רכיב</th><th style="border:1px solid #d1d5db;padding:0.3rem;">כמות</th></tr></thead>
-      <tbody><tr><td style="border:1px solid #d1d5db;padding:0.3rem;">קלוריות</td><td style="border:1px solid #d1d5db;padding:0.3rem;">210</td></tr></tbody>
-    </table>
-  </div>
-</div>
-</div>
-
-## הסבר עיקרי
-
-Flexbox ו-Grid לא מתחרים — כל אחד לתפקיד שלו — כותרת העמוד (לוגו + כפתור) היא שורה חד-ממדית — בדיוק בשביל זה Flexbox קיים. פריסת העמוד השלמה (תוכן ראשי + תפריט צדדי) היא רשת דו-ממדית עם עמודות ושורות — בדיוק בשביל זה Grid קיים. פרויקט אמיתי כמעט תמיד משתמש **בשניהם יחד**, כל אחד במקום שמתאים לו.
-
-משתני CSS הופכים שינוי-עיצוב לשינוי-שורה-אחת — בלי `--color-primary`, שינוי צבע ה-מותג היה דורש חיפוש-והחלפה בעשרות מקומות בקובץ. עם המשתנה, `:root { --color-primary: #16a34a; }` משנה את הצבע **בכל מקום** שמשתמש בו בבת אחת.
-
-Media Query הוא ההבדל בין "נראה טוב אצלי" ל"נראה טוב אצל כולם" — פריסת Grid דו-עמודתית שנראית מעולה על מסך רחב יכולה להיראות דחוסה ושבורה על טלפון. `@media (max-width: 640px)` מאפשר להגדיר כלל **חלופי** שחל רק מתחת לרוחב מסוים — בלי לשנות את ה-HTML בכלל, רק את ה-CSS שמעצב אותו.
-
-## יתרונות
-
-עיצוב מלא בלי לגעת ב-HTML הסמנטי מהיחידה הקודמת — הפרדת אחריות אמיתית בין מבנה לעיצוב; משתני CSS הופכים שינוי מותג/ערכת-נושא לשינוי מרוכז במקום אחד; Flexbox+Grid יחד נותנים כלים לכל סוג פריסה, מהפשוט למורכב.
-
-## חסרונות
-
-שילוב Flexbox+Grid+משתנים+Media Queries באותו קובץ דורש תכנון מראש כדי שהקובץ יישאר קריא; יותר מדי Media Queries מפוזרות (לא מאורגנות) הופכות תחזוקה למסובכת.
-
-## נקודות חשובות
-
-• Flexbox — פריסה חד-ממדית; Grid — פריסה דו-ממדית; בפרויקט אמיתי משתמשים בשניהם
-
-• CSS Variables מוגדרים ב-`:root` ונקראים עם `var(--שם)` — שינוי מרוכז במקום אחד
-
-• Media Query מגדיר כללים **חלופיים** מתחת לרוחב מסך נתון — לא מוחק את הכללים הרגילים, רק דורס אותם כשהתנאי מתקיים
-
-• עיצוב מלא לא דורש שינוי ב-HTML — זו בדיוק הפרדת האחריות בין מבנה לעיצוב
-
-## טעויות נפוצות
-
-• להשתמש בערכי צבע קשיחים בעשרות מקומות במקום משתנה CSS מרכזי אחד
-
-• לבחור Grid לכל דבר (גם שורה פשוטה של כפתורים) במקום Flexbox הפשוט יותר למקרה הזה — או ההפך
-
-• לשכוח Media Query לגמרי ולבדוק רק במסך רחב — הפרויקט "נשבר" בפועל בטלפון
-
-• לגעת ב-HTML כדי "לתקן" בעיית עיצוב, במקום לפתור אותה ב-CSS בלבד
-
-## סיכום
-
-הפרויקט המסכם לוקח עמוד HTML סמנטי קיים ומלביש אותו בעיצוב מלא — משתני CSS לעקביות, Flexbox לפריסות חד-ממדיות, Grid לפריסת העמוד השלמה, ו-Media Queries לתגובתיות בין מסכים. שום שינוי ב-HTML לא נדרש — בדיוק ההוכחה שהפרדת מבנה מעיצוב עובדת.
-
-## דוקומנטציה רשמית
-
-[MDN — CSS Layout: Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout)
-
-[MDN — CSS Layout: Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout)
-
----
-
-## תרגילים
-
-### תרגיל 1 — משתני CSS לערכת נושא
-
-**המשימה:** הגדירו 3 משתני CSS ב-`:root` (צבע ראשי, צבע רקע, מרווח בסיסי), והשתמשו בהם בלפחות 3 כללים שונים.
-
-**בדיקה:** שינוי ערך המשתנה ב-`:root` בלבד משנה את המראה בכל המקומות שמשתמשים בו, בלי לגעת בכללים האחרים.
-
-### תרגיל 2 — פריסה תגובתית
-
-**המשימה:** בנו פריסת Grid דו-עמודתית, והוסיפו Media Query שהופך אותה לעמודה אחת מתחת ל-`640px`.
-
-**בדיקה:** שינוי רוחב חלון הדפדפן (או מצב מובייל ב-DevTools) חוצה את נקודת השבירה ומשנה את הפריסה בזמן אמת.
-
----
-
-## פרויקט מסכם
-
-**המשימה:** עצבו את עמוד "פרופיל המתכון" מהפרויקט המסכם של יחידת HTML במלואו, בלי לשנות את קובץ ה-HTML.
+## מה צריך להיות מוכן בסוף
 
 **דרישות:**
 1. משתני CSS ב-`:root` לפחות 4 (צבעים + מרווחים), בשימוש בכל הקובץ
 2. Flexbox לכותרת העמוד (לוגו/כותרת + מיושר לצד השני)
 3. Grid לפריסת העמוד הראשית (תוכן + טבלת ערכים תזונתיים זה לצד זה על מסך רחב)
 4. Media Query שהופך את פריסת ה-Grid לעמודה אחת מתחת ל-`768px`
-5. פסאודו-סלקטור `:hover`/`:focus` על הכפתור בטופס, עם `transition` חלק (בונוס מהשיעור האחרון)
+5. פסאודו-סלקטור `:hover`/`:focus` על הכפתור בטופס, עם `transition` חלק
 
-**בדיקה:** העמוד נראה מעוצב ומאורגן על מסך רחב, עם תוכן ראשי וטבלה זה-לצד-זה; הקטנת רוחב הדפדפן מתחת ל-768px מציגה עמודה אחת נקייה, בלי גלילה אופקית; hover על הכפתור מרגיש חלק, לא מיידי; ה-HTML עצמו (בדקו ב-DevTools) זהה לחלוטין למה שהיה בסוף יחידת HTML.
+**קריטריוני הצלחה:**
 
-## מה בפרק הבא
+• העמוד נראה מעוצב ומאורגן על מסך רחב, עם תוכן ראשי וטבלה זה-לצד-זה
 
-בפרק הבא נתחיל יחידה חדשה — **DOM**. עד עכשיו כל עמוד שבנינו היה **סטטי** — מה שכתבנו ב-HTML/CSS זה מה שהמשתמש רואה, לתמיד. ביחידת DOM נלמד לשנות את העמוד **בזמן אמת** עם JavaScript — להוסיף, למחוק ולעדכן תוכן בתגובה לפעולות המשתמש, בלי לרענן את העמוד בכלל.
+• הקטנת רוחב הדפדפן מתחת ל-768px מציגה עמודה אחת נקייה, בלי גלילה אופקית
+
+• hover על הכפתור מרגיש חלק (עם transition), לא מיידי
+
+• ה-HTML עצמו (בדקו ב-DevTools) זהה לחלוטין למה שהיה בסוף יחידת HTML — שום שינוי בו לא נדרש
+
+## דוקומנטציה רשמית מותרת
+
+[MDN — CSS Layout: Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout)
+
+[MDN — CSS Layout: Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout)
