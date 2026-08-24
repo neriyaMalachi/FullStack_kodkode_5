@@ -39,11 +39,11 @@ params:
 <html lang="he" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <title>העמוד שלי</title>
+    <title>My Page</title>
   </head>
   <body>
-    <h1>ברוכים הבאים</h1>
-    <p>זה <strong>פסקה</strong> עם קישור <a href="https://example.com">לכאן</a>.</p>
+    <h1>Welcome</h1>
+    <p>This is a <strong>paragraph</strong> with a link <a href="https://example.com">here</a>.</p>
   </body>
 </html>
 ```
@@ -76,7 +76,7 @@ Attribute כמידע נוסף על התג — `href="https://example.com"` בת�
 
 HTML לבדו לא מטפל בעיצוב חזותי (זה תפקיד CSS, בשיעורי היחידה הבאה) ולא באינטראקטיביות (זה תפקיד JavaScript); שכחת תג סגירה או קינון שגוי יכולים לשבור את מבנה העמוד בשקט, בלי שגיאה גלויה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Element = תג פתיחה + תוכן + תג סגירה; Attribute = מידע נוסף בתוך תג הפתיחה
 

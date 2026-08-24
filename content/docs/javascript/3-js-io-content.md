@@ -35,30 +35,30 @@ params:
 • `null` — מה ש-`prompt()` מחזיר אם המשתמש לוחץ "ביטול" במקום להקליד ולאשר
 
 ```javascript
-// Output — כבר מוכר משיעור קודם
-console.log("שלום!");
+// Output — already familiar from a previous lesson
+console.log("Hello!");
 
-// Input — חדש: שואלים את המשתמש, ומחכים לתשובה
-const name = prompt("מה השם שלך?");
-console.log(`שלום, ${name}!`); // משלב קלט בתוך פלט
+// Input — new: ask the user, and wait for an answer
+const name = prompt("What's your name?");
+console.log(`Hello, ${name}!`); // combines input inside output
 ```
 
 ```javascript
-// prompt() תמיד מחזיר string — גם למספרים דרושה המרה
-const ageText = prompt("מה הגיל שלך?"); // "25" — טקסט, לא מספר!
-const age = Number(ageText); // המרה מפורשת ל-number
+// prompt() always returns a string — even numbers need conversion
+const ageText = prompt("How old are you?"); // "25" — text, not a number!
+const age = Number(ageText); // explicit conversion to number
 
 console.log(typeof ageText); // "string"
 console.log(typeof age); // "number"
-console.log(age + 1); // 26 — עבד, כי age הוא באמת number
+console.log(age + 1); // 26 — worked, because age is really a number
 ```
 
 ```mermaid
 flowchart RL
-    User["המשתמש"] -->|"מקליד תשובה"| Prompt["prompt('שאלה')"]
-    Prompt -->|"מחזיר string"| Var["משתנה בקוד"]
+    User["The user"] -->|"types an answer"| Prompt["prompt('question')"]
+    Prompt -->|"returns a string"| Var["variable in code"]
     Var --> Log["console.log(...)"]
-    Log -->|"מציג תוצאה"| User
+    Log -->|"displays the result"| User
 ```
 
 ## הסבר עיקרי
@@ -77,7 +77,7 @@ flowchart RL
 
 `prompt()` חוסם את כל העמוד עד לתשובה — לא מתאים לאתרים אמיתיים (חוויית משתמש גרועה); מחזיר תמיד `string`, מה שדורש המרה זהירה בכל שימוש עם מספרים; `null` בביטול קל לשכוח לבדוק ולגרום לקריסה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `prompt()` = Input (קלט מהמשתמש); `console.log()` = Output (פלט מהקוד)
 

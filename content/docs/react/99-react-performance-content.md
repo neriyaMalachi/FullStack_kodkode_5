@@ -41,12 +41,12 @@ const ExpensiveList = React.memo(function ExpensiveList({ items }) {
 
 function App() {
   const [count, setCount] = useState(0);
-  const items = useMemo(() => computeExpensiveList(), []); // מחושב פעם אחת בלבד
+  const items = useMemo(() => computeExpensiveList(), []); // computed only once
 
   return (
     <>
       <button onClick={() => setCount(count + 1)}>{count}</button>
-      <ExpensiveList items={items} /> {/* לא מתרנדר מחדש כש-count משתנה */}
+      <ExpensiveList items={items} /> {/* does not re-render when count changes */}
     </>
   );
 }
@@ -54,13 +54,13 @@ function App() {
 
 ```mermaid
 flowchart TD
-    subgraph without["בלי React.memo"]
-        A1["App מתרנדר<br/>(count השתנה)"] --> B1["ExpensiveList<br/>מתרנדר מחדש בכל זאת<br/>למרות שitems זהה"]
+    subgraph without["Without React.memo"]
+        A1["App re-renders<br/>(count changed)"] --> B1["ExpensiveList<br/>re-renders anyway<br/>even though items is the same"]
     end
-    subgraph with["עם React.memo"]
-        A2["App מתרנדר<br/>(count השתנה)"] --> B2{"items השתנה?"}
-        B2 -->|"לא"| C2["ExpensiveList<br/>מדלג על רינדור"]
-        B2 -->|"כן"| D2["ExpensiveList<br/>מתרנדר מחדש"]
+    subgraph with["With React.memo"]
+        A2["App re-renders<br/>(count changed)"] --> B2{"Did items change?"}
+        B2 -->|"No"| C2["ExpensiveList<br/>skips render"]
+        B2 -->|"Yes"| D2["ExpensiveList<br/>re-renders"]
     end
 ```
 
@@ -80,7 +80,7 @@ useCallback פותר בעיית Referential Equality של פונקציות — �
 
 אופטימיזציית-יתר (עטיפת **כל** קומפוננטה ב-`memo`/`useMemo`) מוסיפה מורכבות ו-overhead משלה, בלי תועלת אמיתית אם אין באמת בעיית ביצועים; קל לשכוח תלות ב-`useMemo`/`useCallback` ולקבל תוצאה "תקועה" מיושנת.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `React.memo` מדלג על רינדור מחדש של קומפוננטה אם ה-props שלה לא השתנו בפועל
 

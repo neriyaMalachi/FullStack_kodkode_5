@@ -44,11 +44,11 @@ async function getUser(id) {
 
 ```mermaid
 flowchart TB
-    subgraph Sequential["סדרתי — await await"]
+    subgraph Sequential["Sequential — await await"]
         direction LR
         S1["await fetchA()"] --> S2["await fetchB()"]
     end
-    subgraph Parallel["מקבילי — Promise.all"]
+    subgraph Parallel["Parallel — Promise.all"]
         direction LR
         P1["fetchA()"]
         P2["fetchB()"]
@@ -75,7 +75,7 @@ try/catch כתחליף מוכר ל-`.catch()` — כש-Promise נדחה (`reject
 
 `await` סדרתי מיותר (כששתי הבקשות עצמאיות) הוא באג ביצועים נפוץ וקל לפספס אם לא זוכרים על `Promise.all`; שכחת `await` היא שגיאה **שקטה** — מקבלים Promise object במקום הערך בפועל, בלי הודעת שגיאה שמסבירה מה קרה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • פונקציית `async` מחזירה תמיד Promise, גם אם מוחזר ערך פשוט מבפנים
 

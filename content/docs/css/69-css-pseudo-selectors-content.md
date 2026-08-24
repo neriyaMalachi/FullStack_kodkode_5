@@ -38,7 +38,7 @@ params:
 button:hover { background: #eee; }
 input:focus { outline: 2px solid blue; }
 tr:nth-child(odd) { background: #f9f9f9; }
-.tooltip::after { content: "מידע נוסף"; }
+.tooltip::after { content: "More info"; }
 ```
 
 ## הדגמה חיה
@@ -82,7 +82,7 @@ tr:nth-child(odd) { background: #f9f9f9; }
 
 שימוש-יתר ב-::before/::after להסתרת תוכן **משמעותי** (לא דקורטיבי) פוגע בנגישות — קוראי מסך לא תמיד "רואים" תוכן שנוצר ב-CSS; `:nth-child` עם ביטויים מורכבים (`:nth-child(3n+1)`) פחות אינטואיטיבי בהתחלה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Pseudo-class (`:name`, נקודה אחת) בוחר לפי מצב/מיקום; Pseudo-element (`::name`, שתי נקודות) יוצר חלק וירטואלי
 

@@ -46,7 +46,7 @@ export default router;
 
 // app.js
 import usersRouter from "./routes/users.js";
-app.use("/users", usersRouter); // כל route בקובץ מקבל את הprefix "/users"
+app.use("/users", usersRouter); // every route in the file gets the "/users" prefix
 ```
 
 ```mermaid
@@ -75,7 +75,7 @@ flowchart TB
 
 עוד רמת הפשטה שדורשת הבנה (prefix, relative paths); פיצול-יתר (router לכל route בודד) יכול ליצור יותר מדי קבצים קטנים.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `express.Router()` יוצר mini-app עצמאי עם אותה API כמו `app`
 

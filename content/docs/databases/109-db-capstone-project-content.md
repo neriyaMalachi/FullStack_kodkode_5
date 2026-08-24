@@ -33,7 +33,7 @@ params:
 • Schema (Mongoose) — הגדרת המבנה הצפוי של document — שדות, טיפוסים, חובה/לא-חובה — גם ש-MongoDB עצמו "לא אוכף" schema באופן טבעי
 
 ```sql
--- גרסה רלציונית: שתי טבלאות + JOIN
+-- Relational version: two tables + JOIN
 CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT NOT NULL);
 CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
@@ -47,13 +47,13 @@ JOIN users ON posts.user_id = users.id;
 ```
 
 ```javascript
-// גרסה MongoDB + Mongoose: posts כ-documents נפרדים, עם reference למשתמש
+// MongoDB + Mongoose version: posts as separate documents, with a reference to the user
 const postSchema = new mongoose.Schema({
   title: { type: String, required: true },
   author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 
-const posts = await Post.find().populate("author"); // "JOIN" של Mongoose
+const posts = await Post.find().populate("author"); // Mongoose's "JOIN"
 ```
 
 ```mermaid
@@ -65,13 +65,13 @@ erDiagram
 
 ```mermaid
 flowchart RL
-    subgraph רלציוני
+    subgraph Relational
         U1["users"] -->|"FK: user_id"| P1["posts"]
-        P1 -->|"FK: post_id"| C1["comments (טבלה נפרדת)"]
+        P1 -->|"FK: post_id"| C1["comments (separate table)"]
     end
     subgraph MongoDB
         U2["User document"] -.->|"Reference + populate()"| P2["Post document"]
-        P2 -->|"Embedding"| C2["comments: [...]<br/>(מערך בתוך ה-Post)"]
+        P2 -->|"Embedding"| C2["comments: [...]<br/>(array inside the Post)"]
     end
 ```
 
@@ -91,7 +91,7 @@ flowchart RL
 
 עיצוב אותו דבר פעמיים לוקח יותר זמן מבחירה ישירה בטכנולוגיה אחת; קל "לבלבל" בין העקרונות של שתי הגישות אם לא מתרגלים כל אחת בנפרד קודם.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Foreign Key + JOIN הם הדרך הרלציונית לחבר טבלאות; Reference + `populate()` הם המקבילה ב-Mongoose
 

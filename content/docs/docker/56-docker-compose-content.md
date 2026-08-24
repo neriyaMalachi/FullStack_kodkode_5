@@ -57,12 +57,12 @@ volumes:
 flowchart RL
     subgraph Compose["docker compose up"]
         App["Service: app
-        (מה-Dockerfile)"]
+        (from the Dockerfile)"]
         DB["Service: db
         (postgres:16)"]
         App -->|"host: db"| DB
         DB -.Volume.-> V[("db-data
-        נשאר אחרי restart")]
+        persists after restart")]
     end
 ```
 
@@ -82,7 +82,7 @@ Volume פותר את בעיית הנתונים הנעלמים — קונטיינ
 
 `depends_on` מבטיח **סדר הפעלה**, אבל לא בהכרח ש-DB **מוכן לקבל חיבורים** (יכול לקחת עוד כמה שניות) — לפעמים צריך לוגיקת retry באפליקציה; קובץ `docker-compose.yml` מורכב יכול להיות קשה לתחזק בפרויקטים גדולים.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `docker-compose.yml` מגדיר כמה Services יחד; `docker compose up` מפעיל את כולם בפקודה אחת
 

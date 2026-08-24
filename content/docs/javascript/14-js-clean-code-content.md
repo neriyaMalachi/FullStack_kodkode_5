@@ -35,10 +35,10 @@ Clean Code הוא קוד שקל לקרוא, להבין, ולתחזק — לא ר
 • Guard Clause — בדיקת תנאי שגיאה/edge case בתחילת הפונקציה, לפני הלוגיקה הראשית
 
 ```javascript
-// לפני
+// before
 function fn2(x) { if (x) { if (x.active) { return x.name; } } }
 
-// אחרי — Guard Clauses + שם ברור
+// after — Guard Clauses + a clear name
 function getActiveUserName(user) {
   if (!user) return null;
   if (!user.active) return null;
@@ -49,9 +49,9 @@ function getActiveUserName(user) {
 ```mermaid
 flowchart TD
     A["if (x) { if (x.active) {...} }
-    שלוש רמות הזחה"] -->|"Guard Clauses"| B["if (!user) return null;
+    three levels of indentation"] -->|"Guard Clauses"| B["if (!user) return null;
     if (!user.active) return null;
-    ...לוגיקה ראשית, שטוחה"]
+    ...main logic, flat"]
 ```
 
 ## הסבר עיקרי
@@ -72,7 +72,7 @@ DRY כאיתות לפעולה — כלל אצבע מעשי: שלוש שורות 
 
 לפעמים קוד "נקי מדי" (abstraction מוקדמת) מוסיף שכבות עקיפין שמכבידות; Refactoring מתמיד דורש זמן שלא תמיד יש בלוחות זמנים לחוצים.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • "קוד נקרא הרבה יותר פעמים ממה שהוא נכתב" — העיקרון המכונן
 

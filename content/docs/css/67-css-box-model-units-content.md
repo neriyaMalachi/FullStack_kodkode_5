@@ -48,10 +48,10 @@ params:
 
 ```mermaid
 flowchart TB
-    subgraph Margin["margin - שוליים חיצוניים"]
-      subgraph Border["border - גבול"]
-        subgraph Padding["padding - ריפוד פנימי"]
-          Content["content - התוכן"]
+    subgraph Margin["margin - outer spacing"]
+      subgraph Border["border - border"]
+        subgraph Padding["padding - inner padding"]
+          Content["content - the content"]
         end
       end
     end
@@ -87,7 +87,7 @@ Box Model נותן מודל עקבי וחזוי לכל אלמנט, בלי יוצ
 
 margin collapse הוא התנהגות לא-אינטואיטיבית שמפתיעה מפתחים חדשים; ברירת המחדל (`content-box`) מבלבלת אם לא מגדירים `border-box` במפורש; ריבוי יחידות (px/%/em/rem) דורש הבנה מתי כל אחת מתאימה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • סדר השכבות (מבפנים החוצה): content → padding → border → margin
 

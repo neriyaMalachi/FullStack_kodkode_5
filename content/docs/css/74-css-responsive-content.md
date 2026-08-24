@@ -41,7 +41,7 @@ params:
   gap: 16px;
 }
 
-.card { flex: 1 1 300px; } /* גדל/מתכווץ, בסיס 300px */
+.card { flex: 1 1 300px; } /* grows/shrinks, base 300px */
 
 @media (min-width: 768px) {
   .layout { grid-template-columns: 200px 1fr; }
@@ -83,7 +83,7 @@ Viewport meta tag כתנאי הכרחי — בלי `<meta name="viewport" conten
 
 דורש בדיקה על מכשירים/רזולוציות מרובים בפועל; breakpoints רבים מדי (במקום Fluid Layout במקומות שאפשר) הופכים CSS למסורבל; קל לשכוח את ה-viewport meta tag ולתהות למה Responsive "לא עובד".
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Mobile-First: כותבים CSS בסיסי למסך קטן, ומוסיפים עם `min-width` למסכים גדולים
 

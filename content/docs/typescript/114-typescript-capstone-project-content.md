@@ -31,7 +31,7 @@ params:
 • Type Annotation על Factory Function — הפרמטר והחזרה של `createBook` מסומנים במפורש, כדי שקריאה שגויה תיתפס בקומפילציה
 
 ```typescript
-// library.ts — עם interfaces וטיפוסים מלאים
+// library.ts — with full interfaces and types
 interface RawWork {
   title: string;
   authors?: { name: string }[];
@@ -50,21 +50,21 @@ export function createBook(rawWork: RawWork): Book {
 
   return {
     title: rawWork.title,
-    author: rawWork.authors?.[0]?.name ?? "לא ידוע",
+    author: rawWork.authors?.[0]?.name ?? "Unknown",
     year: rawWork.first_publish_year ?? null,
     view() {
       timesViewed++;
-      return `${this.title} (נצפה ${timesViewed} פעמים)`;
+      return `${this.title} (viewed ${timesViewed} times)`;
     },
   };
 }
 ```
 
 ```typescript
-// api.ts — טיפוס החזרה async תמיד עטוף ב-Promise
+// api.ts — an async return type is always wrapped in Promise
 export async function fetchBooksBySubject(subject: string): Promise<RawWork[]> {
   const res = await fetch(`https://openlibrary.org/subjects/${subject}.json?limit=10`);
-  if (!res.ok) throw new Error(`שגיאת רשת: ${res.status}`);
+  if (!res.ok) throw new Error(`Network error: ${res.status}`);
   const data = await res.json();
   return data.works;
 }
@@ -72,13 +72,13 @@ export async function fetchBooksBySubject(subject: string): Promise<RawWork[]> {
 
 ```mermaid
 flowchart RL
-    RAW["RawWork<br/>(מה-API החיצוני)"] -->|"createBook(): Book"| BOOK["Book<br/>(interface שלנו)"]
-    subgraph tsc["בדיקת tsc"]
-        CHECK{"האם RawWork תואם<br/>את מה ש-createBook מצפה?"}
+    RAW["RawWork<br/>(from the external API)"] -->|"createBook(): Book"| BOOK["Book<br/>(our interface)"]
+    subgraph tsc["tsc check"]
+        CHECK{"Does RawWork match<br/>what createBook expects?"}
     end
     RAW --> CHECK
-    CHECK -->|"שדה חסר/טיפוס שגוי"| FAIL["❌ קומפילציה נכשלת"]
-    CHECK -->|"הכל תואם"| BOOK
+    CHECK -->|"Missing field / wrong type"| FAIL["❌ Compilation fails"]
+    CHECK -->|"Everything matches"| BOOK
 ```
 
 ## הסבר עיקרי
@@ -97,7 +97,7 @@ flowchart RL
 
 המרה מלאה של פרויקט קיים ל-TypeScript דורשת זמן ותשומת לב לכל פונקציה, לא רק "להוסיף `:type` בקצה"; טיפוסים ל-API חיצוני (כמו Open Library) לפעמים לא מדויקים ב-100% אם המבנה האמיתי משתנה בלי אזהרה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • פונקציית `async` תמיד מחזירה `Promise<T>` — גם אם ה-`return` בגוף הפונקציה הוא ערך "רגיל"
 

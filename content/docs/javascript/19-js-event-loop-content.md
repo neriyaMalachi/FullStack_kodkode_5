@@ -36,19 +36,19 @@ params:
 
 ```javascript
 console.log("1");
-fetch("/api/users"); // מופנה ל-Web API; הקוד ממשיך מיד
+fetch("/api/users"); // handed off to the Web API; the code continues immediately
 console.log("2");
-// "1" ו-"2" ידפיסו קודם, לפני שכל טיפול בתשובה של fetch מתחיל
+// "1" and "2" will print first, before any handling of fetch's response begins
 ```
 
 ```mermaid
 flowchart RL
     CS["Call Stack
-    (LIFO) — מה רץ עכשיו"] -->|"fetch() מופנה החוצה"| WA["Web API
-    מטפל בבקשת הרשת ברקע"]
-    WA -->|"התשובה מוכנה"| CQ["Callback Queue
-    (FIFO) — ממתין לתור"]
-    CQ -->|"Event Loop: Call Stack ריק?"| CS
+    (LIFO) — what's running now"] -->|"fetch() handed off"| WA["Web API
+    handles the network request in the background"]
+    WA -->|"response ready"| CQ["Callback Queue
+    (FIFO) — waiting in line"]
+    CQ -->|"Event Loop: is the Call Stack empty?"| CS
 ```
 
 ## הדגמה חיה
@@ -171,7 +171,7 @@ Call Stack הוא LIFO, Callback Queue הוא FIFO — כשפונקציה `a()` 
 
 מנגנון עם כמה חלקים נעים (Call Stack, Web APIs, Queue) שדורש זמן להפנים; קל לטעות בחיזוי סדר הרצה בלי להבין את הכללים לעומק.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Event Loop מריץ פעולה מה-Callback Queue **רק** כשה-Call Stack ריק לגמרי
 

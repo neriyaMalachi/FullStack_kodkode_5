@@ -49,10 +49,10 @@ function readBody(req) {
   });
 }
 
-// שימוש בתוך handler:
+// Usage inside the handler:
 const server = http.createServer(async (req, res) => {
   if (req.method === "POST") {
-    const body = await readBody(req); // ממתין שה-Stream יסתיים
+    const body = await readBody(req); // waits for the stream to finish
     res.writeHead(201, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ received: body }));
   }
@@ -67,7 +67,7 @@ sequenceDiagram
     R->>R: "data" event: raw += chunk
     C->>R: chunk 2
     R->>R: "data" event: raw += chunk
-    C->>R: סיום השליחה
+    C->>R: End of sending
     R->>R: "end" event: JSON.parse(raw)
 ```
 
@@ -87,7 +87,7 @@ sequenceDiagram
 
 הרבה קוד "boilerplate" (חוזר, לא ייחודי) לכל route שצריך body; שכחת טיפול ב-`JSON.parse` שנכשל (JSON לא תקין) עלולה להפיל את השרת אם לא נתפס נכון.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `req` הוא Stream — התוכן מגיע בחלקים (`data` events), לא בבת אחת
 

@@ -38,22 +38,22 @@ params:
 
 ```typescript
 let age: number = 25;
-let name: string = "דנה";
+let name: string = "Dana";
 
 function greet(user: { name: string; age: number }): string {
-  return `שלום, ${user.name}!`;
+  return `Hello, ${user.name}!`;
 }
 
-greet({ name: "יוסי", age: 30 }); // תקין
-greet({ name: "יוסי" });          // שגיאת קומפילציה — age חסר!
+greet({ name: "Yossi", age: 30 }); // valid
+greet({ name: "Yossi" });          // compilation error — age is missing!
 ```
 
 ```mermaid
 flowchart TD
-    A["קובץ code.ts<br/>עם Type Annotations"] --> B{"tsc בודק טיפוסים"}
-    B -->|"יש שגיאת טיפוס"| C["❌ קומפילציה נכשלת<br/>הקוד לא רץ בכלל"]
-    B -->|"הכל תואם"| D["✅ נוצר code.js<br/>JavaScript רגיל, בלי טיפוסים"]
-    D --> E["רץ בדפדפן / Node.js"]
+    A["code.ts file<br/>with Type Annotations"] --> B{"tsc checks types"}
+    B -->|"There's a type error"| C["❌ Compilation fails<br/>the code doesn't run at all"]
+    B -->|"Everything matches"| D["✅ code.js is created<br/>Regular JavaScript, no types"]
+    D --> E["Runs in the browser / Node.js"]
 ```
 
 ## הסבר עיקרי
@@ -72,7 +72,7 @@ Compilation — TS לעולם לא "רץ" ישירות — קובץ `.ts` **חי
 
 דורש שלב קומפילציה נוסף לפני הרצה — לא ניתן להריץ `.ts` ישירות; עקומת למידה נוספת (תחביר טיפוסים, interfaces); בפרויקטים עם הרבה קוד JavaScript קיים, מעבר מלא ל-TypeScript יכול לקחת זמן.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • TypeScript הוא Superset של JavaScript — כל JS תקין הוא גם TS תקין
 

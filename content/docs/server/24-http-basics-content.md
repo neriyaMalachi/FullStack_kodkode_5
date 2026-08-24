@@ -55,11 +55,11 @@ Content-Type: application/json
 
 ```mermaid
 sequenceDiagram
-    participant C as Client (דפדפן)
+    participant C as Client (browser)
     participant S as Server
     C->>S: Request: GET /api/users
-    Note over S: מעבד את הבקשה
-    S-->>C: Response: 200 OK + נתונים
+    Note over S: Processing the request
+    S-->>C: Response: 200 OK + data
 ```
 
 ## הסבר עיקרי
@@ -78,7 +78,7 @@ Stateless — כל בקשה "מתחילה מאפס" — לדוגמה: זה שה�
 
 Stateless דורש מנגנון נוסף (כמו טוקנים) כשבאמת צריך "לזכור" מידע בין בקשות; טעות נפוצה היא לבחור Method לא-מתאים (למשל `GET` שמוחק נתונים) שסותר את הציפייה התקנית.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Request מכיל Method + URL + Headers + (אופציונלי) Body; Response מכיל Status + Headers + Body
 

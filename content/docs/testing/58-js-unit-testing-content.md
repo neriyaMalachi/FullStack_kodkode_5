@@ -42,13 +42,13 @@ import assert from "node:assert/strict";
 import { add, divide } from "./math.js";
 
 describe("add", () => {
-  test("מחבר שני מספרים חיוביים", () => {
+  test("adds two positive numbers", () => {
     assert.strictEqual(add(2, 3), 5);
   });
 });
 
 describe("divide", () => {
-  test("זורק שגיאה בחלוקה באפס", () => {
+  test("throws an error when dividing by zero", () => {
     assert.throws(() => divide(10, 0));
   });
 });
@@ -58,8 +58,8 @@ describe("divide", () => {
 flowchart TD
     T["node --test"] --> D1["describe('add')"]
     T --> D2["describe('divide')"]
-    D1 --> T1["test: מחבר שני מספרים ✓"]
-    D2 --> T2["test: זורק שגיאה באפס ✓"]
+    D1 --> T1["test: adds two numbers ✓"]
+    D2 --> T2["test: throws an error on zero ✓"]
 ```
 
 ## הסבר עיקרי
@@ -78,7 +78,7 @@ assert.throws לבדיקת שגיאות — פונקציה שאמורה **לזר
 
 פחות "תכונות נוחות" מספריות בדיקה חיצוניות פופולריות (כמו mocking מתקדם); דוח התוצאות של `node --test` פחות ויזואלי מכלים חיצוניים.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `test(name, fn)` מגדיר בדיקה בודדת; `describe` מקבץ בדיקות קשורות
 

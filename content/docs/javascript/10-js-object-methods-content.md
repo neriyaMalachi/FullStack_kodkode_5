@@ -57,8 +57,8 @@ entries כגשר למתודות מערך — `Object.entries()` הופכת Objec
 assign מול spread — שתיהן מבצעות מיזוג שטחי, אך ההבדל קריטי: `Object.assign(target, source)` כותבת **לתוך** ה-target (mutating, אם הוא לא `{}` ריק); spread (`{...a, ...b}`) **תמיד** יוצרת object חדש ולא נוגעת במקורות — לכן היא המועדפת בקוד מודרני.
 
 ```javascript
-const merged = { ...user, age: 29 }; // spread — לא נוגע ב-user
-Object.assign(user, { age: 30 });    // assign — משנה את user עצמו!
+const merged = { ...user, age: 29 }; // spread — doesn't touch user
+Object.assign(user, { age: 30 });    // assign — mutates user itself!
 ```
 
 `"key" in obj` לבדיקת קיום — לפני גישה לתכונה שאולי לא קיימת, `"email" in user` מחזיר `true`/`false` בלי לזרוק שגיאה — בטוח יותר מלנחש.
@@ -71,7 +71,7 @@ Object.assign(user, { age: 30 });    // assign — משנה את user עצמו!
 
 `Object.assign` בלי `{}` ריק כ-target משנה בטעות את המקור (mutation לא מכוון); בלבול בין `keys`/`values`/`entries` — לא זוכרים איזו מחזירה מה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `Object.assign(target, source)` משנה את ה-target; spread תמיד יוצר object חדש
 

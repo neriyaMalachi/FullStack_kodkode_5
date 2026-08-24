@@ -47,9 +47,9 @@ params:
 ```mermaid
 flowchart RL
     Original["'hello'
-    המחרוזת המקורית"] -->|".toUpperCase()"| New["'HELLO'
-    מחרוזת חדשה מוחזרת"]
-    Original -.נשארת ללא שינוי.-> Original
+    the original string"] -->|".toUpperCase()"| New["'HELLO'
+    a new string is returned"]
+    Original -.stays unchanged.-> Original
 ```
 
 ## הסבר עיקרי
@@ -70,7 +70,7 @@ Template Literals לשילוב ערכים — `` \`שם: ${name}, גיל: ${age}
 
 שכחה ששיטות מחזירות ערך חדש (ולא משנות את המקור) גורמת לקוד "שלא עובד" בלי שגיאה גלויה; שרשור ארוך של מתודות (`.trim().toLowerCase().split(" ")`) עלול לפגוע בקריאות אם משתמשים בו יתר על המידה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • מתודות מחרוזת תמיד מחזירות מחרוזת חדשה — לעולם לא משנות את המקור (immutable)
 

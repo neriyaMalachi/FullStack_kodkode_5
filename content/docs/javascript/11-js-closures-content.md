@@ -39,19 +39,19 @@ function makeCounter() {
 }
 const counter = makeCounter();
 counter(); // 1
-counter(); // 2 — זוכר את count בין קריאות
+counter(); // 2 — remembers count between calls
 ```
 
 ```mermaid
 flowchart TB
-    subgraph outer["makeCounter() - scope חיצוני"]
+    subgraph outer["makeCounter() - outer scope"]
         count["count = 0"]
-        subgraph inner["הפונקציה הפנימית שמוחזרת"]
+        subgraph inner["The inner function that gets returned"]
             access["++count"]
         end
-        access -.רואה ונשארת מחוברת ל-.-> count
+        access -.sees and stays connected to.-> count
     end
-    caller["counter() נקרא מבחוץ"] -->|"מפעיל את"| access
+    caller["counter() called from outside"] -->|"invokes"| access
 ```
 
 ## הסבר עיקרי
@@ -70,7 +70,7 @@ Private State כתוצר לוואי — כש-`makeCounter()` מחזירה פונ
 
 קל לצפות שפונקציה תיצור closure חדש אבל בטעות להשתמש שוב באותו closure קיים (ולהפך); שימוש מוגזם ב-closures מקוננים עמוק פוגע בקריאות.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Closure = פונקציה + הסביבה הלקסיקלית (lexical) שבה היא נוצרה
 

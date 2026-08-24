@@ -52,8 +52,8 @@ flowchart TB
     C --> D["RUN npm install"]
     D --> E["COPY . ."]
     E --> F["CMD - node index.js"]
-    F --> G["Image מוכן"]
-    G -->|"docker run"| H["Container רץ"]
+    F --> G["Image ready"]
+    G -->|"docker run"| H["Container running"]
 ```
 
 ## הסבר עיקרי
@@ -72,7 +72,7 @@ Dockerfile הוא תיעוד חי ומדויק של איך בדיוק לבנות
 
 סדר הוראות לא-אופטימלי הורס את יתרון ה-caching; Dockerfile "עבה מדי" (הרבה תלויות מיותרות) מייצר Image גדול שאיטי להעביר; שכחת `.dockerignore` (מקביל ל-`.gitignore`) עלולה להעתיק `node_modules` מקומי בטעות לתוך ה-Image.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `FROM` קובע Image בסיס; `COPY` מעתיק קבצים; `RUN` מריץ פקודה בזמן build; `CMD` מריץ פקודה בזמן run של הקונטיינר
 

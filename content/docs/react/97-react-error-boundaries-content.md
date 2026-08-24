@@ -42,13 +42,13 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return <p>אופס, משהו השתבש בחלק הזה.</p>;
+      return <p>Oops, something went wrong in this section.</p>;
     }
     return this.props.children;
   }
 }
 
-// שימוש:
+// Usage:
 <ErrorBoundary>
   <RiskyComponent />
 </ErrorBoundary>
@@ -56,12 +56,12 @@ class ErrorBoundary extends React.Component {
 
 ```mermaid
 flowchart TD
-    subgraph without["בלי Error Boundary"]
-        X1["Header"] --- X2["ProductCard #3<br/>❌ זורק שגיאה"] --- X3["Footer"]
-        X2 -.->|"מפיל הכל"| Xall["מסך לבן ריק לגמרי"]
+    subgraph without["Without Error Boundary"]
+        X1["Header"] --- X2["ProductCard #3<br/>❌ throws error"] --- X3["Footer"]
+        X2 -.->|"brings everything down"| Xall["Completely blank white screen"]
     end
-    subgraph with["עם Error Boundary סביב כל כרטיס"]
-        Y1["Header — עדיין עובד"] --- Y2["ProductCard #3<br/>❌ שגיאה → Fallback UI"] --- Y3["Footer — עדיין עובד"]
+    subgraph with["With Error Boundary around each card"]
+        Y1["Header — still works"] --- Y2["ProductCard #3<br/>❌ error → Fallback UI"] --- Y3["Footer — still works"]
     end
 ```
 
@@ -81,7 +81,7 @@ Error Boundary לא תופס הכל — חשוב לדעת: Error Boundary תופ
 
 עדיין דורש class component — לא ניתן לכתוב עם Hooks בלבד (נכון לכתיבת שיעור זה); לא תופס שגיאות ב-event handlers או `useEffect` — צריך `try`/`catch` נפרד שם.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Error Boundary תופס שגיאות רינדור בתת-עץ הילדים שלו, ומציג Fallback UI במקום קריסה מלאה
 

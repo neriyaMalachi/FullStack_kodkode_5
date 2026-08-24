@@ -35,19 +35,19 @@ params:
 • `$ne` — "שונה מ-" (not equal)
 
 ```javascript
-// משימות עם עדיפות 3 ומעלה
+// Tasks with priority 3 and above
 db.tasks.find({ priority: { $gte: 3 } });
 
-// משימות בעדיפות גבוהה או דחופה
+// Tasks with high or urgent priority
 db.tasks.find({ priority: { $in: [4, 5] } });
 ```
 
 ```mermaid
 flowchart TD
-    Docs["כל ה-documents ב-tasks"]
+    Docs["All documents in tasks"]
     Docs -->|"{ priority: { $gte: 3 } }"| A["priority >= 3"]
-    Docs -->|"{ priority: { $in: [4,5] } }"| B["priority = 4 או 5"]
-    Docs -->|"{ $or: [{priority:5}, {done:false}] }"| C["priority=5 או done=false"]
+    Docs -->|"{ priority: { $in: [4,5] } }"| B["priority = 4 or 5"]
+    Docs -->|"{ $or: [{priority:5}, {done:false}] }"| C["priority=5 or done=false"]
 ```
 
 ## הסבר עיקרי
@@ -66,7 +66,7 @@ Query Operators מאפשרים תנאי סינון עשירים בלי לכתו�
 
 תחביר האופרטורים (`$gte`, `$in` וכו') דורש שינון בנפרד מ-SQL, למרות שהרעיון דומה; filter מקונן עמוק (הרבה `$and`/`$or` משולבים) יכול להיות קשה לקריאה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • אופרטורים מתחילים תמיד ב-`$` ונכתבים כאובייקט בתוך ערך השדה, לא כערך ישיר
 

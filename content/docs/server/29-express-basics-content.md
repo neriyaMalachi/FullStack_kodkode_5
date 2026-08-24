@@ -45,13 +45,13 @@ app.get("/users", (req, res) => {
   res.json([{ id: 1, name: "Dana" }]);
 });
 
-app.listen(3000, () => console.log("השרת רץ על פורט 3000"));
+app.listen(3000, () => console.log("Server running on port 3000"));
 ```
 
 ```mermaid
 flowchart RL
     Req["GET /users"] --> App["app (Express)"]
-    App -->|"מתאים לפי Method+URL"| H["app.get('/users', handler)"]
+    App -->|"Matched by Method+URL"| H["app.get('/users', handler)"]
     H --> Res["res.json([...])"]
 ```
 
@@ -71,7 +71,7 @@ routing תמציתי וקריא במקום `if`/`else` ידני; `res.json()`/`r
 
 עוד ספרייה חיצונית להתקין ולנהל גרסה שלה; "קסם" מסוים (מה בדיוק `res.json` עושה מתחת למכסה?) שקל להבין הרבה יותר טוב אחרי שכבר ראיתם את הגרסה הידנית ב-Vanilla.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Express עוטף את מודול `http` המובנה עם routing ועזרים נוחים
 

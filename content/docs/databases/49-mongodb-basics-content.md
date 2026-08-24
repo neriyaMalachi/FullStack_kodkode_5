@@ -54,10 +54,10 @@ flowchart TB
         M3["updateOne / updateMany"]
         M4["deleteOne / deleteMany"]
     end
-    S1 -.מקביל.- M1
-    S2 -.מקביל.- M2
-    S3 -.מקביל.- M3
-    S4 -.מקביל.- M4
+    S1 -.equivalent.- M1
+    S2 -.equivalent.- M2
+    S3 -.equivalent.- M3
+    S4 -.equivalent.- M4
 ```
 
 ## הסבר עיקרי
@@ -76,7 +76,7 @@ updateOne/deleteOne ודרישת filter — בדיוק כמו ש-`UPDATE`/`DELET
 
 בלי Schema, קל בטעות ליצור documents לא-עקביים (חלק עם שדה מסוים, חלק בלי); `updateOne`/`deleteOne` בלי לשים לב לשם עלולים "לפספס" documents שרציתם לעדכן; שאילתות מורכבות (כמו JOIN ב-SQL) פחות טבעיות (נלמד ב-Mongoose איך מתמודדים עם קשרים).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Document = רשומה יחידה (דמוי-JSON); Collection = קבוצת documents, מקבילה לטבלה
 

@@ -39,7 +39,7 @@ params:
 ```javascript
 const menu = document.querySelector(".menu");
 
-menu.classList.toggle("open"); // הופך open/closed בכל קריאה
+menu.classList.toggle("open"); // toggles open/closed on each call
 menu.classList.add("visible");
 menu.classList.remove("hidden");
 
@@ -71,7 +71,7 @@ toggle כ"מתג" נוח — `classList.toggle("open")` הוא הרבה יותר
 
 שינוי `element.style` ישיר מיצר עיצוב "inline" שקשה יותר לתחזק ולדרוס עם CSS רגיל (Specificity גבוהה במיוחד); שימוש-יתר ב-`style` ישיר במקום classes מוגדרות מראש מבזבז את היתרון של הפרדת אחריות.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `classList.add`/`.remove`/`.toggle`/`.contains` מנהלים classes בלי לגעת בעיצוב ישירות
 

@@ -36,7 +36,7 @@ function renderNote(note) {
   textarea.value = note.content;
 
   textarea.addEventListener("input", (event) => {
-    note.content = event.target.value; // מעדכן state מיד, בכל הקלדה
+    note.content = event.target.value; // updates state immediately, on every keystroke
     saveNotes();
   });
 
@@ -73,7 +73,7 @@ State ו-DOM מסונכרנים תמיד, גם בעריכה חיה ישירה; `
 
 שמירה ל-localStorage בכל תו בודד (בלי Debounce) יכולה להיות מיותרת לביצועים בפרויקטים גדולים מאוד; בלי `id` ייחודי ברור לכל פתק, קל לבלבל בין פתקים בעדכון ה-state.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `input` event מופעל בכל הקלדה בודדת; `change` מופעל רק כששדה מאבד פוקוס אחרי שינוי
 

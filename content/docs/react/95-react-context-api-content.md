@@ -39,26 +39,26 @@ function App() {
   const [theme, setTheme] = useState("dark");
   return (
     <ThemeContext.Provider value={theme}>
-      <Toolbar /> {/* לא צריך להעביר theme כ-prop! */}
+      <Toolbar /> {/* No need to pass theme as a prop! */}
     </ThemeContext.Provider>
   );
 }
 
 function DeepButton() {
-  const theme = useContext(ThemeContext); // "מושך" ישירות, גם דרך כמה שכבות
-  return <button className={theme}>לחצו</button>;
+  const theme = useContext(ThemeContext); // "Pulls" directly, even through several layers
+  return <button className={theme}>Click</button>;
 }
 ```
 
 ```mermaid
 flowchart TD
-    subgraph before["בלי Context — Prop Drilling"]
-        A1["App theme='dark'"] -->|"prop"| B1["Toolbar<br/>(לא צריך theme בעצמו!)"]
-        B1 -->|"prop מועבר הלאה"| C1["DeepButton<br/>סוף-סוף משתמש בו"]
+    subgraph before["Without Context — Prop Drilling"]
+        A1["App theme='dark'"] -->|"prop"| B1["Toolbar<br/>(doesn't need theme itself!)"]
+        B1 -->|"prop passed along"| C1["DeepButton<br/>finally uses it"]
     end
-    subgraph after["עם Context API"]
-        A2["App + Provider value=theme"] -.->|"עוטף את כל העץ"| B2["Toolbar<br/>לא נוגע ב-theme כלל"]
-        A2 -.->|"זמין ישירות בכל עומק"| C2["DeepButton<br/>useContext(ThemeContext)"]
+    subgraph after["With Context API"]
+        A2["App + Provider value=theme"] -.->|"wraps the whole tree"| B2["Toolbar<br/>doesn't touch theme at all"]
+        A2 -.->|"available directly at any depth"| C2["DeepButton<br/>useContext(ThemeContext)"]
     end
 ```
 
@@ -78,7 +78,7 @@ Provider קובע את הערך לכל מה שבתוכו — `<ThemeContext.Prov
 
 שימוש-יתר ב-Context לכל דבר הופך את זרימת הנתונים לפחות ברורה (קשה "לעקוב" מאיפה ערך הגיע); עדכון Context מרנדר מחדש **את כל** הצרכנים, גם אם רק חלק מהם באמת "צריכים" את השינוי הספציפי — פוטנציאל לבעיות ביצועים (נלמד עוד בשיעור Performance).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Prop Drilling הוא הבעיה: העברת props דרך שכבות ביניים שלא צריכות אותם
 

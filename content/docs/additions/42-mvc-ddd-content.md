@@ -35,22 +35,22 @@ params:
 • Domain Function — פונקציה טהורה עם כלל עסקי, ללא תלות ב-DB או HTTP; ניתנת לבדיקה בבידוד מוחלט
 
 ```javascript
-// repository/taskRepository.js — DB בלבד
+// repository/taskRepository.js — DB only
 export const taskRepository = {
   findAll: () => tasksInMemory,
   create: (task) => { tasksInMemory.push(task); return task; },
 };
 
-// services/taskService.js — לוגיקה עסקית בלבד
+// services/taskService.js — business logic only
 export function createTask(title) {
   if (!title || title.length < 1) throw new ValidationError("Title required");
   const task = { id: Date.now(), title, done: false };
   return taskRepository.create(task);
 }
 
-// controllers/taskController.js — HTTP בלבד
+// controllers/taskController.js — HTTP only
 export function createTaskHandler(req, res) {
-  const task = createTask(req.body.title); // לא יודע כלום על איך זה נשמר
+  const task = createTask(req.body.title); // doesn't know anything about how it's saved
   res.status(201).json(task);
 }
 ```
@@ -58,12 +58,12 @@ export function createTaskHandler(req, res) {
 ```mermaid
 flowchart RL
     Req["HTTP Request"] --> Ctrl["Controller
-    req/res בלבד"]
+    req/res only"]
     Ctrl --> Svc["Service
-    לוגיקה עסקית"]
+    business logic"]
     Svc --> Repo["Repository
-    גישה ל-DB בלבד"]
-    Repo --> DB[("נתונים")]
+    DB access only"]
+    Repo --> DB[("Data")]
 ```
 
 ## הסבר עיקרי
@@ -82,7 +82,7 @@ Repository כ"שכבת בידוד" מה-DB — אם מחר עוברים מ"מע�
 
 עוד קבצים ועוד שכבות הפשטה לפרויקטים קטנים — יכול להרגיש "מוגזם" למשימה פשוטה; דורש משמעת לשמור על ההפרדה לאורך זמן, במיוחד תחת לחץ זמנים.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Controller = HTTP בלבד; Service = לוגיקה עסקית; Repository = DB בלבד
 

@@ -49,15 +49,15 @@ params:
 ```mermaid
 flowchart RL
     A["static
-    זרימה רגילה"] --> B["relative
-    זרימה + הזזה יחסית לעצמו"]
+    normal flow"] --> B["relative
+    flow + moves relative to itself"]
     B --> C["absolute
-    יוצא מהזרימה,
-    יחסית להורה relative"]
+    leaves the flow,
+    relative to the relative parent"]
     C --> D["fixed
-    יחסית לחלון הדפדפן"]
+    relative to the browser window"]
     D --> E["sticky
-    relative עד נקודת גלילה, אז fixed"]
+    relative until scroll point, then fixed"]
 ```
 
 ## הדגמה חיה
@@ -94,7 +94,7 @@ z-index כשיש חפיפה — כשכמה אלמנטים ממוקמים (לא `
 
 `absolute` בלי "עוגן" `relative` נכון מוביל למיקום לא-צפוי לגמרי; שכבות `z-index` רבות ולא-מתועדות הופכות קשות לניהול; `fixed`/`sticky` יכולים "לכסות" תוכן על מסכים קטנים אם לא מטפלים בזהירות.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `static` = ברירת מחדל, בזרימה; `relative` = בזרימה + הזזה עצמית; `absolute`/`fixed` = יוצאים מהזרימה
 

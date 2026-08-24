@@ -38,7 +38,7 @@ params:
 
 ```javascript
 let name = "Dana";
-name = "Avi";        // let — ניתן לשנות
+name = "Avi";        // let — can be changed
 
 const age = 30;
 age = 31;            // TypeError: Assignment to constant variable
@@ -46,10 +46,10 @@ age = 31;            // TypeError: Assignment to constant variable
 
 ```mermaid
 flowchart TD
-    A["מתחילים תמיד עם const"] --> B{"הערך צריך
-    להשתנות מאוחר יותר?"}
-    B -->|לא| C["השאירו const"]
-    B -->|כן| D["החליפו ל-let"]
+    A["Always start with const"] --> B{"Does the value need
+    to change later?"}
+    B -->|No| C["Keep const"]
+    B -->|Yes| D["Switch to let"]
 ```
 
 ## הסבר עיקרי
@@ -68,7 +68,7 @@ Assignment מול Reassignment — `let x = 5;` היא הצהרה עם ערך ה
 
 בחירה לא נכונה בין `let` ל-`const` (למשל `let` על ערך שלעולם לא משתנה) מטשטשת את כוונת הקוד; `var` הישן עדיין קיים בקוד legacy ומתנהג אחרת מ-`let`/`const`, מה שיוצר בלבול כשנתקלים בו.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `const` לא ניתן ל-reassignment; ניסיון כזה זורק `TypeError`
 

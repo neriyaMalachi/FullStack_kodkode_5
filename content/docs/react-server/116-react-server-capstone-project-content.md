@@ -33,7 +33,7 @@ params:
 • WebSocket (Socket.io) — חיבור פתוח וממושך; השרת "דוחף" עדכון לכל הלקוחות המחוברים, לא רק עונה על בקשה
 
 ```jsx
-// api.js — Axios עם Interceptor, במקום fetch חוזר בכל מקום
+// api.js — Axios with an Interceptor, instead of repeating fetch everywhere
 const api = axios.create({ baseURL: import.meta.env.VITE_API_URL });
 
 api.interceptors.request.use((config) => {
@@ -46,7 +46,7 @@ export default api;
 ```
 
 ```jsx
-// ProtectedRoute.jsx — שער לפני תוכן מוגן
+// ProtectedRoute.jsx — gate before protected content
 function ProtectedRoute({ children }) {
   const { user } = useContext(AuthContext);
   if (!user) return <Navigate to="/login" />;
@@ -55,7 +55,7 @@ function ProtectedRoute({ children }) {
 ```
 
 ```jsx
-// TaskList.jsx — עדכון בזמן אמת עם WebSocket, בנוסף לטעינה הראשונית מ-Axios
+// TaskList.jsx — real-time update via WebSocket, in addition to the initial Axios load
 useEffect(() => {
   socket.on("taskAdded", (task) => setTasks((prev) => [...prev, task]));
   return () => socket.off("taskAdded");
@@ -64,22 +64,22 @@ useEffect(() => {
 
 ```mermaid
 sequenceDiagram
-    participant U as משתמש א'
+    participant U as User A
     participant R as React (Axios)
     participant S as Express Server
-    participant U2 as משתמש ב' (טאב אחר)
+    participant U2 as User B (other tab)
 
-    U->>R: התחברות (Login)
+    U->>R: Login
     R->>S: POST /login
     S-->>R: JWT token
-    R->>R: שמירה ב-localStorage
-    Note over R: כל בקשה הבאה — Interceptor מוסיף Authorization
+    R->>R: Save to localStorage
+    Note over R: Every subsequent request — Interceptor adds Authorization
 
-    U->>R: הוספת משימה חדשה
-    R->>S: POST /tasks (עם Bearer token)
+    U->>R: Add new task
+    R->>S: POST /tasks (with Bearer token)
     S->>S: requireAuth + Zod validation
     S-->>R: 201 Created
-    S->>U2: io.emit("taskAdded") — בזמן אמת
+    S->>U2: io.emit("taskAdded") — in real time
 ```
 
 ## הסבר עיקרי
@@ -98,7 +98,7 @@ Interceptor מרכזי חוסך כפילות קוד ומונע שכחת token ב
 
 חיבור WebSocket פתוח דורש ניהול נוסף (ניתוקים, reconnection) שלא קיים בבקשת HTTP רגילה; Protected Routes מוסיפות שכבת מורכבות (Auth Context, בדיקות בכל route) שלא נחוצה באפליקציה בלי משתמשים.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Axios Interceptor רץ אוטומטית על כל בקשה — נפוץ במיוחד להוספת טוקן Authorization
 

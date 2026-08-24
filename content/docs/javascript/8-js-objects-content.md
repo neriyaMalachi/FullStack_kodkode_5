@@ -58,8 +58,8 @@ dot מול bracket — הכלל הוא לא "מה נוח" אלא "מה אפשר�
 
 ```javascript
 const key = "age";
-user.key;   // undefined — dot לא תומכת במשתנה
-user[key];  // 28   — bracket כן
+user.key;   // undefined — dot doesn't support a variable
+user[key];  // 28   — bracket does
 ```
 
 מתודה ו-`this` — כשערך של תכונה הוא פונקציה, זו מתודה. `this` בתוכה מצביע על ה-Object שדרכו נקראה המתודה בפועל — כך אפשר לכתוב לוגיקה אחת (`greet() { return "Hi, I'm " + this.name; }`) שעובדת נכון על כל object שקורא לה, בלי לחזור על הקוד.
@@ -74,7 +74,7 @@ Object מקנן — ערך של תכונה יכול להיות בעצמו Object
 
 bracket notation עם מפתח דינמי פחות קריא מ-dot notation למי שלא רגיל; גישה לתכונה מקוננת לא-קיימת (`user.address.city` כש-`address` הוא `undefined`) זורקת שגיאה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • dot notation דורשת שם קבוע; bracket notation תומכת גם במפתח דינמי (משתנה)
 

@@ -33,10 +33,10 @@ params:
 ```javascript
 const list = document.querySelector(".task-list");
 
-// listener יחיד — לא משנה כמה <li> יש או ייווצרו בעתיד
+// single listener — doesn't matter how many <li> exist or get created later
 list.addEventListener("click", (event) => {
   const deleteBtn = event.target.closest(".delete-btn");
-  if (!deleteBtn) return; // הקליק לא היה על כפתור מחיקה
+  if (!deleteBtn) return; // the click wasn't on a delete button
 
   deleteBtn.closest("li").remove();
 });
@@ -68,7 +68,7 @@ listener יחיד במקום עשרות — יעיל בזיכרון ובביצו
 
 דורש הבנה של Event Bubbling ו-`closest` — פחות ישיר-לעין למתחילים; אם ההורה נבחר לא נכון (למשל, רחוק מדי בעץ), הקוד עדיין "עובד" אך פחות יעיל.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Event Delegation מנצל Event Bubbling — אירוע "מטפס" מהילד המדויק להורים שלו אוטומטית
 

@@ -33,15 +33,15 @@ params:
 • Merge Conflict — כששני מקורות (כאן: `main` וענף) שינו את אותן שורות; נפתר ידנית לפני שממשיכים
 
 ```bash
-# הסדר המלא, בקצרה
-git init                                  # 1. repository מקומי
-git remote add origin <github-url>        # 2. חיבור ל-GitHub
-git push -u origin main                   # 3. שליחה ראשונה
-git switch -c feature-x                   # 4. ענף לשינוי חדש
-# ... commits על הענף ...
-git push -u origin feature-x              # 5. שליחת הענף ל-GitHub
-# 6. פתיחת Pull Request באתר GitHub
-# 7. מיזוג (עם פתרון קונפליקט אם צריך)
+# The full sequence, in short
+git init                                  # 1. local repository
+git remote add origin <github-url>        # 2. connect to GitHub
+git push -u origin main                   # 3. first push
+git switch -c feature-x                   # 4. branch for the new change
+# ... commits on the branch ...
+git push -u origin feature-x              # 5. push the branch to GitHub
+# 6. open a Pull Request on the GitHub site
+# 7. merge (with conflict resolution if needed)
 ```
 
 ```mermaid
@@ -50,10 +50,10 @@ gitGraph
     commit id: "config.txt v1.0"
     branch bump-version
     checkout bump-version
-    commit id: "v1.1 (בענף)"
+    commit id: "v1.1 (on branch)"
     checkout main
-    commit id: "v1.0.1 (על main!)"
-    merge bump-version id: "פתרון קונפליקט + PR"
+    commit id: "v1.0.1 (on main!)"
+    merge bump-version id: "conflict resolution + PR"
 ```
 
 ## הסבר עיקרי
@@ -72,7 +72,7 @@ Pull Request הוא שכבה **מעל** merge, לא תחליף לו — אפשר
 
 זרימת עבודה מלאה עם GitHub דורשת יותר שלבים מ-commit מקומי בודד — לא תמיד נחוץ לפרויקט אישי קטן; קונפליקטים מורכבים (כמה קבצים, שינויים גדולים) יכולים לקחת זמן לפתור נכון גם עם ניסיון.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • הסדר הנכון: repository מקומי → `git remote add` → `git push` → GitHub
 
@@ -120,7 +120,7 @@ Pull Request הוא שכבה **מעל** merge, לא תחליף לו — אפשר
    ```
 3. חברו ושלחו:
    ```bash
-   git remote add origin <ה-URL שקיבלתם מ-GitHub>
+   git remote add origin <the URL you got from GitHub>
    git push -u origin main
    ```
 
@@ -162,7 +162,7 @@ Pull Request הוא שכבה **מעל** merge, לא תחליף לו — אפשר
 3. צרו ענף חדש ושנו את השורה ל-`version=1.1`, בצעו commit ושלחו את הענף:
    ```bash
    git switch -c bump-version
-   # ערכו את config.txt כך שהשורה תהיה version=1.1
+   # edit config.txt so the line reads version=1.1
    git add config.txt
    git commit -m "Bump version to 1.1"
    git push -u origin bump-version
@@ -170,7 +170,7 @@ Pull Request הוא שכבה **מעל** merge, לא תחליף לו — אפשר
 4. **בלי למזג עדיין** — חזרו ל-`main` ושנו את **אותה שורה בדיוק** לערך אחר, ובצעו commit ושלחו ישירות:
    ```bash
    git switch main
-   # ערכו את config.txt כך שהשורה תהיה version=1.0.1
+   # edit config.txt so the line reads version=1.0.1
    git add config.txt
    git commit -m "Patch version to 1.0.1"
    git push
@@ -180,7 +180,7 @@ Pull Request הוא שכבה **מעל** merge, לא תחליף לו — אפשר
    ```bash
    git switch main
    git merge bump-version
-   # פתחו את config.txt, בחרו/שלבו את הערך הנכון, מחקו סימוני <<<< ==== >>>>
+   # open config.txt, pick/combine the correct value, delete the <<<< ==== >>>> markers
    git add config.txt
    git commit -m "Resolve version conflict"
    git push

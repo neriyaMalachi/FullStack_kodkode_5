@@ -38,21 +38,21 @@ import path from "node:path";
 
 const app = express();
 
-app.use(express.static(path.join(process.cwd(), "dist"))); // קבצי ה-build
+app.use(express.static(path.join(process.cwd(), "dist"))); // build files
 
-app.get("/api/tasks", (req, res) => { /* ... */ }); // API routes כרגיל
+app.get("/api/tasks", (req, res) => { /* ... */ }); // API routes as usual
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(process.cwd(), "dist", "index.html")); // Catch-all ל-React Router
+  res.sendFile(path.join(process.cwd(), "dist", "index.html")); // Catch-all for React Router
 });
 ```
 
 ```mermaid
 flowchart RL
-    A["קוד React<br/>(.jsx, .css)"] -->|"npm run build"| B["dist/<br/>קבצים סטטיים מוכנים"]
+    A["React code<br/>(.jsx, .css)"] -->|"npm run build"| B["dist/<br/>ready static files"]
     B --> C["express.static('dist')"]
-    subgraph server["סדר ה-routes בשרת — חובה בסדר הזה"]
-        D["1. /api/tasks וכו'"] --> E["2. express.static"] --> F["3. app.get('*') — Catch-all"]
+    subgraph server["Route order on the server — must be in this order"]
+        D["1. /api/tasks etc."] --> E["2. express.static"] --> F["3. app.get('*') — Catch-all"]
     end
     C --> F
 ```
@@ -73,7 +73,7 @@ API routes וקבצים סטטיים חיים יחד באותו שרת — שי�
 
 צריך לזכור להריץ `npm run build` מחדש בכל שינוי קוד frontend — לא מתעדכן אוטומטית כמו `npm run dev`; שרת אחד שמשרת גם API וגם frontend פחות ניתן להרחבה (scale) בנפרד מאשר הפרדה מלאה בפרודקשן גדול.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `npm run build` מייצר קבצים סטטיים מוגמרים בתיקיית `dist/`, שונה לגמרי מ-`npm run dev`
 

@@ -37,7 +37,7 @@ params:
 ```javascript
 class ValidationError extends Error {
   constructor(message) {
-    super(message);   // מפעיל את constructor של Error עצמו
+    super(message);   // invokes the Error class's own constructor
     this.name = "ValidationError";
     this.status = 400;
   }
@@ -54,10 +54,10 @@ try {
 
 ```mermaid
 flowchart TD
-    T["try { ...קוד שעלול להישבר... }"] -->|"הצליח"| Cont["ממשיך אחרי ה-try/catch"]
-    T -->|"throw"| C["catch (err) { ...טיפול... }"]
+    T["try { ...code that might break... }"] -->|"Succeeded"| Cont["Continues after try/catch"]
+    T -->|"throw"| C["catch (err) { ...handling... }"]
     C --> Cont
-    T -.תמיד רץ בסוף.-> F["finally { ...ניקוי... }"]
+    T -.always runs at the end.-> F["finally { ...cleanup... }"]
 ```
 
 ## הסבר עיקרי
@@ -76,7 +76,7 @@ Promise.catch() כמקבילה אסינכרונית — `try`/`catch` תופס �
 
 `try`/`catch` תופס רק שגיאות סינכרוניות — קל לשכוח שקוד async דורש `.catch()` נפרד; Custom Errors רבים מדי בלי מבנה ברור יכולים להסתבך.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `try`/`catch` תופס שגיאות סינכרוניות; `.catch()` על Promise תופס שגיאות אסינכרוניות
 

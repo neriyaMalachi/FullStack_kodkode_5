@@ -38,16 +38,16 @@ function makeUser(name, age) {
   };
 }
 const u1 = makeUser("Dana", 28);
-const u2 = makeUser("Avi", 35); // עצמאי לגמרי מ-u1
+const u2 = makeUser("Avi", 35); // completely independent from u1
 ```
 
 ```mermaid
 flowchart TB
     F["makeUser(name, age)
-    Factory Function אחת"]
+    One Factory Function"]
     F -->|"makeUser('Dana', 28)"| U1["{ name:'Dana', age:28, greet }"]
     F -->|"makeUser('Avi', 35)"| U2["{ name:'Avi', age:35, greet }"]
-    U1 -.עצמאי לגמרי מ.- U2
+    U1 -.completely independent from.- U2
 ```
 
 ## הסבר עיקרי
@@ -58,11 +58,11 @@ Private State דרך Closure — כש-Factory משתמשת ב-closure (`let coun
 
 ```javascript
 function makeCounter(start = 0) {
-  let count = start; // private — לא נגיש מבחוץ
+  let count = start; // private — not accessible from outside
   return { inc: () => ++count, value: () => count };
 }
 const c = makeCounter();
-c.count;   // undefined — לא נגיש ישירות
+c.count;   // undefined — not accessible directly
 c.value(); // 0
 ```
 
@@ -76,7 +76,7 @@ Private state טבעי בלי תחביר מיוחד; כל קריאה עצמאי�
 
 יצירת אובייקטים רבים עם אותן מתודות בכל instance פחות יעילה בזיכרון בקנה מידה גדול מאוד; בלי תיעוד ברור, קשה לדעת מראש אילו תכונות ה-object יחזיר.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Factory Function מחזירה object חדש בכל קריאה, בלי מנגנון מיוחד
 

@@ -38,8 +38,8 @@ function TaskList() {
     `${import.meta.env.VITE_API_URL}/tasks`
   );
 
-  if (loading) return <p>טוען...</p>;
-  if (error) return <p>שגיאה: {error.message}</p>;
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return <ul>{tasks.map(t => <li key={t.id}>{t.title}</li>)}</ul>;
 }
@@ -53,13 +53,13 @@ sequenceDiagram
 
     R->>R: useEffect → loading = true
     R->>E: fetch(VITE_API_URL + "/tasks")
-    E->>E: middleware cors() מאשר origin
-    E->>DB: שאילתת CRUD
-    DB-->>E: נתונים
+    E->>E: middleware cors() approves the origin
+    E->>DB: CRUD query
+    DB-->>E: Data
     E-->>R: JSON response
-    alt הצליח
+    alt Succeeded
         R->>R: setTasks(data) → success state
-    else נכשל
+    else Failed
         R->>R: setError(err) → error state
     end
 ```
@@ -80,7 +80,7 @@ Environment Variables מפרידים סביבות — `import.meta.env.VITE_API_
 
 CORS יכול להיות מקור תסכול נפוץ למתחילים (שגיאה בקונסול שלא תמיד ברורה מיד); סנכרון בין שינויי Schema בשרת (DB) לטיפוסי הנתונים ב-Frontend דורש תשומת לב ידנית (בלי TypeScript מלא על שני הצדדים, שראינו רק כמבוא).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Frontend (React) ו-Backend (Express) הם שני "צדדים" נפרדים שמתקשרים דרך HTTP/`fetch`
 

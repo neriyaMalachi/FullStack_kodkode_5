@@ -37,8 +37,8 @@ params:
 ```javascript
 // GET /users/42?role=admin
 app.get("/users/:id", (req, res) => {
-  const userId = req.params.id;   // "42" — מה-route
-  const role = req.query.role;    // "admin" — מה-Query String
+  const userId = req.params.id;   // "42" — from the route
+  const role = req.query.role;    // "admin" — from the query string
   res.json({ userId, role });
 });
 ```
@@ -47,9 +47,9 @@ app.get("/users/:id", (req, res) => {
 flowchart TD
     URL["/users/42?role=admin"]
     URL --> Path["/users/:id
-    חלק חובה של הנתיב"]
+    Required part of the path"]
     URL --> Query["?role=admin
-    חלק אופציונלי"]
+    Optional part"]
     Path -->|"req.params.id"| P["'42'"]
     Query -->|"req.query.role"| Q["'admin'"]
 ```
@@ -72,7 +72,7 @@ flowchart TD
 
 בלבול נפוץ בין השניים אצל מתחילים; שכחת `Number()` על params/query גורמת להשוואות שגויות שקטות.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `req.params` מגיע מהגדרת ה-route (`:id`); `req.query` מגיע מ-Query String אחרי `?`
 

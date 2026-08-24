@@ -54,7 +54,7 @@ params:
 
 @media (max-width: 640px) {
   .recipe-layout {
-    grid-template-columns: 1fr; /* מסך צר — עמודה אחת במקום שתיים */
+    grid-template-columns: 1fr; /* narrow screen — one column instead of two */
   }
 }
 ```
@@ -109,7 +109,7 @@ Media Query הוא ההבדל בין "נראה טוב אצלי" ל"נראה טו
 
 שילוב Flexbox+Grid+משתנים+Media Queries באותו קובץ דורש תכנון מראש כדי שהקובץ יישאר קריא; יותר מדי Media Queries מפוזרות (לא מאורגנות) הופכות תחזוקה למסובכת.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Flexbox — פריסה חד-ממדית; Grid — פריסה דו-ממדית; בפרויקט אמיתי משתמשים בשניהם
 

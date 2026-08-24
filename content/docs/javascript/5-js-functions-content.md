@@ -46,9 +46,9 @@ add(2, 3); // 5
 ```mermaid
 flowchart RL
     Args["add(2, 3)
-    ארגומנטים"] --> Params["a=2, b=3
-    פרמטרים בתוך הפונקציה"]
-    Params --> Body["גוף הפונקציה
+    arguments"] --> Params["a=2, b=3
+    parameters inside the function"]
+    Params --> Body["function body
     a + b"]
     Body --> Return["return 5"]
 ```
@@ -73,7 +73,7 @@ Arrow Functions — ביטוי בודד בלי `{}` מחזיר אוטומטית 
 
 בחירה לא נכונה בין declaration ל-expression עלולה ליצור תלות ב-hoisting שקשה להבין; פונקציות ארוכות מדי (שעושות כמה דברים בו-זמנית) פוגעות בקריאות ובבדיקתיות.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Function Declaration מורם (hoisted); Function Expression ו-Arrow Function לא
 
@@ -129,7 +129,7 @@ greet("Alice") →  "Hello, Alice"
 
 ```javascript
 function calcArea(w, h) {
-  w * h; // באג: אין return!
+  w * h; // bug: missing return!
 }
 ```
 

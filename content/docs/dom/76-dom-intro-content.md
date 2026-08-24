@@ -35,9 +35,9 @@ params:
 • Live vs Static — שינוי ב-DOM דרך JavaScript **משתקף מיד** על המסך — בניגוד לקובץ HTML המקורי, שלא משתנה
 
 ```javascript
-console.log(document.title);        // כותרת העמוד
-console.log(document.body);         // ה-<body> כאובייקט
-document.title = "כותרת חדשה";       // שינוי מיידי — משתקף על המסך
+console.log(document.title);        // the page title
+console.log(document.body);         // the <body> as an object
+document.title = "New title";       // immediate change — reflected on screen right away
 ```
 
 ## הדגמה חיה
@@ -64,7 +64,7 @@ Node מול Element — לא כל Node הוא Element! טקסט בתוך `<p>ש�
 
 מניפולציית DOM תכופה מדי (הרבה שינויים בכל פעם) יכולה לפגוע בביצועים; קוד DOM "ידני" רב יכול להיות פחות קריא מגישות מודרניות (כמו React, בהמשך הקורס).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • DOM הוא הייצוג הפנימי-בזיכרון של HTML, לא הקובץ עצמו
 

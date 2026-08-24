@@ -39,18 +39,18 @@ params:
 • `.gitignore` — קובץ שרושמים בו אילו קבצים/תיקיות Git **צריך להתעלם מהם** ולא לעקוב אחריהם (למשל, קבצי סיסמאות)
 
 ```bash
-git clone https://github.com/example/my-project.git   # מוריד את כל הפרויקט מ-GitHub
-git push origin main    # שולח את ה-commits שלי ל-GitHub
-git pull origin main    # מביא שינויים חדשים שאחרים שלחו ל-GitHub
+git clone https://github.com/example/my-project.git   # downloads the whole project from GitHub
+git push origin main    # sends my commits to GitHub
+git pull origin main    # brings in new changes others pushed to GitHub
 ```
 
 ```mermaid
 flowchart RL
-    subgraph Local["המחשב שלכם"]
-        R["Repository מקומי"]
+    subgraph Local["Your computer"]
+        R["Local Repository"]
     end
     subgraph Remote["GitHub (origin)"]
-        RG["Repository מרוחק"]
+        RG["Remote Repository"]
     end
     R -->|"git push"| RG
     RG -->|"git pull / git clone"| R
@@ -74,7 +74,7 @@ README כברוכים-הבאים — כשמישהו נכנס לעמוד ה-Repos
 
 שכחת `.gitignore` יכולה לגרום להעלאת סיסמאות/מפתחות בטעות לפומבי; `git push`/`git pull` דורשים חיבור אינטרנט; עבודה עם כמה מפתחים על אותם קבצים דורשת תיאום (נלמד בשיעור הבא — Branches).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `git clone` מוריד Repository שלם מ-GitHub, כולל היסטוריה
 
@@ -182,9 +182,9 @@ GitHub מארח עותק Remote של ה-Repository שלכם בענן — לגי�
    ```
 3. צרו (או עדכנו) `README.md` עם כותרת ותיאור קצר של הפרויקט:
    ```markdown
-   # שם הפרויקט
+   # Project Name
 
-   תיאור קצר של מה שהפרויקט עושה.
+   A short description of what the project does.
    ```
 4. בצעו commit ראשון עם שני הקבצים האלה:
    ```bash

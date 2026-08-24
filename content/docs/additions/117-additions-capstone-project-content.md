@@ -33,11 +33,11 @@ params:
 • MVC — Controller (HTTP בלבד) → Service (לוגיקה עסקית) → Repository (גישה לנתונים), כל שכבה לא יודעת על מה שמעליה
 
 ```javascript
-// middleware/validate.js — Zod לפני שהבקשה מגיעה ל-Controller
+// middleware/validate.js — Zod before the request reaches the Controller
 import { z } from "zod";
 
 const createTaskSchema = z.object({
-  title: z.string().min(1, "כותרת חובה"),
+  title: z.string().min(1, "Title is required"),
 });
 
 export function validateCreateTask(req, res, next) {
@@ -51,27 +51,27 @@ export function validateCreateTask(req, res, next) {
 ```
 
 ```javascript
-// כל השכבות יחד ב-routes/tasks.js
+// all the layers together in routes/tasks.js
 router.post(
   "/",
-  requireAuth,              // JWT — חייב להיות מחובר
-  validateCreateTask,       // Zod — קלט תקין
-  taskController.create,    // Controller דק — רק HTTP
+  requireAuth,              // JWT — must be logged in
+  validateCreateTask,       // Zod — valid input
+  taskController.create,    // Thin Controller — HTTP only
 );
 ```
 
 ```mermaid
 flowchart RL
-    REQ["בקשה נכנסת"] --> LOG["Logger<br/>(info: כל בקשה)"]
-    LOG --> AUTH{"requireAuth<br/>JWT תקין?"}
-    AUTH -->|"לא"| E401["401"]
-    AUTH -->|"כן"| VAL{"validateCreateTask<br/>Zod תקין?"}
-    VAL -->|"לא"| E400["400"]
-    VAL -->|"כן"| CTRL["Controller"]
-    CTRL --> SVC["Service<br/>לוגיקה עסקית"]
-    SVC --> REPO["Repository<br/>גישה לנתונים"]
+    REQ["Incoming request"] --> LOG["Logger<br/>(info: every request)"]
+    LOG --> AUTH{"requireAuth<br/>Valid JWT?"}
+    AUTH -->|"no"| E401["401"]
+    AUTH -->|"yes"| VAL{"validateCreateTask<br/>Valid input?"}
+    VAL -->|"no"| E400["400"]
+    VAL -->|"yes"| CTRL["Controller"]
+    CTRL --> SVC["Service<br/>Business logic"]
+    SVC --> REPO["Repository<br/>Data access"]
     REPO --> RES["201 + Logger (info)"]
-    SVC -.->|"שגיאה"| ERRLOG["Logger (error)"]
+    SVC -.->|"error"| ERRLOG["Logger (error)"]
 ```
 
 ## הסבר עיקרי
@@ -90,7 +90,7 @@ MVC + כל השאר יחד — הריפקטור ל-MVC (Controller/Service/Repos
 
 חמישה נושאים יחד מוסיפים תשתית משמעותית לפני שמגיעים ללוגיקה העסקית עצמה — overhead אמיתי לפרויקט קטן מאוד; יותר שכבות משמעו יותר מקומות אפשריים לטעות בסדר ה-middleware.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • סדר middleware קובע רמת הגנה: אימות → ולידציה → לוגיקה עסקית, לא הפוך
 

@@ -39,11 +39,11 @@ import { test, mock } from "node:test";
 import assert from "node:assert/strict";
 import { getOpenTasks } from "./taskService.js";
 
-test("getOpenTasks מחזיר רק משימות פתוחות", () => {
+test("getOpenTasks returns only open tasks", () => {
   const fakeRepo = {
     findAll: mock.fn(() => [
-      { title: "קניות", done: false },
-      { title: "דוח", done: true },
+      { title: "Shopping", done: false },
+      { title: "Report", done: true },
     ]),
   };
 
@@ -56,11 +56,11 @@ test("getOpenTasks מחזיר רק משימות פתוחות", () => {
 
 ```mermaid
 flowchart RL
-    Test["הבדיקה"] --> Fake["fakeRepo.findAll = mock.fn(...)"]
-    Fake -->|"מוזרק כפרמטר"| Svc["getOpenTasks(fakeRepo)"]
-    Svc --> Result["result — נבדק עם assert"]
+    Test["The test"] --> Fake["fakeRepo.findAll = mock.fn(...)"]
+    Fake -->|"Injected as a parameter"| Svc["getOpenTasks(fakeRepo)"]
+    Svc --> Result["result — verified with assert"]
     Svc -.-> Calls["fakeRepo.findAll.mock.calls
-    (הוכחה שנקרא פעם אחת)"]
+    (proof it was called once)"]
 ```
 
 ## הסבר עיקרי
@@ -79,7 +79,7 @@ Dependency Injection כמאפשר את כל זה — שימו לב ש-`getOpenTa
 
 Mock לא בודק שהאינטגרציה עם ה-DB **האמיתי** עובדת בפועל (זו בדיוק העבודה של Integration Testing מהשיעור הקודם); דורש קוד שכתוב עם Dependency Injection מלכתחילה כדי להיות ניתן ל-mock בקלות; Mock לא-מדויק (שלא מייצג נכון את ההתנהגות האמיתית) עלול "להסתיר" באג אמיתי.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Mock מחליף תלות אמיתית (כמו DB) בפונקציה מזויפת, לבדיקה מהירה ומבודדת
 

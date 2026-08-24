@@ -38,7 +38,7 @@ params:
 
 ```javascript
 // index.js
-import "dotenv/config"; // טוען את .env לתוך process.env
+import "dotenv/config"; // loads .env into process.env
 
 const PORT = process.env.PORT || 3000;
 const DB_SECRET = process.env.DB_SECRET;
@@ -48,7 +48,7 @@ if (!DB_SECRET) {
 }
 ```
 ```
-# .env (לא נכנס ל-Git!)
+# .env (never committed to Git!)
 PORT=4000
 DB_SECRET=super-secret-key-123
 ```
@@ -56,11 +56,11 @@ DB_SECRET=super-secret-key-123
 ```mermaid
 flowchart RL
     Env[".env
-    (מקומי, לא ב-Git)"] -->|"dotenv/config"| PE["process.env"]
-    PE --> Code["הקוד קורא
+    (local, not in Git)"] -->|"dotenv/config"| PE["process.env"]
+    PE --> Code["The code reads
     process.env.DB_SECRET"]
     Example[".env.example
-    (שמות בלבד, כן ב-Git)"] -.מתעד אילו משתנים נדרשים.-> Env
+    (names only, is in Git)"] -.documents which variables are required.-> Env
 ```
 
 ## הסבר עיקרי
@@ -79,7 +79,7 @@ Fail Fast למה זה חשוב — אם קוד "ממשיך לרוץ" בלי `DB_
 
 שכחת להוסיף `.env` ל-`.gitignore` **לפני** ה-commit הראשון היא טעות בלתי-הפיכה (הסוד כבר בהיסטוריית Git); שכחת לעדכן `.env.example` כשמוסיפים משתנה חדש מבלבלת את שאר הצוות.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `.env` מכיל ערכים אמיתיים ולעולם לא נכנס ל-Git; `.env.example` הוא תבנית ריקה שכן נכנסת
 

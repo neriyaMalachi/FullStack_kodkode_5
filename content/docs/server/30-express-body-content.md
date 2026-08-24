@@ -38,10 +38,10 @@ params:
 import express from "express";
 
 const app = express();
-app.use(express.json()); // חייב לבוא לפני הroutes שצריכים req.body!
+app.use(express.json()); // must come before the routes that need req.body!
 
 app.post("/users", (req, res) => {
-  const { name, email } = req.body; // כבר Object מוכן!
+  const { name, email } = req.body; // already a ready-made object!
   res.status(201).json({ id: 1, name, email });
 });
 ```
@@ -50,9 +50,9 @@ app.post("/users", (req, res) => {
 flowchart RL
     Req["POST /users
     body: raw JSON"] --> MW["express.json()
-    מפרסר את ה-Stream"]
+    Parses the stream"]
     MW --> Handler["route handler
-    req.body מוכן"]
+    req.body ready"]
 ```
 
 ## הסבר עיקרי
@@ -71,7 +71,7 @@ Content-Type כתנאי — `express.json()` בודק את ה-`Content-Type` hea
 
 חובה לזכור את סדר הרישום (לפני ה-routes); שכחת `Content-Type` נכון בצד הלקוח גורמת ל-`req.body` שנשאר `undefined` בלי הודעת שגיאה ברורה — ועלול לגרום ל-`TypeError` אם ניגשים לשדה בתוכו בלי בדיקה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `req.body` זמין רק אחרי `app.use(express.json())`, שחייב לבוא לפני ה-routes הרלוונטיים
 

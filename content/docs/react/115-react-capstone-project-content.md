@@ -33,7 +33,7 @@ params:
 • Error Boundary — עוטף אזור באפליקציה כדי שקריסת רינדור לא תפיל את כל האתר
 
 ```jsx
-// useTasks.js — Custom Hook שמרכז את כל לוגיקת המשימות
+// useTasks.js — Custom Hook that centralizes all the task logic
 function useTasks() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +52,7 @@ function useTasks() {
 ```
 
 ```jsx
-// App.jsx — הרכבת כל היחידה: Router + Context + Error Boundary
+// App.jsx — assembling the whole unit: Router + Context + Error Boundary
 function App() {
   return (
     <ThemeContext.Provider value="dark">
@@ -77,8 +77,8 @@ flowchart TD
     EB -->|"/tasks/:id"| DETAIL["TaskDetailsPage"]
     HOOK["useTasks()<br/>fetch + state"] -.->|"tasks, loading, error"| LIST
     HOOK -.-> DETAIL
-    LIST -->|"React.memo"| ITEM["TaskItem<br/>(כרטיס בודד)"]
-    SERVER[("שרת Express<br/>מהיחידה הקודמת")] -.->|"fetch"| HOOK
+    LIST -->|"React.memo"| ITEM["TaskItem<br/>(single card)"]
+    SERVER[("Express server<br/>from the previous unit")] -.->|"fetch"| HOOK
 ```
 
 ## הסבר עיקרי
@@ -97,7 +97,7 @@ Error Boundary + Context הם רשת ביטחון ותשתית-רחבה, לא "�
 
 אפליקציה מרובת-עמודים עם Context+Hooks+Routing דורשת יותר קבצים ותכנון מראש מ"קומפוננטה בודדת עם useState"; דיבוג בעיות שמערבות כמה שכבות (Hook+Context+Router ביחד) יכול לקחת יותר זמן מבעיה מבודדת בקומפוננטה אחת.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Custom Hook מפריד לוגיקת state/fetch מקומפוננטות UI — עקרון מרכזי לאפליקציות React אמיתיות
 

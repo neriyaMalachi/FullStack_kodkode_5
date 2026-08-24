@@ -37,23 +37,23 @@ params:
 • Merge Conflict (התנגשות מיזוג) — כששני ענפים שינו את **אותן שורות בדיוק**, ו-Git לא יכול להחליט איזה שינוי "נכון" — נדרשת התערבות ידנית
 
 ```bash
-git branch feature-login      # יוצר ענף חדש בשם feature-login
-git switch feature-login      # עובר לענף החדש
-# ... כותבים קוד, מבצעים commits, כרגיל ...
-git switch main               # חוזרים ל-main
-git merge feature-login       # ממזגים את השינויים מ-feature-login לתוך main
+git branch feature-login      # creates a new branch named feature-login
+git switch feature-login      # switches to the new branch
+# ... write code, make commits, as usual ...
+git switch main               # switch back to main
+git merge feature-login       # merges changes from feature-login into main
 ```
 
 ```mermaid
 gitGraph
-    commit id: "קוד יציב"
-    commit id: "עוד commit"
+    commit id: "Stable code"
+    commit id: "Another commit"
     branch feature-login
     checkout feature-login
-    commit id: "עבודה על הפיצ'ר"
-    commit id: "עוד שינוי"
+    commit id: "Work on the feature"
+    commit id: "Another change"
     checkout main
-    merge feature-login id: "מיזוג חזרה"
+    merge feature-login id: "Merge back"
 ```
 
 ## הסבר עיקרי
@@ -74,7 +74,7 @@ Merge Conflict כשיש התנגשות אמיתית — אם שני הענפים
 
 Merge Conflicts יכולים להיות מבלבלים ומלחיצים למתחילים; ענפים ישנים ולא-ממוזגים שנשארים לאורך זמן קשה לעקוב אחריהם; שכחה לעבור לענף הנכון (`git switch`) לפני commit גורמת ל-commit "במקום הלא נכון".
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Branch הוא קו-פיתוח עצמאי; commits עליו לא משפיעים על ענפים אחרים עד merge
 

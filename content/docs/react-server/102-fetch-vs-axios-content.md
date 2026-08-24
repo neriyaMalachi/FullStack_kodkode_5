@@ -35,15 +35,15 @@ params:
 • Interceptors — פונקציות שרצות אוטומטית על **כל** בקשה/תגובה (למשל, הוספת טוקן Auth לכל בקשה יוצאת) — תכונה שאין ב-`fetch` המובנה
 
 ```javascript
-// fetch — דורש טיפול ידני בכל שלב
+// fetch — requires manual handling at every step
 fetch("/api/tasks")
   .then(res => {
-    if (!res.ok) throw new Error("שגיאת שרת");
+    if (!res.ok) throw new Error("Server error");
     return res.json();
   })
   .then(data => console.log(data));
 
-// axios — אותו דבר, פחות טקס
+// axios — same thing, less boilerplate
 axios.get("/api/tasks")
   .then(response => console.log(response.data))
   .catch(error => console.error(error));
@@ -52,13 +52,13 @@ axios.get("/api/tasks")
 ```mermaid
 flowchart TD
     subgraph fetchFlow["fetch — status 404"]
-        F1["fetch('/api/tasks')"] --> F2["Promise מצליח בכל זאת!"]
-        F2 --> F3{"בדקתם res.ok ידנית?"}
-        F3 -->|"לא"| F4["באג שקט — קוד ממשיך<br/>כאילו הכל תקין"]
-        F3 -->|"כן"| F5["throw ידני → catch"]
+        F1["fetch('/api/tasks')"] --> F2["Promise still succeeds anyway!"]
+        F2 --> F3{"Did you check res.ok manually?"}
+        F3 -->|"No"| F4["Silent bug — code continues<br/>as if everything is fine"]
+        F3 -->|"Yes"| F5["Manual throw → catch"]
     end
     subgraph axiosFlow["axios — status 404"]
-        A1["axios.get('/api/tasks')"] --> A2["נופל אוטומטית ל-.catch()"]
+        A1["axios.get('/api/tasks')"] --> A2["Automatically falls into .catch()"]
     end
 ```
 
@@ -78,7 +78,7 @@ axios: פחות קוד חוזר, זריקת שגיאה אוטומטית, Interce
 
 axios: תלות (dependency) נוספת שצריך להתקין ולתחזק; fetch: הרבה "טקס" חוזר בכל קריאה, וזריקת שגיאה ידנית שקל לשכוח.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `fetch` מובנה בדפדפן; `axios` ספרייה חיצונית שדורשת התקנה
 

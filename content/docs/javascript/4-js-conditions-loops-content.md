@@ -39,25 +39,25 @@ params:
 ```javascript
 const age = 20;
 if (age >= 18) {
-  console.log("בגיר");
+  console.log("Adult");
 } else {
-  console.log("קטין");
+  console.log("Minor");
 }
 ```
 
 ```mermaid
 flowchart TD
-    A{"age >= 18?"} -->|true| B["הדפס 'בגיר'"]
-    A -->|false| C["הדפס 'קטין'"]
+    A{"age >= 18?"} -->|true| B["Print 'Adult'"]
+    A -->|false| C["Print 'Minor'"]
 ```
 
 ```mermaid
 flowchart RL
     Init["i = 0"] --> Check{"i < 3?"}
-    Check -->|true| Run["הרץ את גוף הלולאה"]
+    Check -->|true| Run["Run the loop body"]
     Run --> Update["i++"]
     Update --> Check
-    Check -->|false| Done["סיום הלולאה"]
+    Check -->|false| Done["Loop ends"]
 ```
 
 ## הסבר עיקרי
@@ -78,7 +78,7 @@ flowchart RL
 
 `if`/`else if` ארוך מדי (הרבה תנאים) פוגע בקריאות; שכחת `i++` בלולאת `while` יוצרת לולאה אינסופית שתוקעת את התוכנית; שימוש ב-`==` במקום `===` עלול לייצר באגים עדינים מהמרת סוגים לא צפויה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `===` בודק ערך וסוג; `==` מבצע המרת סוגים אוטומטית — לכן `===` עדיף
 

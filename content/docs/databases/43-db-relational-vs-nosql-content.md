@@ -38,15 +38,15 @@ params:
 
 ```mermaid
 flowchart RL
-    subgraph SQL["רלציוני (SQL) — טבלת tasks"]
+    subgraph SQL["Relational (SQL) — tasks table"]
         direction TB
-        R1["id: 1 | title: קניות | done: false"]
-        R2["id: 2 | title: דוח | done: true"]
+        R1["id: 1 | title: Groceries | done: false"]
+        R2["id: 2 | title: Report | done: true"]
     end
-    subgraph NOSQL["מבוסס-documents (NoSQL) — collection בשם tasks"]
+    subgraph NOSQL["Document-based (NoSQL) — collection named tasks"]
         direction TB
-        D1["{ _id: 1, title: קניות, done: false }"]
-        D2["{ _id: 2, title: דוח, done: true, tags: [דחוף] }"]
+        D1["{ _id: 1, title: Groceries, done: false }"]
+        D2["{ _id: 2, title: Report, done: true, tags: [urgent] }"]
     end
 ```
 
@@ -66,7 +66,7 @@ SQL: ACID מלא (עסקאות בטוחות), קשרים מאומתים ע"י ה
 
 SQL: שינוי מבנה טבלה קיימת (migration) יכול להיות מסובך ומסוכן על נתונים קיימים; דורש תכנון Schema מראש. NoSQL: בלי Schema קשיח, קל בטעות ליצור documents לא-עקביים; אין אכיפת קשרים מובנית — קל "לשבור" reference בלי לשים לב.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • SQL = טבלאות + עמודות קבועות + קשרים מפורשים (Foreign Keys); NoSQL = documents גמישים + Collections
 

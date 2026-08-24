@@ -36,9 +36,9 @@ params:
 
 ```mermaid
 flowchart RL
-    A["הקוד שלכם (Node.js)"] -->|Connection String| B["Supabase"]
+    A["Your code (Node.js)"] -->|Connection String| B["Supabase"]
     B --> C[("PostgreSQL")]
-    D["דפדפן — Table/SQL Editor"] --> B
+    D["Browser — Table/SQL Editor"] --> B
 ```
 
 ## הסבר עיקרי
@@ -57,7 +57,7 @@ Table Editor ו-SQL Editor — שני כלים משלימים בממשק הדפ�
 
 תלות ברשת אינטרנט — בלי חיבור, אין גישה למסד; שכבה חינמית עם מגבלות (אחסון, השהיית פרויקט לא-פעיל); Connection String מכיל סיסמה — דורש זהירות שלא לחשוף אותו בטעות.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Supabase הוא שירות ענן ל-PostgreSQL — לא מנוע DB חדש, אלא PostgreSQL אמיתי מאוחסן ומנוהל
 

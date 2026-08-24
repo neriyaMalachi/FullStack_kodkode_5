@@ -38,7 +38,7 @@ params:
 const button = document.querySelector(".submit-btn");
 
 button.addEventListener("click", (event) => {
-  console.log("נלחץ!", event.target);
+  console.log("Clicked!", event.target);
 });
 ```
 
@@ -66,7 +66,7 @@ preventDefault למניעת ברירת מחדל — לחלק מהאירועים 
 
 הרבה `addEventListener` נפרדים על הרבה אלמנטים דומים יכולים להיות לא-יעילים (נלמד פתרון ב-Event Delegation); שכחת `preventDefault` במקומות שצריך גורמת להתנהגות ברירת מחדל לא-רצויה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `addEventListener` רושם callback שירוץ בכל התרחשות של האירוע, לא רק פעם אחת
 

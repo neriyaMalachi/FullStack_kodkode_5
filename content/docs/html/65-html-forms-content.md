@@ -36,13 +36,13 @@ params:
 
 ```html
 <form action="/register" method="POST">
-  <label for="name">שם:</label>
+  <label for="name">Name:</label>
   <input type="text" id="name" name="name" required />
 
-  <label for="email">אימייל:</label>
+  <label for="email">Email:</label>
   <input type="email" id="email" name="email" required />
 
-  <button type="submit">הרשמה</button>
+  <button type="submit">Register</button>
 </form>
 ```
 
@@ -79,7 +79,7 @@ required כ-Validation בלי קוד — `required` הוא הצורה הפשוט
 
 Validation בצד הלקוח (`required` וכו') **לעולם** לא מספיק לבד — חובה Validation גם בשרת; חוויית שליחת טופס "רגילה" (בלי JavaScript) גורמת לרענון עמוד מלא — לרוב רוצים למנוע זאת עם JavaScript (`fetch`, בהמשך הקורס).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `<form action="..." method="...">` קובע לאן ואיך לשלוח נתונים
 

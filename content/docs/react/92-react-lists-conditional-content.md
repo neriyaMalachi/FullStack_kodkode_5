@@ -48,18 +48,18 @@ function TaskList({ tasks }) {
 
 ```mermaid
 flowchart RL
-    subgraph arr["מערך tasks"]
-        A1["id:1 קניות"]
-        A2["id:2 לימוד"]
+    subgraph arr["tasks array"]
+        A1["id:1 Shopping"]
+        A2["id:2 Study"]
     end
-    subgraph jsx["JSX שנוצר ע'י map()"]
+    subgraph jsx["JSX created by map()"]
         L1["li key=1"]
         L2["li key=2"]
     end
     A1 -->|"map()"| L1
     A2 -->|"map()"| L2
-    L1 -->|"key ייחודי"| React["React יודעת בדיוק<br/>מי השתנה/נוסף/הוסר"]
-    L2 -->|"key ייחודי"| React
+    L1 -->|"unique key"| React["React knows exactly<br/>what changed/was added/removed"]
+    L2 -->|"unique key"| React
 ```
 
 ## הסבר עיקרי
@@ -78,7 +78,7 @@ key עוזר ל-React "לזהות" איברים לאורך זמן — כשמער
 
 שימוש ב-index כ-`key` (במקום `id` אמיתי) עלול לגרום לבאגים עדינים כשהרשימה משתנה מהאמצע; ביטויי תנאי מקוננים מדי (`&&`/טרנרי בתוך טרנרי) פוגעים בקריאות.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • כל איבר ברשימה ממופה חייב `key` ייחודי ויציב — עדיף `id` אמיתי, לא index
 

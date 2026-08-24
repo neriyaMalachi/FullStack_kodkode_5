@@ -46,17 +46,17 @@ params:
 ```
 ```javascript
 // index.js
-console.log("שלום מ-Node.js!");
-console.log(process.env.NODE_ENV); // קורא משתנה סביבה
+console.log("Hello from Node.js!");
+console.log(process.env.NODE_ENV); // reads an environment variable
 ```
 
 ```mermaid
 flowchart TB
-    JS["שפת JavaScript אחת"]
-    JS --> Browser["Runtime: דפדפן
+    JS["One JavaScript language"]
+    JS --> Browser["Runtime: Browser
     APIs: DOM, fetch..."]
     JS --> Node["Runtime: Node.js
-    APIs: קבצים, רשת, process.env"]
+    APIs: files, network, process.env"]
 ```
 
 ## הסבר עיקרי
@@ -75,7 +75,7 @@ flowchart TB
 
 בלבול נפוץ בין CommonJS (`require`) ל-ESM (`import`) בפרויקטים ישנים יותר; `node_modules` יכולה לתפוס הרבה מקום ותמיד צריך להתקין מחדש אחרי `clone`.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Node.js הוא Runtime שמריץ JavaScript מחוץ לדפדפן, עם APIs נוספים (קבצים, רשת)
 

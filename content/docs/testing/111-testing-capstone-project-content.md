@@ -33,19 +33,19 @@ params:
 • Integration Test — מריץ שרת אמיתי ושולח בקשת HTTP אמיתית — איטי יותר, אבל מוכיח שהשרשרת **כולה** עובדת יחד
 
 ```javascript
-// validation.js — פונקציה טהורה, נבדקת ב-Unit Test רגיל, בלי Mocks בכלל
+// validation.js — a pure function, tested with a regular unit test, no mocks at all
 export function isValidTask(task) {
   return typeof task.title === "string" && task.title.trim().length > 0;
 }
 ```
 
 ```javascript
-// taskService.test.js — Server Unit Test עם Mock במקום Repository אמיתי
+// taskService.test.js — server unit test with a mock instead of a real repository
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createTaskService } from "./taskService.js";
 
-test("createTask דוחה משימה בלי כותרת בלי לפנות ל-Repository", () => {
+test("createTask rejects a task without a title without calling the Repository", () => {
   const fakeRepo = { create: mock.fn() };
   const service = createTaskService(fakeRepo);
 
@@ -56,9 +56,9 @@ test("createTask דוחה משימה בלי כותרת בלי לפנות ל-Repo
 
 ```mermaid
 flowchart TB
-    A["Integration Tests<br/>מעטים — שרת אמיתי + HTTP אמיתי"]
-    B["Server Unit Tests<br/>יותר — לוגיקה עם Mocks"]
-    C["Unit Tests<br/>הכי הרבה — פונקציות טהורות, מהירות"]
+    A["Integration Tests<br/>Few — real server + real HTTP"]
+    B["Server Unit Tests<br/>More — logic with mocks"]
+    C["Unit Tests<br/>The most — pure functions, fast"]
     A --- B --- C
     style A stroke-width:1px
     style B stroke-width:2px
@@ -79,7 +79,7 @@ flowchart TB
 
 תחזוקת שלוש שכבות בדיקה דורשת יותר קוד בדיקה מאשר שכבה אחת בלבד; כפילות מסוימת בין השכבות (אותה לוגיקה עסקית נבדקת גם ב-Server Unit וגם, בעקיפין, ב-Integration) היא מחיר מקובל של הביטחון הנוסף.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • פירמידת הבדיקות: הרבה Unit, פחות Integration — לא להפוך את היחס
 

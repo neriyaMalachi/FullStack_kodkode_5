@@ -35,33 +35,33 @@ params:
 • Socket.io — ספרייה פופולרית שמפשטת עבודה עם WebSockets (fallbacks, reconnection, rooms)
 
 ```javascript
-// שרת (Express + Socket.io)
+// Server (Express + Socket.io)
 io.on("connection", (socket) => {
   socket.on("newTask", (task) => {
-    io.emit("taskAdded", task); // שולח לכל הלקוחות המחוברים
+    io.emit("taskAdded", task); // sends to all connected clients
   });
 });
 
-// לקוח (React)
+// Client (React)
 useEffect(() => {
   socket.on("taskAdded", (task) => {
-    setTasks(prev => [...prev, task]); // עדכון state בזמן אמת
+    setTasks(prev => [...prev, task]); // real-time state update
   });
-  return () => socket.off("taskAdded"); // Cleanup (מיחידת useEffect!)
+  return () => socket.off("taskAdded"); // Cleanup (from the useEffect unit!)
 }, []);
 ```
 
 ```mermaid
 sequenceDiagram
-    participant A as משתמש א' (React)
+    participant A as User A (React)
     participant S as Server (Socket.io)
-    participant B as משתמש ב' (React)
+    participant B as User B (React)
 
-    Note over A,B: שני חיבורים פתוחים וממושכים, לא HTTP רגיל
+    Note over A,B: Two open, persistent connections, not regular HTTP
     A->>S: socket.emit("newTask", task)
-    S->>S: io.emit("taskAdded", task) — לכל המחוברים
-    S-->>A: taskAdded (גם השולח מקבל)
-    S-->>B: taskAdded — מיידי, בלי שביקש כלום!
+    S->>S: io.emit("taskAdded", task) — to everyone connected
+    S-->>A: taskAdded (the sender receives it too)
+    S-->>B: taskAdded — instant, without asking for anything!
     Note over B: setTasks(prev => [...prev, task])
 ```
 
@@ -81,7 +81,7 @@ Cleanup ב-useEffect קריטי גם כאן — בדיוק כמו `setInterval`/
 
 מורכב יותר מ-HTTP רגיל — חיבור ממושך דורש ניהול (ניתוקים, reconnection); לא כל תשתית/hosting תומכת ב-WebSockets בקלות כמו ב-HTTP רגיל; לא מתאים לכל תרחיש — רוב הבקשות הרגילות (CRUD סטנדרטי) עדיין הכי טבעיות ב-HTTP/REST.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • WebSocket הוא חיבור פתוח וממושך, דו-כיווני — בניגוד ל-HTTP (בקשה-תגובה, נסגר)
 

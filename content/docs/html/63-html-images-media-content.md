@@ -35,7 +35,7 @@ params:
 • Lazy Loading — `loading="lazy"` — דוחה טעינת תמונה עד שהיא קרובה להיכנס למסך, לביצועים טובים יותר בעמודים עם הרבה תמונות
 
 ```html
-<img src="cat.jpg" alt="חתול כתום ישן על ספה" loading="lazy" />
+<img src="cat.jpg" alt="An orange cat sleeping on a couch" loading="lazy" />
 
 <video src="intro.mp4" controls width="480"></video>
 
@@ -66,7 +66,7 @@ Lazy Loading חוסך זמן טעינה — עמוד עם 50 תמונות לא �
 
 פורמטים/קידודים שונים של וידאו/אודיו לא תמיד נתמכים בכל דפדפן; תמונות גדולות מדי בלי אופטימיזציה עדיין פוגעות בביצועים, גם עם `lazy`; `alt` גרוע (או ריק כשלא צריך) מבטל את יתרון הנגישות.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `alt` הוא Attribute חובה על `<img>` — קריטי לנגישות ול-fallback
 

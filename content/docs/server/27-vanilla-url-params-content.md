@@ -42,8 +42,8 @@ import http from "node:http";
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   const parts = url.pathname.split("/").filter(Boolean); // ["users", "42"]
-  const userId = parts[1];               // "42" — תמיד string!
-  const role = url.searchParams.get("role"); // "admin" או null
+  const userId = parts[1];               // "42" — always a string!
+  const role = url.searchParams.get("role"); // "admin" or null
 
   res.writeHead(200, { "Content-Type": "application/json" });
   res.end(JSON.stringify({ userId, role }));
@@ -75,7 +75,7 @@ flowchart RL
 
 פיצול `pathname` ידני לחילוץ params הוא מסורבל ורגיש לטעויות (למשל, נתיבים עם אורך משתנה); חובה לזכור להמיר Type בעצמכם בכל מקום.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `new URL(req.url, base)` הופך מחרוזת גולמית לאובייקט מסודר עם `pathname` ו-`searchParams`
 

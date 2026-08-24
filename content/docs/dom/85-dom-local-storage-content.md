@@ -35,12 +35,12 @@ params:
 • `JSON.stringify`/`JSON.parse` — הופכים אובייקט/מערך למחרוזת ובחזרה — הכרחי כי `localStorage` שומר **רק** מחרוזות
 
 ```javascript
-const tasks = [{ title: "קניות", done: false }];
+const tasks = [{ title: "Shopping", done: false }];
 
 localStorage.setItem("tasks", JSON.stringify(tasks));
 
 const saved = JSON.parse(localStorage.getItem("tasks"));
-console.log(saved); // המערך המקורי, חזר לחיים
+console.log(saved); // the original array, brought back to life
 ```
 
 ## הדגמה חיה
@@ -72,7 +72,7 @@ localStorage מול משתנה רגיל — ב-JavaScript רגיל, מערך ר�
 
 מוגבל בגודל (בד"כ כ-5-10MB, תלוי דפדפן); שומר רק מחרוזות — דורש `JSON.stringify`/`parse` ידני לכל דבר שאינו טקסט פשוט; זמין **רק** בדפדפן שבו נשמר — לא מסונכרן בין מכשירים (בניגוד ל-DB אמיתי בשרת, מיחידת ה-DB).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `localStorage` שומר זוגות מפתח-ערך, כמחרוזות בלבד, שנשארים גם אחרי רענון/סגירה
 

@@ -41,21 +41,21 @@ params:
 • Non-blocking (לא-חוסם) — הקוד שממשיך לרוץ בזמן שממתינים לתוצאה של פעולה אסינכרונית
 
 ```javascript
-console.log("מתחילים לבקש נתונים מהשרת...");
-fetch("/api/users"); // שולח בקשה — לא מחכה לתשובה!
-console.log("ממשיכים לרוץ מיד, גם אם התשובה עוד לא הגיעה");
+console.log("Starting to request data from the server...");
+fetch("/api/users"); // sends the request — doesn't wait for the response!
+console.log("Continuing to run immediately, even if the response hasn't arrived yet");
 ```
 
 ```mermaid
 sequenceDiagram
-    participant Code as הקוד שלכם
-    participant Web as Web API (דפדפן/Node)
-    participant Server as שרת מרוחק
+    participant Code as Your code
+    participant Web as Web API (browser/Node)
+    participant Server as Remote server
     Code->>Web: fetch("/api/users")
-    Web->>Server: שולח בקשת רשת ברקע
-    Code->>Code: ממשיך לרוץ מיד (לא חוסם!)
-    Server-->>Web: תשובה מגיעה (מאוחר יותר)
-    Web-->>Code: מטפל בתוצאה כשהיא מוכנה
+    Web->>Server: sends network request in the background
+    Code->>Code: continues running immediately (non-blocking!)
+    Server-->>Web: response arrives (later)
+    Web-->>Code: handles the result when ready
 ```
 
 ## הסבר עיקרי
@@ -74,7 +74,7 @@ sequenceDiagram
 
 קוד שמחכה ל"אחר כך" קשה יותר לעקוב אחריו מקוד ליניארי רגיל — צריך ללמוד כלים חדשים (בשיעורים הבאים) כדי לכתוב אותו בקריאות; אי אפשר לדעת מראש בדיוק כמה זמן ייקח, רק שזה לא יחסום.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • JavaScript היא Single-threaded — יש לה רק ביצוע אחד בכל רגע, לא כמה "מקבילים" אמיתיים
 

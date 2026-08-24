@@ -38,12 +38,12 @@ params:
 
 ```mermaid
 flowchart TB
-    subgraph Host["המחשב שלכם - Host"]
+    subgraph Host["Your computer - Host"]
         Image["Image: node:20
-        (תבנית קפואה)"]
-        Image --> C1["Container 1 (רץ)"]
-        Image --> C2["Container 2 (רץ)"]
-        C1 -.מבודד מ.- C2
+        (frozen template)"]
+        Image --> C1["Container 1 (running)"]
+        Image --> C2["Container 2 (running)"]
+        C1 -.isolated from.- C2
     end
 ```
 
@@ -63,7 +63,7 @@ Isolation פותר את "אצלי זה עובד" — קונטיינר לא "רו
 
 עקומת למידה בתחילת הדרך (מושגים חדשים: Image, Container, Volume...); Images יכולים לתפוס הרבה מקום בדיסק; overhead קל בביצועים לעומת הרצה ישירה על המחשב (בדרך כלל זניח).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Image = תבנית קפואה; Container = מופע רץ של Image
 

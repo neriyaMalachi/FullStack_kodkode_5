@@ -34,12 +34,12 @@ params:
 
 ```javascript
 const li = document.createElement("li");
-li.textContent = "משימה חדשה";
+li.textContent = "New task";
 li.classList.add("task-item");
 
 document.querySelector(".task-list").appendChild(li);
 
-// מאוחר יותר:
+// later on:
 li.remove();
 ```
 
@@ -67,7 +67,7 @@ remove() כניקוי פשוט — `element.remove()` (שיטה מודרנית) 
 
 יצירת הרבה אלמנטים בלולאה, כל אחד עם `appendChild` נפרד, יכולה להיות לא-יעילה (כל `appendChild` גורם לדפדפן "לצייר" מחדש); בניית HTML מורכב אלמנט-אחרי-אלמנט יכולה להיות מסורבלת לעומת `innerHTML` (עם הסיכון שבו).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `createElement` יוצר אלמנט בזיכרון בלבד; `appendChild`/`append` מכניס אותו בפועל לעמוד
 

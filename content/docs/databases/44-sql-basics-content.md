@@ -53,7 +53,7 @@ CREATE TABLE tasks (
   done BOOLEAN DEFAULT false
 );
 
-INSERT INTO tasks (title) VALUES ('קניות');
+INSERT INTO tasks (title) VALUES ('Groceries');
 SELECT * FROM tasks WHERE done = false;
 UPDATE tasks SET done = true WHERE id = 1;
 DELETE FROM tasks WHERE id = 2;
@@ -87,7 +87,7 @@ Primary Key כזיהוי חד-משמעי — `id SERIAL PRIMARY KEY` אומר: �
 
 שכחת `WHERE` ב-`UPDATE`/`DELETE` היא טעות הרסנית ובלתי-הפיכה שקלה לעשות בטעות; שינוי מבנה טבלה קיימת (`ALTER TABLE`) על נתונים רבים יכול לקחת זמן ולהיות מסוכן.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • CRUD = Create (`INSERT`), Read (`SELECT`), Update (`UPDATE`), Delete (`DELETE`)
 

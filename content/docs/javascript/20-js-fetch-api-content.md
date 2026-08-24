@@ -36,16 +36,16 @@ Fetch API הוא הכלי המובנה בדפדפן (וב-Node.js 18+) לשלו�
 
 ```javascript
 const result = fetch("/api/users");
-console.log(result); // Promise { <pending> } — עדיין לא הנתונים עצמם!
+console.log(result); // Promise { <pending> } — not the actual data yet!
 ```
 
 ```mermaid
 flowchart RL
-    A["fetch('/api/users')"] --> B["Promise מוחזר מיד
-    (הכרטיס - עדיין pending)"]
-    B -.בזמן שממתינים.-> C["...קוד אחר ממשיך לרוץ..."]
-    B -->|"כשהתשובה מגיעה"| D["Response
-    (הנתונים בפועל)"]
+    A["fetch('/api/users')"] --> B["Promise returned immediately
+    (the ticket - still pending)"]
+    B -.while waiting.-> C["...other code keeps running..."]
+    B -->|"when the response arrives"| D["Response
+    (the actual data)"]
 ```
 
 ## הסבר עיקרי
@@ -56,8 +56,8 @@ Promise כ"כרטיס המתנה" — דמיינו שאתם מזמינים בג�
 
 ```javascript
 fetch("/api/users")
-  .then(response => response.json()) // "פודים" את הכרטיס, מקבלים את התגובה
-  .then(data => console.log(data));  // "פודים" כרטיס נוסף, מקבלים את הנתונים עצמם
+  .then(response => response.json()) // "redeem" the ticket, get the response
+  .then(data => console.log(data));  // "redeem" another ticket, get the actual data
 ```
 
 שימו לב שיש **שני** שלבי `.then` — זה לא טעות. `fetch` עצמה נותנת Promise ל-`Response` (מעטפת התגובה: קוד סטטוס וכו'); ולהוציא ממנה את התוכן בפועל (`response.json()`) זהו עוד Promise נפרד. שני השלבים האלה יוסברו לעומק בהמשך.
@@ -72,7 +72,7 @@ fetch("/api/users")
 
 הערך המיידי שמתקבל (ה-Promise) הוא לא הנתונים עצמם — צריך ללמוד איך "לפדות" אותו (השיעורים הבאים); בלי הבנת Promise, הקוד עלול להיראות "לא עובד" (למשל, הדפסת ה-Promise במקום התוכן).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `fetch(url)` שולחת בקשת HTTP ומחזירה **מיד** Promise — לא את התשובה עצמה
 

@@ -33,9 +33,9 @@ params:
 • State Management Library — ספרייה חיצונית (כמו Redux, Zustand) שנותנת כלים מובנים לניהול state גלובלי מורכב, מעבר למה ש-Context לבד נותן בקלות
 
 ```jsx
-// Lifting State Up: שתי קומפוננטות-אחיות צריכות לשתף state
+// Lifting State Up: two sibling components need to share state
 function App() {
-  const [selectedId, setSelectedId] = useState(null); // ה-state "עלה" ל-App
+  const [selectedId, setSelectedId] = useState(null); // the state "moved up" to App
 
   return (
     <>
@@ -48,10 +48,10 @@ function App() {
 
 ```mermaid
 flowchart TD
-    A["רק קומפוננטה אחת צריכה את הנתון?"] -->|"כן"| B["Local State (useState)"]
-    A -->|"לא, גם אחות/הורה קרוב"| C["Lifting State Up<br/>להורה המשותף הקרוב"]
-    C -->|"עדיין לא מספיק —<br/>הרבה קומפוננטות רחוקות"| D["Context API"]
-    D -->|"state גלובלי מורכב מאוד,<br/>עדכונים תכופים"| E["ספרייה ייעודית<br/>(Redux / Zustand)"]
+    A["Does only one component need the data?"] -->|"Yes"| B["Local State (useState)"]
+    A -->|"No, a sibling/nearby parent too"| C["Lifting State Up<br/>to the nearest common parent"]
+    C -->|"Still not enough —<br/>many distant components"| D["Context API"]
+    D -->|"Very complex global state,<br/>frequent updates"| E["Dedicated library<br/>(Redux / Zustand)"]
 ```
 
 ## הסבר עיקרי
@@ -70,7 +70,7 @@ Lifting State Up כפתרון לביניים — כששתי קומפוננטות
 
 קפיצה ישירה לפתרון "כבד" (ספרייה חיצונית) לפני שבאמת צריך מוסיפה מורכבות מיותרת; Lifting State Up-יתר (הכל ב-`App`) יוצר קומפוננטת-שורש עמוסה מדי, "prop drilling" הפוך.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • סדר עדיפות: Local State תמיד ראשון; Lifting State Up כששתי אחיות צריכות לשתף; Context לשיתוף רחב; ספרייה ייעודית רק כשבאמת נחוץ
 

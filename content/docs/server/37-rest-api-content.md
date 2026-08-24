@@ -37,8 +37,8 @@ params:
 • Versioning — `/api/v1/...`, `/api/v2/...` — שמירת תאימות לאחור כשה-API משתנה עם הזמן
 
 ```javascript
-router.get("/tasks", getAllTasks);       // Read (רשימה)
-router.get("/tasks/:id", getTaskById);   // Read (בודד)
+router.get("/tasks", getAllTasks);       // Read (list)
+router.get("/tasks/:id", getTaskById);   // Read (single)
 router.post("/tasks", createTask);       // Create
 router.put("/tasks/:id", updateTask);    // Update
 router.delete("/tasks/:id", deleteTask); // Delete
@@ -46,7 +46,7 @@ router.delete("/tasks/:id", deleteTask); // Delete
 
 ```mermaid
 flowchart RL
-    subgraph Resource["/tasks (משאב — שם עצם)"]
+    subgraph Resource["/tasks (resource — noun)"]
         direction TB
         G["GET → Read"]
         P["POST → Create"]
@@ -73,7 +73,7 @@ Versioning כשה-API משתנה — כשמוסיפים שדה חדש או מש�
 
 לא כל פעולה עסקית מתאימה בקלות ל-CRUD (למשל, "שלח התראה" הוא לא באמת Create/Read/Update/Delete); Versioning מוסיף תחזוקה — צריך לתמוך בכמה גרסאות במקביל לפעמים.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • URLs הם שמות עצם (משאבים); HTTP Methods הם הפעלים (פעולות)
 

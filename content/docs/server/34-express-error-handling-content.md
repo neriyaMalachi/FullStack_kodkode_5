@@ -35,12 +35,12 @@ params:
 ```javascript
 function asyncHandler(fn) {
   return (req, res, next) => {
-    Promise.resolve(fn(req, res, next)).catch(next); // תופס שגיאה -> next(err)
+    Promise.resolve(fn(req, res, next)).catch(next); // catches an error -> next(err)
   };
 }
 
 app.get("/users/:id", asyncHandler(async (req, res) => {
-  const user = await findUser(req.params.id); // אם נזרקת שגיאה, asyncHandler תופס אותה
+  const user = await findUser(req.params.id); // if an error is thrown, asyncHandler catches it
   if (!user) {
     const err = new Error("User not found");
     err.status = 404;
@@ -49,7 +49,7 @@ app.get("/users/:id", asyncHandler(async (req, res) => {
   res.json(user);
 }));
 
-// Error Middleware — תמיד אחרון, עם 4 פרמטרים בדיוק
+// Error middleware — always last, with exactly 4 parameters
 app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ error: err.message });
 });
@@ -57,7 +57,7 @@ app.use((err, req, res, next) => {
 
 ```mermaid
 flowchart TD
-    H["asyncHandler(async handler)"] -->|"שגיאה נזרקת"| Catch["Promise.resolve().catch(next)"]
+    H["asyncHandler(async handler)"] -->|"Error thrown"| Catch["Promise.resolve().catch(next)"]
     Catch -->|"next(err)"| EM["Error Middleware
     (err, req, res, next)"]
     EM --> Res["res.status(err.status||500).json(...)"]
@@ -79,7 +79,7 @@ Error Middleware תמיד אחרון, ותמיד 4 פרמטרים — Express מ
 
 עוד שכבת הפשטה (`asyncHandler`) שצריך להבין; שכחת לעטוף route אסינכרוני ב-`asyncHandler` מחזירה למצב המקורי הבעייתי.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `asyncHandler` תופס שגיאות מ-`async` route handlers ומעביר אותן ל-`next(err)`
 

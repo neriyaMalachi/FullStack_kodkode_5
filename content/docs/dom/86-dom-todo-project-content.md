@@ -37,7 +37,7 @@ let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 function render() {
   const list = document.querySelector(".task-list");
-  list.innerHTML = ""; // מנקים ובונים מחדש מה-state
+  list.innerHTML = ""; // clear and rebuild from state
   tasks.forEach(task => {
     const li = document.createElement("li");
     li.textContent = task.title;
@@ -81,7 +81,7 @@ State כמקור אמת יחיד מונע חוסר-סנכרון בין מה שר
 
 מחיקה ובנייה מחדש של כל ה-DOM (`innerHTML = ""` + לולאת `createElement`) בכל שינוי קטן פחות יעילה מעדכון ממוקד — בפרויקטים גדולים, זו בדיוק הבעיה שספריות כמו React פותרות; אין שיתוף בין מכשירים (localStorage מקומי בלבד).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • State הוא מקור האמת; ה-DOM הוא רק "השתקפות" חזותית שלו, לא להפך
 

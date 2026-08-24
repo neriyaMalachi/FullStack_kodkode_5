@@ -45,8 +45,8 @@ function UserCard({ name, role }) {
 function App() {
   return (
     <>
-      <UserCard name="דנה" role="מפתחת" />
-      <UserCard name="יוסי" role="מעצב" />
+      <UserCard name="Dana" role="Developer" />
+      <UserCard name="Yossi" role="Designer" />
     </>
   );
 }
@@ -54,10 +54,10 @@ function App() {
 
 ```mermaid
 flowchart TD
-    App["App"] -->|"name='דנה' role='מפתחת'"| Card1["UserCard"]
-    App -->|"name='יוסי' role='מעצב'"| Card2["UserCard"]
-    Card1 -.->|"props קריאה-בלבד"| Card1
-    Card2 -.->|"props קריאה-בלבד"| Card2
+    App["App"] -->|"name='Dana' role='Developer'"| Card1["UserCard"]
+    App -->|"name='Yossi' role='Designer'"| Card2["UserCard"]
+    Card1 -.->|"props read-only"| Card1
+    Card2 -.->|"props read-only"| Card2
 ```
 
 ## הסבר עיקרי
@@ -76,7 +76,7 @@ className לא class — שימו לב שבתוך JSX כותבים `className` �
 
 העברת props דרך כמה שכבות קומפוננטות ("prop drilling") יכולה להיות מסורבלת (נלמד פתרון ב-Context API); פירוק-יתר לקומפוננטות קטנות מדי יכול להוסיף מורכבות ניהולית שלא לצורך.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Props זורמים תמיד מהורה לילד, וקריאים-בלבד מנקודת מבט הילד
 

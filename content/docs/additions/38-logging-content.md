@@ -48,11 +48,11 @@ logger.error("Database connection failed", { code: "ECONNREFUSED" });
 
 ```mermaid
 flowchart TD
-    L["level: 'info' (הסף שהוגדר)"]
-    L --> E["error ✓ נרשם"]
-    L --> W["warn ✓ נרשם"]
-    L --> I["info ✓ נרשם"]
-    L --> D["debug ✗ מסונן — נמוך מהסף"]
+    L["level: 'info' (the configured threshold)"]
+    L --> E["error ✓ logged"]
+    L --> W["warn ✓ logged"]
+    L --> I["info ✓ logged"]
+    L --> D["debug ✗ filtered — below threshold"]
 ```
 
 ## הסבר עיקרי
@@ -71,7 +71,7 @@ logs נשמרים ונגישים גם אחרי שהשרת ריצה; רמות ח�
 
 עוד ספרייה חיצונית להגדיר ולתחזק; יותר מדי logging (ברמת `debug` בכל מקום) יכול להאט ולבלבל; שכחת להגדיר `level` נכון לפי `NODE_ENV` מחזירה "רעש" מיותר לפרודקשן.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Log Levels: `error` (הכי חמור) > `warn` > `info` > `debug` (הכי פחות)
 

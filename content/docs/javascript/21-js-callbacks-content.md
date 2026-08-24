@@ -37,11 +37,11 @@ params:
 • Callback Hell — הרבה callbacks מקוננים זה בתוך זה, שהופכים קשים לקריאה
 
 ```javascript
-// דוגמה היסטורית: כך פונקציית fetch-כמו-ישנה הייתה יכולה להיראות עם callback,
-// לפני עידן ה-Promise (fetch האמיתי לא עובד כך — הוא מחזיר Promise, כמו שראינו)
+// Historical example: this is how an old fetch-like function might have looked with a callback,
+// before the Promise era (the real fetch doesn't work this way — it returns a Promise, as we saw)
 function getUsersOldStyle(url, callback) {
-  // ...קוד פנימי שמדמה בקשת רשת...
-  callback(null, [{ id: 1, name: "Dana" }]); // error-first: null = אין שגיאה
+  // ...internal code that simulates a network request...
+  callback(null, [{ id: 1, name: "Dana" }]); // error-first: null = no error
 }
 
 getUsersOldStyle("/api/users", (error, users) => {
@@ -53,8 +53,8 @@ getUsersOldStyle("/api/users", (error, users) => {
 ```mermaid
 flowchart TD
     A["getUsersOldStyle(url, callback)"] --> B{"error?"}
-    B -->|"יש שגיאה"| C["callback(error, undefined)"]
-    B -->|"הצליח"| D["callback(null, users)"]
+    B -->|"has an error"| C["callback(error, undefined)"]
+    B -->|"succeeded"| D["callback(null, users)"]
 ```
 
 ## הסבר עיקרי
@@ -75,7 +75,7 @@ Error-first כקונבנציה ישנה — שימו לב לפרמטר הראש�
 
 Callback Hell (קינון עמוק) הופך קוד לבלתי-קריא כשיש כמה שלבים תלויים; טיפול בשגיאות מפוזר — צריך לבדוק `if (error)` בנפרד בכל callback; קשה לדבג רצף ארוך של callbacks מקוננים כי קשה לעקוב אחרי סדר ההרצה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Callback = פונקציה שמועברת כארגומנט, מופעלת ע"י הפונקציה שקיבלה אותה
 

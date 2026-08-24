@@ -40,24 +40,24 @@ params:
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
-app.use(helmet()); // מוסיף security headers אוטומטית
+app.use(helmet()); // automatically adds security headers
 
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }); // 100 בקשות ל-15 דקות
+const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }); // 100 requests per 15 minutes
 app.use("/api/", limiter);
 ```
 
 ```mermaid
 flowchart RL
-    Req["בקשה נכנסת"] --> RL["Rate Limiting
-    נגד Brute Force"]
+    Req["Incoming request"] --> RL["Rate Limiting
+    against Brute Force"]
     RL --> HM["Helmet
     Security Headers"]
     HM --> Val["Validation
-    נגד קלט זדוני"]
+    against malicious input"]
     Val --> PQ["Parameterized Query
-    נגד SQL Injection"]
-    PQ --> Out["Escaping בפלט
-    נגד XSS"]
+    against SQL Injection"]
+    PQ --> Out["Output escaping
+    against XSS"]
 ```
 
 ## הסבר עיקרי
@@ -78,7 +78,7 @@ Rate Limiting נגד ניחוש חוזר — בלי הגבלה, תוקף יכו�
 
 אבטחה היא תחום עמוק — הכרת Top 10 היא התחלה, לא כיסוי מלא; Rate Limiting אגרסיבי מדי עלול לחסום משתמשים לגיטימיים בטעות.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • SQL Injection נמנעת ע"י Parameterized Queries — לעולם לא לשרשר קלט ישירות לתוך שאילתת SQL
 

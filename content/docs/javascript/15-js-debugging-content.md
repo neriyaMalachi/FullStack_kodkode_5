@@ -39,18 +39,18 @@ console.table([
   { name: "Dana", age: 28 },
   { name: "Avi", age: 35 },
 ]);
-// מציג טבלה קריאה במקום JSON מקונן
+// shows a readable table instead of nested JSON
 ```
 
 ```mermaid
 flowchart RL
-    A["שגיאה בקוד"] --> B["Breakpoint / debugger
-    עוצר ביצוע בשורה מדויקת"]
-    B --> C["בדיקת משתנים
-    בזמן אמת"]
+    A["Bug in the code"] --> B["Breakpoint / debugger
+    stops execution at an exact line"]
+    B --> C["Inspect variables
+    in real time"]
     C --> D["Step
-    צעד שורה אחר שורה"]
-    D --> E["מציאת מקור הבאג"]
+    line by line"]
+    D --> E["Find the root cause of the bug"]
 ```
 
 ## הסבר עיקרי
@@ -59,7 +59,7 @@ flowchart RL
 
 ```javascript
 function calcTotal(price) {
-  debugger; // עוצר כאן ב-DevTools אם הן פתוחות
+  debugger; // stops here in DevTools if it's open
   return price * 1.17;
 }
 ```
@@ -78,7 +78,7 @@ Breakpoints מדויקים בהרבה מ-console.log מפוזר; Call Stack חו
 
 `debugger` שנשאר בקוד production הוא באג בפני עצמו — חוסם ביצוע אצל כל מי שפותח DevTools; למידת קיצורי הדרך והכלים ב-DevTools דורשת זמן השקעה ראשוני.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Breakpoint עוצר ביצוע בשורה מדויקת; console.log דורש חיזוי מראש מה להדפיס
 
@@ -135,19 +135,19 @@ Debug שיטתי מתחיל בשאלה "מה בדיוק אני בודק?", לא 
 ```javascript
 function calculateAverage(numbers) {
   let total = 0;
-  for (let i = 0; i <= numbers.length; i++) { // באג 1: תנאי הלולאה שגוי
+  for (let i = 0; i <= numbers.length; i++) { // bug 1: wrong loop condition
     total += numbers[i];
   }
   return total / numbers.length;
 }
 
 function getDiscountedPrice(price, discountPercent) {
-  const discount = price * discountPercent; // באג 2: חסרה חלוקה ב-100
+  const discount = price * discountPercent; // bug 2: missing division by 100
   return price - discount;
 }
 
-console.log(calculateAverage([10, 20, 30])); // אמור להדפיס 20, מדפיס NaN
-console.log(getDiscountedPrice(100, 10));    // אמור להדפיס 90, מדפיס משהו אחר
+console.log(calculateAverage([10, 20, 30])); // should print 20, prints NaN
+console.log(getDiscountedPrice(100, 10));    // should print 90, prints something else
 ```
 
 **דרישות:**

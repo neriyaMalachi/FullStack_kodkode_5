@@ -47,12 +47,12 @@ const user = await User.create({ name: "Dana", age: 28 });
 ```mermaid
 flowchart TB
     A["Schema
-    שדות + validation rules"] --> B["Model
+    fields + validation rules"] --> B["Model
     User = mongoose.model(...)"]
     B --> C["User.create(...) / User.find(...)"]
-    C -->|"עובר validation"| D[("MongoDB Collection")]
-    C -.נכשל validation.-> E["Promise נדחה
-    לפני שמירה"]
+    C -->|"passes validation"| D[("MongoDB Collection")]
+    C -.fails validation.-> E["Promise rejected
+    before save"]
 ```
 
 ## הסבר עיקרי
@@ -73,7 +73,7 @@ Schema אוכף מבנה ותקינות באופן אוטומטי לפני כל 
 
 שכבת Mongoose מוסיפה overhead קל לעומת Native Driver ישיר; Schema לא-גמיש מדי עלול להכביד כשצריך מבנה נתונים דינמי לגמרי; טעויות בהגדרת Schema (למשל טיפוס שגוי) מתגלות רק כשמנסים לשמור נתון שלא תואם.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Schema מגדיר מבנה ו-validation; Model הוא הממשק לביצוע פעולות על Collection
 

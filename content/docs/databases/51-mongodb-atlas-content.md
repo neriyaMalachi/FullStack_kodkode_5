@@ -36,11 +36,11 @@ params:
 
 ```mermaid
 flowchart RL
-    App["הקוד שלכם - Node.js"] -->|"Connection String + Database User"| NA{"Network Access - IP מורשה?"}
-    NA -->|מורשה| Cluster["MongoDB Atlas Cluster"]
-    Cluster --> R1[("עותק 1")]
-    Cluster --> R2[("עותק 2")]
-    Cluster --> R3[("עותק 3")]
+    App["Your code - Node.js"] -->|"Connection String + Database User"| NA{"Network Access - IP allowed?"}
+    NA -->|allowed| Cluster["MongoDB Atlas Cluster"]
+    Cluster --> R1[("Replica 1")]
+    Cluster --> R2[("Replica 2")]
+    Cluster --> R3[("Replica 3")]
 ```
 
 ## הסבר עיקרי
@@ -59,7 +59,7 @@ Cluster מוכן תוך דקות, בלי להתקין ולנהל שרת MongoDB 
 
 הגדרת Network Access לא-נכונה (או שכוחה) היא מקור נפוץ לתקלות חיבור מבלבלות; תלות ברשת אינטרנט; שכבה חינמית עם מגבלות משאבים.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Atlas הוא שירות הענן הרשמי ל-MongoDB, מקביל ל-Supabase בצד ה-SQL
 

@@ -31,14 +31,14 @@ params:
 • `.env` + `docker-compose.yml` — Compose קורא אוטומטית קובץ `.env` באותה תיקייה, ומזריק את הערכים דרך `${VAR}` בתוך ה-YAML
 
 ```dockerfile
-# שלב 1: בנייה — יש כאן כל כלי הפיתוח, אבל הImage הזה נזרק בסוף
+# Stage 1: build — has all the dev tools, but this image gets discarded at the end
 FROM node:20 AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
 
-# שלב 2: ריצה — Image סופי קטן, בלי כלי בנייה מיותרים
+# Stage 2: run — small final image, without the extra build tools
 FROM node:20-alpine
 WORKDIR /app
 COPY --from=build /app .
@@ -46,13 +46,13 @@ CMD ["node", "server.js"]
 ```
 
 ```yaml
-# docker-compose.yml — קורא ערכים מ-.env אוטומטית
+# docker-compose.yml — reads values from .env automatically
 services:
   app:
     build: .
     environment:
       - DB_HOST=db
-      - DB_PASSWORD=${DB_PASSWORD}   # מגיע מקובץ .env
+      - DB_PASSWORD=${DB_PASSWORD}   # comes from the .env file
     depends_on:
       - db
   db:
@@ -68,12 +68,12 @@ volumes:
 
 ```mermaid
 flowchart TB
-    subgraph Build["בניית ה-Image (Multi-Stage)"]
-        S1["שלב 1: node:20<br/>npm ci + כל הקוד"] -->|"COPY --from=build<br/>רק מה שצריך"| S2["שלב 2: node:20-alpine<br/>Image סופי קטן"]
+    subgraph Build["Building the Image (Multi-Stage)"]
+        S1["Stage 1: node:20<br/>npm ci + all the code"] -->|"COPY --from=build<br/>only what's needed"| S2["Stage 2: node:20-alpine<br/>small final image"]
     end
     ENV[".env<br/>DB_PASSWORD=..."] -.->|"${DB_PASSWORD}"| COMPOSE
     subgraph COMPOSE["docker compose up"]
-        APP["app<br/>(מה-Image הסופי)"] -->|"depends_on"| DB["db<br/>postgres:16"]
+        APP["app<br/>(from the final image)"] -->|"depends_on"| DB["db<br/>postgres:16"]
         DB --> VOL[("Volume<br/>db-data")]
     end
 ```
@@ -94,7 +94,7 @@ Multi-Stage נותן Image קטן ומאובטח יותר בלי לשנות שו
 
 Dockerfile רב-שלבי מורכב יותר לקריאה מ-Dockerfile פשוט בשלב אחד; קובץ `.env` חייב להישאר **מחוץ** ל-Git (ב-`.gitignore`) — אם מישהו מוסיף אותו בטעות, הסודות נחשפים בהיסטוריה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Multi-Stage Build משתמש בכמה `FROM` בקובץ אחד; `COPY --from=<stage>` מעתיק רק מה שצריך לשלב הסופי
 

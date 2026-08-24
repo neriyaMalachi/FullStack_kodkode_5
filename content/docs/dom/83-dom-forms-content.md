@@ -73,7 +73,7 @@ Client-side Validation כשכבה נוספת — `required` (HTML) עוצר של
 
 שכחת `preventDefault` הופכת את כל שאר הקוד ל"מת" (לא רץ בכלל, כי הדף עוזב קודם); `FormData` דורש ש-`name` יהיה מוגדר נכון על כל שדה — שדה בלי `name` פשוט לא מופיע ב-`FormData`.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `event.preventDefault()` על `submit` הוא תנאי הכרחי לטיפול JavaScript בטופס
 

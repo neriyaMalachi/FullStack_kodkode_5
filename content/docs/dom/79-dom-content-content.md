@@ -34,10 +34,10 @@ params:
 
 ```javascript
 const counter = document.querySelector(".counter");
-counter.textContent = "3 פריטים בעגלה"; // בטוח תמיד
+counter.textContent = "3 items in cart"; // always safe
 
 const box = document.querySelector(".box");
-box.innerHTML = "<strong>מודגש</strong>"; // מתפרש כ-HTML אמיתי
+box.innerHTML = "<strong>bold</strong>"; // parsed as real HTML
 ```
 
 ## הדגמה חיה
@@ -68,7 +68,7 @@ value לשדות טופס, לא textContent — שדה `<input>` לא מציג �
 
 `innerHTML` עם קלט משתמש לא-מסונן הוא סיכון אבטחה חמור; `innerHTML` איטי יותר מ-`textContent` לעדכונים תכופים (הדפדפן צריך לפרסר HTML מחדש כל פעם).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `textContent` מציג תגיות כטקסט מילולי; `innerHTML` מפרש אותן כ-HTML אמיתי
 

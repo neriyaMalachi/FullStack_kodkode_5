@@ -36,8 +36,8 @@ params:
 
 ```css
 p { color: blue; }              /* Specificity: 0,0,1 */
-.highlight { color: red; }      /* Specificity: 0,1,0 — מנצח! */
-#main { color: green; }         /* Specificity: 1,0,0 — היה מנצח אם היה מתחרה */
+.highlight { color: red; }      /* Specificity: 0,1,0 — wins! */
+#main { color: green; }         /* Specificity: 1,0,0 — would win if it were competing */
 ```
 
 ## הדגמה חיה
@@ -69,7 +69,7 @@ Specificity הוא מנגנון קבוע וניתן לחישוב — אין ני
 
 Specificity Wars — פרויקטים גדולים לפעמים "מתדרדרים" לשימוש הולך וגובר ב-ID/`!important` כדי "לנצח" חוקים קודמים, ומאבדים שליטה; חישוב Specificity לא תמיד אינטואיטיבי למתחילים.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • סדר עדיפות: Inline > ID > Class/Pseudo-class > Element; `!important` עוקף הכל
 

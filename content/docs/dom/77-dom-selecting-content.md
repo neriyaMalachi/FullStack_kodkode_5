@@ -70,7 +70,7 @@ NodeList לא בדיוק מערך — `querySelectorAll` מחזיר NodeList —
 
 `querySelector` מחזיר `null` בלי שגיאה אם לא נמצא — קל לשכוח לבדוק ולקבל `TypeError` מאוחר יותר; NodeList לא זהה למערך אמיתי — יכול להפתיע מי שמצפה למתודות מערך מלאות.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `querySelector` מחזיר אלמנט אחד (או `null`); `querySelectorAll` מחזיר NodeList (גם אם ריק)
 

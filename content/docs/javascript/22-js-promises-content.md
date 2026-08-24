@@ -39,18 +39,18 @@ params:
 • `Promise.all(array)` — ממתין לכמה Promises יחד; נכשל מיד אם אחד מהם נכשל
 
 ```javascript
-fetch("/api/users")           // Promise 1: מחזיר Response
-  .then(response => response.json()) // Promise 2: מחזיר את הנתונים
-  .then(users => console.log(users)) // מריצים על הנתונים בפועל
-  .catch(error => console.error(error)) // אם משהו נכשל בדרך
-  .finally(() => console.log("הבקשה הסתיימה"));
+fetch("/api/users")           // Promise 1: returns a Response
+  .then(response => response.json()) // Promise 2: returns the data
+  .then(users => console.log(users)) // runs on the actual data
+  .catch(error => console.error(error)) // if something failed along the way
+  .finally(() => console.log("Request finished"));
 ```
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Pending: Promise נוצר
-    Pending --> Fulfilled: הצליח
-    Pending --> Rejected: נכשל
+    [*] --> Pending: Promise created
+    Pending --> Fulfilled: succeeded
+    Pending --> Rejected: failed
     Fulfilled --> [*]: .then()
     Rejected --> [*]: .catch()
 ```
@@ -73,7 +73,7 @@ Promise.all להרצה מקבילית — כשיש כמה פעולות async **�
 
 שרשראות `.then()` ארוכות עדיין פחות קריאות מקוד שנראה סינכרוני לגמרי (הפתרון הסופי בשיעור הבא: `async`/`await`); `Promise.all` "נכשל מיד" עלול להיות לא-רצוי כשרוצים תוצאות חלקיות.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Promise עובר בין שלושה מצבים: Pending → Fulfilled או Rejected (ולא חוזר אחורה)
 

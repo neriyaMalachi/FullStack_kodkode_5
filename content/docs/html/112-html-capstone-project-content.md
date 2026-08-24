@@ -35,33 +35,33 @@ params:
 ```html
 <article>
   <header>
-    <h1>עוגיות שוקולד צ'יפס</h1>
-    <img src="cookies.jpg" alt="עוגיות שוקולד צ'יפס טריות על צלחת עץ">
+    <h1>Chocolate Chip Cookies</h1>
+    <img src="cookies.jpg" alt="Fresh chocolate chip cookies on a wooden plate">
   </header>
 
   <section aria-labelledby="nutrition-heading">
-    <h2 id="nutrition-heading">ערכים תזונתיים (למנה)</h2>
+    <h2 id="nutrition-heading">Nutrition Facts (per serving)</h2>
     <table>
       <thead>
-        <tr><th>רכיב</th><th>כמות</th></tr>
+        <tr><th>Component</th><th>Amount</th></tr>
       </thead>
       <tbody>
-        <tr><td>קלוריות</td><td>210</td></tr>
-        <tr><td>שומן</td><td>9 גרם</td></tr>
+        <tr><td>Calories</td><td>210</td></tr>
+        <tr><td>Fat</td><td>9 grams</td></tr>
       </tbody>
     </table>
   </section>
 
   <section aria-labelledby="review-heading">
-    <h2 id="review-heading">השאירו ביקורת</h2>
+    <h2 id="review-heading">Leave a Review</h2>
     <form action="/reviews" method="POST">
-      <label for="reviewer-name">שם:</label>
+      <label for="reviewer-name">Name:</label>
       <input type="text" id="reviewer-name" name="name" required>
 
-      <label for="rating">דירוג (1–5):</label>
+      <label for="rating">Rating (1–5):</label>
       <input type="number" id="rating" name="rating" min="1" max="5" required>
 
-      <button type="submit">שליחה</button>
+      <button type="submit">Submit</button>
     </form>
   </section>
 </article>
@@ -116,7 +116,7 @@ params:
 
 בלי CSS, העמוד נראה "גולמי" — זה תקין ומכוון בשלב הזה של הקורס, אבל לא מוצג-סופי; ולידציית HTML בלבד לא מספיקה לביטחון אמיתי (תמיד צריך גם ולידציה בצד שרת, שנלמד ביחידת Server).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • תגיות סמנטיות מתארות תפקיד, לא רק מראה — משפרות נגישות ו-SEO בלי מאמץ נוסף
 

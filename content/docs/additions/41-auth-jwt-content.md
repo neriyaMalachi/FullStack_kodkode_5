@@ -41,15 +41,15 @@ params:
 ```javascript
 import jwt from "jsonwebtoken";
 
-// בזמן login מוצלח:
+// On successful login:
 const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
 res.json({ token });
 
-// Middleware לאימות בקשות עתידיות:
+// Middleware to authenticate future requests:
 function requireAuth(req, res, next) {
   const token = req.headers.authorization?.split(" ")[1]; // "Bearer <token>"
   try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET); // מוסיף req.user
+    req.user = jwt.verify(token, process.env.JWT_SECRET); // adds req.user
     next();
   } catch {
     res.status(401).json({ error: "Invalid or expired token" });
@@ -64,10 +64,10 @@ sequenceDiagram
     C->>S: POST /login (username, password)
     S->>S: jwt.sign({userId, role}, secret, {expiresIn})
     S-->>C: { token }
-    Note over C: שומר את הטוקן
+    Note over C: stores the token
     C->>S: GET /tasks (Authorization: Bearer token)
     S->>S: jwt.verify(token, secret)
-    S-->>C: 200 + נתונים (או 401 אם הטוקן לא תקין)
+    S-->>C: 200 + data (or 401 if the token is invalid)
 ```
 
 ## הסבר עיקרי
@@ -88,7 +88,7 @@ Access Token מול Refresh Token — Access Token קצר-מועד (למשל ש�
 
 ה-Payload גלוי לכולם — **אסור** לשים בו סיסמאות או מידע רגיש; טוקן שנגנב תקף עד שפג תוקפו (או שיש מנגנון ביטול נפרד); דורש ניהול זהיר של ה-`secret` (ב-`.env`, זוכרים?).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • JWT = Header.Payload.Signature; Payload גלוי (Base64), לא מוצפן
 

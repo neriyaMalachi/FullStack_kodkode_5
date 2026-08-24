@@ -36,7 +36,7 @@ params:
 
 ```jsx
 function Greeting() {
-  return <h1>שלום, React!</h1>;
+  return <h1>Hello, React!</h1>;
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<Greeting />);
@@ -44,10 +44,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(<Greeting />);
 
 ```mermaid
 flowchart RL
-    A["Component function<br/>מחזיר JSX"] --> B["Virtual DOM<br/>תמונה חדשה בזיכרון"]
-    B --> C{"React משווה<br/>לתמונה הקודמת (Diffing)"}
-    C -->|"נמצא הבדל"| D["מעדכן רק את זה<br/>ב-DOM האמיתי"]
-    C -->|"אין הבדל"| E["לא נוגע ב-DOM בכלל"]
+    A["Component function<br/>returns JSX"] --> B["Virtual DOM<br/>new snapshot in memory"]
+    B --> C{"React compares<br/>to the previous snapshot (Diffing)"}
+    C -->|"difference found"| D["updates only that<br/>in the real DOM"]
+    C -->|"no difference"| E["doesn't touch the DOM at all"]
 ```
 
 ## הסבר עיקרי
@@ -66,7 +66,7 @@ Virtual DOM נותן ביצועים טובים גם באפליקציות גדו�
 
 דורש שלב build (Vite/webpack) — לא ניתן להריץ JSX ישירות בדפדפן בלי קומפילציה; עקומת למידה נוספת (JSX, קומפוננטות, hooks בהמשך); "הקסם" של Virtual DOM יכול להקשות על הבנה מלאה של מה קורה "מתחת למכסה המנוע" בהתחלה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Component הוא פונקציה שמחזירה JSX; React קוראת לה מחדש כדי לרנדר
 

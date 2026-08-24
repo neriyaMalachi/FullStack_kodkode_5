@@ -40,7 +40,7 @@ function TaskList() {
     fetch("/api/tasks")
       .then(res => res.json())
       .then(data => setTasks(data));
-  }, []); // מערך ריק — רץ פעם אחת, כשהקומפוננטה עולה
+  }, []); // Empty array — runs once, when the component mounts
 
   return <ul>{tasks.map(t => <li key={t.id}>{t.title}</li>)}</ul>;
 }
@@ -48,13 +48,13 @@ function TaskList() {
 
 ```mermaid
 flowchart TD
-    A["הקומפוננטה עולה לראשונה"] --> B["React מציירת את ה-JSX"]
-    B --> C["אחרי הציור — useEffect רץ"]
+    A["The component mounts for the first time"] --> B["React renders the JSX"]
+    B --> C["After rendering — useEffect runs"]
     C --> D{"dependency array"}
-    D -->|"[] ריק"| E["רץ פעם אחת בלבד"]
-    D -->|"[dep]"| F["רץ שוב בכל שינוי dep<br/>(עם cleanup קודם)"]
-    D -->|"בלי מערך"| G["רץ אחרי כל רינדור"]
-    E --> H["הקומפוננטה יורדת → cleanup רץ"]
+    D -->|"[] empty"| E["Runs only once"]
+    D -->|"[dep]"| F["Runs again on every dep change<br/>(with cleanup first)"]
+    D -->|"no array"| G["Runs after every render"]
+    E --> H["The component unmounts → cleanup runs"]
 ```
 
 ## הסבר עיקרי
@@ -73,7 +73,7 @@ Cleanup Function מונע דליפות — אם `useEffect` "נרשם" למשה�
 
 Dependency Array שגוי (חסר תלות, או תלות מיותרת) הוא מקור נפוץ מאוד לבאגים — ריצה בתדירות לא-נכונה; לוגיקת effects מורכבת יכולה להיות קשה למעקב, במיוחד עם כמה effects בקומפוננטה אחת.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `useEffect(fn, [])` רץ פעם אחת, כשהקומפוננטה עולה — מתאים ל-fetch ראשוני
 

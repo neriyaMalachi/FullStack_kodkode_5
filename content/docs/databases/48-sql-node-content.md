@@ -50,8 +50,8 @@ sequenceDiagram
     participant Pool as pg.Pool
     participant DB as PostgreSQL
     App->>Pool: await pool.query("...WHERE done=$1", [false])
-    Pool->>DB: שאילתה + פרמטר בנפרד
-    DB-->>Pool: שורות תוצאה
+    Pool->>DB: query + parameter separately
+    DB-->>Pool: result rows
     Pool-->>App: result.rows
 ```
 
@@ -71,7 +71,7 @@ Parameterized Queries נגד SQL Injection — למה לא להדביק קלט �
 
 כתיבת SQL גולמי בתוך מחרוזות JavaScript חסרת auto-complete/type-checking (בניגוד ל-ORM); שגיאות syntax ב-SQL מתגלות רק בזמן ריצה, לא מראש; ניהול חיבורי `Pool` דורש תשומת לב (למשל, לסגור אותו בסיום התוכנית).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `pg` הוא ה-Driver הרשמי ל-PostgreSQL ב-Node.js; `Pool` מנהל חיבורים מרובים ביעילות
 

@@ -39,10 +39,10 @@ params:
 ```javascript
 function logger(req, res, next) {
   console.log(`${req.method} ${req.url}`);
-  next(); // חובה! בלי זה הבקשה "נתקעת" כאן
+  next(); // mandatory! without it the request gets "stuck" here
 }
 
-app.use(logger); // גלובלי — רץ על כל route שנרשם אחריו
+app.use(logger); // global — runs on every route registered after it
 
 app.get("/users", (req, res) => {
   res.json([{ id: 1, name: "Dana" }]);
@@ -51,11 +51,11 @@ app.get("/users", (req, res) => {
 
 ```mermaid
 flowchart RL
-    Req["בקשה נכנסת"] --> MW1["logger(req,res,next)"]
-    MW1 -->|"next()"| MW2["middleware נוסף (אם יש)"]
+    Req["Incoming request"] --> MW1["logger(req,res,next)"]
+    MW1 -->|"next()"| MW2["Additional middleware (if any)"]
     MW2 -->|"next()"| Handler["route handler"]
     Handler --> Res["res.json(...)
-    עוצר את השרשרת"]
+    Stops the chain"]
 ```
 
 ## הסבר עיקרי
@@ -76,7 +76,7 @@ Middleware גלובלי מול מקומי — `app.use(fn)` חל על **כל** r
 
 שכחת `next()` תוקעת בקשות בלי הודעת שגיאה ברורה; סדר רישום לא-נכון (middleware אחרי ה-route שצריך אותה) הוא באג שקט וקשה לאיתור למתחילים.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • כל middleware מקבלת `(req, res, next)`; חייבת לקרוא `next()` או לשלוח תגובה
 

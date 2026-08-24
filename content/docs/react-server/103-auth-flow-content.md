@@ -39,7 +39,7 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
-// שימוש:
+// Usage:
 <Route path="/profile" element={
   <ProtectedRoute><Profile /></ProtectedRoute>
 } />
@@ -47,25 +47,25 @@ function ProtectedRoute({ children }) {
 
 ```mermaid
 sequenceDiagram
-    participant U as משתמש
-    participant App as App (useEffect ב-mount)
+    participant U as User
+    participant App as App (useEffect on mount)
     participant LS as localStorage
     participant PR as ProtectedRoute
     participant Srv as Express Server
 
     App->>LS: getItem("token")
-    alt יש טוקן שמור
+    alt Token is saved
         LS-->>App: token
-        App->>Srv: אימות טוקן
-        Srv-->>App: user תקף → Auth State מלא
-    else אין טוקן
-        App->>App: Auth State = לא מחובר
+        App->>Srv: Verify token
+        Srv-->>App: Valid user → Auth State fully set
+    else No token
+        App->>App: Auth State = not logged in
     end
-    U->>PR: ניווט ל-/profile
-    PR->>PR: בודק Auth State
-    alt מחובר
-        PR-->>U: מציג Profile
-    else לא מחובר
+    U->>PR: Navigate to /profile
+    PR->>PR: Checks Auth State
+    alt Logged in
+        PR-->>U: Shows Profile
+    else Not logged in
         PR-->>U: Navigate to="/login"
     end
 ```
@@ -86,7 +86,7 @@ Auth State ב-Context זמין לכל האפליקציה בלי prop drilling; P
 
 Protected Route בצד הלקוח היא **רק** הגנת UX — לא תחליף לבדיקה בשרת; `localStorage` חשוף להתקפות מסוימות (XSS, אם יש פרצה במקום אחר באפליקציה) — פרויקטים רגישים במיוחד שוקלים אלטרנטיבות.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Auth State (משתמש מחובר?) נשמר ב-Context לרוב, כדי שיהיה נגיש בכל העץ
 

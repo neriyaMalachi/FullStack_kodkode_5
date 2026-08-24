@@ -51,14 +51,14 @@ function useFetch(url) {
 
 function TaskList() {
   const { data: tasks, loading } = useFetch("/api/tasks");
-  if (loading) return <p>טוען...</p>;
+  if (loading) return <p>Loading...</p>;
   return <ul>{tasks.map(t => <li key={t.id}>{t.title}</li>)}</ul>;
 }
 ```
 
 ```mermaid
 flowchart TD
-    Hook["useFetch(url)<br/>useState + useEffect בפנים"]
+    Hook["useFetch(url)<br/>useState + useEffect inside"]
     Hook -->|"url='/api/tasks'"| C1["TaskList"]
     Hook -->|"url='/api/user'"| C2["UserProfile"]
     Hook -->|"url='/api/posts'"| C3["PostList"]
@@ -80,7 +80,7 @@ Hook Rules חלים גם על custom hooks — בדיוק כמו ש-`useState`/`
 
 חילוץ-יתר ל-custom hooks לכל דבר קטן יכול להוסיף אינדירקציה שלא לצורך; דורש הבנה טובה של Hooks בסיסיים (useState/useEffect) לפני שאפשר לחלץ אותם נכון.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Custom hook הוא פונקציה שמתחילה ב-`use`, ומשתמשת ב-Hooks אחרים בפנים
 

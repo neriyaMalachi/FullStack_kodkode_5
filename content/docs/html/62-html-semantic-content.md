@@ -41,26 +41,26 @@ params:
 ```html
 <body>
   <header>
-    <nav><a href="/">בית</a> <a href="/about">אודות</a></nav>
+    <nav><a href="/">Home</a> <a href="/about">About</a></nav>
   </header>
   <main>
     <article>
-      <h1>כותרת המאמר</h1>
-      <p>תוכן המאמר...</p>
+      <h1>Article Title</h1>
+      <p>Article content...</p>
     </article>
   </main>
   <footer>
-    <p>© 2026 כל הזכויות שמורות</p>
+    <p>© 2026 All rights reserved</p>
   </footer>
 </body>
 ```
 
 ```mermaid
 flowchart TB
-    subgraph Page["עמוד"]
-        H["header - לוגו + nav"]
+    subgraph Page["Page"]
+        H["header - logo + nav"]
         M["main"]
-        M --> A["article - תוכן עיקרי"]
+        M --> A["article - main content"]
         F["footer"]
     end
     H --> M --> F
@@ -82,7 +82,7 @@ SEO ונגישות הולכים יחד — מנועי חיפוש (Google) משת
 
 דורש מחשבה נוספת בבחירת התג הנכון (`article` מול `section` לפעמים לא חד-משמעי); לא כל דפדפן/כלי ישן תומך בכל התגיות הסמנטיות באותה מידה (נדיר היום, אך שווה לדעת).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Semantic HTML משתמש בתגיות שמתארות תפקיד (`nav`, `main`, `article`) במקום `div` גנרי
 

@@ -43,21 +43,21 @@ import http from "node:http";
 
 const server = http.createServer((req, res) => {
   res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("שלום מהשרת!");
+  res.end("Hello from the server!");
 });
 
-server.listen(3000, () => console.log("השרת רץ על פורט 3000"));
+server.listen(3000, () => console.log("Server running on port 3000"));
 ```
 
 ```mermaid
 sequenceDiagram
     participant C as Client
     participant S as http.createServer
-    C->>S: בקשה נכנסת (req)
-    Note over S: handler(req, res) רץ
+    C->>S: Incoming request (req)
+    Note over S: handler(req, res) runs
     S->>S: res.writeHead(200, {...})
-    S->>S: res.end("שלום מהשרת!")
-    S-->>C: תגובה (res) נשלחת
+    S->>S: res.end("Hello from the server!")
+    S-->>C: Response (res) is sent
 ```
 
 ## הסבר עיקרי
@@ -76,7 +76,7 @@ Port כ"דלת" — כשקוראים ל-`server.listen(3000)`, השרת "תופ�
 
 כתיבת routing (התאמת URL ל-handler שונה) דורשת קוד ידני מסורבל; אין פרסור אוטומטי ל-body או ל-params — כל זה ידני (נלמד בשני השיעורים הבאים); קוד חוזר על עצמו בכל route חדש.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `http.createServer(handler)` יוצר שרת; ה-`handler` רץ בכל בקשה נכנסת
 

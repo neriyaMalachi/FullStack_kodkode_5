@@ -33,25 +33,25 @@ params:
 • Error-Handling Middleware — פונקציה עם **4 פרמטרים** (`err, req, res, next`) שתופסת כל שגיאה שנזרקת/מועברת עם `next(err)`
 
 ```javascript
-// app.js — הרכבת כל היחידה למקום אחד
+// app.js — assembling the entire unit in one place
 import express from "express";
 import "dotenv/config";
 import tasksRouter from "./routes/tasks.js";
 
 const app = express();
 
-app.use((req, res, next) => {           // middleware לוג בסיסי
+app.use((req, res, next) => {           // basic logging middleware
   console.log(`${req.method} ${req.url}`);
   next();
 });
-app.use(express.json());                 // parsing גוף הבקשה
-app.use("/tasks", tasksRouter);           // Router נפרד
+app.use(express.json());                 // parsing the request body
+app.use("/tasks", tasksRouter);           // separate router
 
-app.use((req, res) => {                  // 404 — שום route לא תפס
+app.use((req, res) => {                  // 404 — no route matched
   res.status(404).json({ error: "Not found" });
 });
 
-app.use((err, req, res, next) => {        // Error-Handling Middleware — תמיד אחרון
+app.use((err, req, res, next) => {        // error-handling middleware — always last
   console.error(err.message);
   res.status(err.status || 500).json({ error: err.message });
 });
@@ -61,13 +61,13 @@ app.listen(process.env.PORT || 3000);
 
 ```mermaid
 flowchart RL
-    REQ["בקשה נכנסת"] --> LOG["Middleware לוג"]
+    REQ["Incoming request"] --> LOG["Logging middleware"]
     LOG --> JSON["express.json()"]
     JSON --> ROUTER["tasksRouter<br/>(/tasks)"]
-    ROUTER -->|"נמצא route תואם"| RES["תשובה תקינה"]
-    ROUTER -->|"שום route לא תפס"| NF["404 Handler"]
-    ROUTER -->|"route זרק שגיאה"| ERR["Error-Handling<br/>Middleware"]
-    ERR --> RES2["תשובת שגיאה JSON"]
+    ROUTER -->|"Matching route found"| RES["Valid response"]
+    ROUTER -->|"No route matched"| NF["404 Handler"]
+    ROUTER -->|"Route threw an error"| ERR["Error-Handling<br/>Middleware"]
+    ERR --> RES2["JSON error response"]
 ```
 
 ## הסבר עיקרי
@@ -86,7 +86,7 @@ Router + Middleware Pipeline הופכים שרת גדול לקריא ומאור�
 
 יותר קבצים ו"חוטים" לעקוב אחריהם מאשר שרת וניל פשוט (מיחידת הבסיסים); סדר middleware שגוי (למשל error-handler לא-אחרון) יכול לגרום להתנהגות מבלבלת שקשה לאבחן.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • סדר middleware קבוע: לוגים → parsing → routes → 404 → error-handling — בסוף תמיד
 

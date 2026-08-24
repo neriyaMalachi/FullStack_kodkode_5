@@ -40,7 +40,7 @@ params:
 function App() {
   return (
     <BrowserRouter>
-      <Link to="/tasks">משימות</Link>
+      <Link to="/tasks">Tasks</Link>
       <Routes>
         <Route path="/tasks" element={<TaskList />} />
         <Route path="/tasks/:id" element={<TaskDetails />} />
@@ -50,23 +50,23 @@ function App() {
 }
 
 function TaskDetails() {
-  const { id } = useParams(); // קורא את ה-id מתוך ה-URL
-  return <p>פרטי משימה מספר {id}</p>;
+  const { id } = useParams(); // reads the id from the URL
+  return <p>Task details number {id}</p>;
 }
 ```
 
 ```mermaid
 sequenceDiagram
-    participant User as משתמש
+    participant User as User
     participant Link as Link to="/tasks/5"
     participant Router as React Router
     participant Comp as TaskDetails
 
-    User->>Link: לחיצה
-    Link->>Router: משנה את ה-URL (בלי רענון!)
-    Router->>Router: מוצא Route תואם ל-/tasks/:id
-    Router->>Comp: מרנדר TaskDetails עם id=5
-    Comp-->>User: מוצג מיד — כל ה-state הקיים נשמר
+    User->>Link: Click
+    Link->>Router: Changes the URL (no refresh!)
+    Router->>Router: Finds a matching Route for /tasks/:id
+    Router->>Comp: Renders TaskDetails with id=5
+    Comp-->>User: Displayed immediately — all existing state is preserved
 ```
 
 ## הסבר עיקרי
@@ -85,7 +85,7 @@ useNavigate לניווט תכנותי — לפעמים רוצים לנווט **�
 
 דורש הבנה נוספת מעבר לקומפוננטות רגילות (Route matching, params); ניתוב לא-נכון (path כפול, סדר routes שגוי) יכול לגרום להתנהגות מבלבלת.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `<Link>` מנווט בלי רענון עמוד; `<a>` רגיל מרענן ומאבד את כל ה-state
 

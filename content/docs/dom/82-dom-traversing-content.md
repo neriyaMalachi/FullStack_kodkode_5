@@ -36,10 +36,10 @@ params:
 const item = document.querySelector(".task-item");
 
 console.log(item.parentElement);       // <ul class="task-list">
-console.log(item.children);            // ילדי הפריט (אם יש)
-console.log(item.nextElementSibling);  // הפריט הבא ברשימה
+console.log(item.children);            // the item's children (if any)
+console.log(item.nextElementSibling);  // the next item in the list
 
-const card = item.closest(".card");    // מחפש כרטיס-אב, גם אם מקונן עמוק
+const card = item.closest(".card");    // searches for a card ancestor, even if deeply nested
 ```
 
 ## הדגמה חיה
@@ -68,7 +68,7 @@ Elements בלבד, לא כל Node — `children` מחזיר **רק** Elements �
 
 שרשראות ניווט ארוכות (כמה `parentElement` ברצף) שבירות מאוד — כל שינוי קטן ב-HTML שובר אותן; פחות ברור/מפורש מ-`querySelector` עם class ייעודית.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `parentElement`/`children`/`nextElementSibling` נעים יחסית לאלמנט קיים, בלי חיפוש חדש
 

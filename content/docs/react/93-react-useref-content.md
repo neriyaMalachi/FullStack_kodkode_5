@@ -37,13 +37,13 @@ function SearchBox() {
   const inputRef = useRef(null);
 
   function focusInput() {
-    inputRef.current.focus(); // גישה ישירה לאלמנט ה-DOM
+    inputRef.current.focus(); // Direct access to the DOM element
   }
 
   return (
     <>
       <input ref={inputRef} type="text" />
-      <button onClick={focusInput}>מקד שדה</button>
+      <button onClick={focusInput}>Focus field</button>
     </>
   );
 }
@@ -51,9 +51,9 @@ function SearchBox() {
 
 ```mermaid
 flowchart TD
-    Q{"השינוי צריך<br/>להשפיע על מה שמוצג?"}
-    Q -->|"כן"| S["useState<br/>משנה → רינדור מחדש"]
-    Q -->|"לא, רק 'לזכור' משהו<br/>או לגעת ישירות ב-DOM"| R["useRef<br/>משנה .current → בלי רינדור"]
+    Q{"Does the change need<br/>to affect what's displayed?"}
+    Q -->|"Yes"| S["useState<br/>Changes → re-render"]
+    Q -->|"No, just 'remember'<br/>something or touch the DOM directly"| R["useRef<br/>Changes .current → no re-render"]
 ```
 
 ## הדגמה חיה
@@ -80,7 +80,7 @@ DOM ref כגישה ישירה, כשבאמת צריך — React בדרך כלל *
 
 שימוש-יתר ב-`ref` לגישה ישירה ל-DOM "עוקף" את הגישה המוצהרת (declarative) של React — צריך רק כשבאמת אין ברירה; קל לבלבל בין מתי להשתמש ב-`useState` למתי ב-`useRef`.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `useRef` מחזיר אובייקט עם `.current` — שינוי שלו לא גורם לרינדור מחדש
 

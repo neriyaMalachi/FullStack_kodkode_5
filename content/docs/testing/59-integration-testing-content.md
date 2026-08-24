@@ -42,10 +42,10 @@ import app from "./app.js";
 
 describe("GET /tasks", () => {
   beforeEach(() => {
-    resetTasks(); // מתחילים כל בדיקה ממצב נקי
+    resetTasks(); // start each test from a clean state
   });
 
-  test("מחזיר רשימה ריקה כשאין משימות", async () => {
+  test("returns an empty list when there are no tasks", async () => {
     const res = await request(app).get("/tasks");
     assert.strictEqual(res.status, 200);
     assert.deepStrictEqual(res.body, []);
@@ -59,7 +59,7 @@ flowchart RL
     Router --> MW["Middleware"]
     MW --> Handler["Route Handler"]
     Handler --> Res["res.status + res.body"]
-    Res --> Assert["assert על כל השרשרת"]
+    Res --> Assert["assert on the whole chain"]
 ```
 
 ## הסבר עיקרי
@@ -78,7 +78,7 @@ Integration Test בודק את השרשרת השלמה — בניגוד ל-Unit 
 
 איטי יותר מ-Unit Tests (עובר דרך יותר קוד); באג שנתפס נותן פחות מידע על **איפה בדיוק** הבעיה, לעומת Unit Test ממוקד; דורש הגדרת מצב התחלתי (כמו `beforeEach`) בקפידה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Integration Test בודק כמה חלקים יחד; Unit Test בודק יחידה בודדת מבודדת
 

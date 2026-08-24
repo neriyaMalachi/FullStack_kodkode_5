@@ -37,19 +37,19 @@ Git הוא מערכת ניהול גרסאות (Version Control) ששומרת ה�
 • `git log` — היסטוריית ה-commits, מהחדש לישן
 
 ```bash
-git init                    # יוצר repository חדש בתיקייה
-git add index.js            # מוסיף קובץ ל-Staging Area
+git init                    # creates a new repository in the folder
+git add index.js            # adds a file to the Staging Area
 git commit -m "first commit"
-git log --oneline           # מציג היסטוריה תמציתית
+git log --oneline           # shows a condensed history
 ```
 
 ```mermaid
 flowchart RL
     A["Working Directory
-    הקבצים על הדיסק"] -->|"git add"| B["Staging Area
-    מוכן ל-commit הבא"]
+    files on disk"] -->|"git add"| B["Staging Area
+    ready for the next commit"]
     B -->|"git commit -m"| C["Repository
-    נשמר לצמיתות בהיסטוריה"]
+    saved permanently in history"]
 ```
 
 ## הסבר עיקרי
@@ -68,7 +68,7 @@ flowchart RL
 
 עקומת למידה בהתחלה — המושגים (Working/Staging/Repository) לא אינטואיטיביים מיד; שכחת `git add` לקובץ חדש לפני commit היא טעות שכיחה בהתחלה; פקודות שגויות (כמו reset לא זהיר) יכולות לאבד עבודה שלא נשמרה ב-commit.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • שלושה שלבים: Working Directory → Staging Area (`git add`) → Repository (`git commit`)
 

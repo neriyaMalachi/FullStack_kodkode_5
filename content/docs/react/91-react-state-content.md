@@ -40,7 +40,7 @@ function Counter() {
 
   return (
     <button onClick={() => setCount(count + 1)}>
-      נלחצתי {count} פעמים
+      Clicked {count} times
     </button>
   );
 }
@@ -48,16 +48,16 @@ function Counter() {
 
 ```mermaid
 sequenceDiagram
-    participant User as משתמש
-    participant Btn as הכפתור (JSX)
+    participant User as User
+    participant Btn as Button (JSX)
     participant React
-    participant Counter as פונקציית Counter
+    participant Counter as Counter function
 
-    User->>Btn: לחיצה
+    User->>Btn: Click
     Btn->>React: setCount(count + 1)
-    React->>Counter: קוראת ל-Counter() מחדש
-    Counter-->>React: JSX חדש עם count מעודכן
-    React->>Btn: מעדכנת רק את הטקסט ב-DOM האמיתי
+    React->>Counter: Calls Counter() again
+    Counter-->>React: New JSX with updated count
+    React->>Btn: Updates only the text in the real DOM
 ```
 
 ## הדגמה חיה
@@ -83,7 +83,7 @@ State לא נעלם בין רינדורים, בניגוד למשתנה רגיל 
 
 עדכוני state הם **אסינכרוניים** — `setCount` לא בהכרח מעדכן את `count` מיד באותה שורת קוד; state מקומי בקומפוננטה אחת לא נגיש לקומפוננטות אחרות בלי מנגנון נוסף (Props, או Context API בשיעור מאוחר יותר).
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • `useState(initial)` מחזיר `[value, setValue]` — ערך נוכחי ופונקציית עדכון
 

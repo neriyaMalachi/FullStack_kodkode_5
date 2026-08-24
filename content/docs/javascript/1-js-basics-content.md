@@ -37,19 +37,19 @@ JavaScript היא שפת תכנות דינמית ו-interpreted (מתפרשת) �
 • Comment — `// שורה בודדת` או `/* כמה שורות */`; לא מתבצע, רק תיעוד
 
 ```javascript
-console.log("Hello, World!"); // רץ גם בדפדפן וגם ב-Node.js
+console.log("Hello, World!"); // runs in both the browser and Node.js
 
 let x = 5;
-x = "עכשיו זה מחרוזת"; // Dynamic Typing — אין שגיאה
+x = "now it's a string"; // Dynamic Typing — no error
 ```
 
 ```mermaid
 flowchart TB
-    JS["שפת JavaScript אחת"]
-    JS --> Browser["רצה בדפדפן
-    - שולטת בעמוד, לחיצות, טפסים"]
-    JS --> Node["רצה ב-Node.js
-    - שרתים, כלי שורת-פקודה"]
+    JS["One JavaScript language"]
+    JS --> Browser["Runs in the browser
+    - controls the page, clicks, forms"]
+    JS --> Node["Runs in Node.js
+    - servers, command-line tools"]
 ```
 
 ## הסבר עיקרי
@@ -68,7 +68,7 @@ Interpreted, לא Compiled — קוד JS לא עובר שלב build לקובץ �
 
 Dynamic Typing מאפשר טעויות שבשפה static היו נתפסות בזמן קימפול; מספר דרכים שונות לבצע אותו דבר (למשל, סוגי הצהרת פונקציה) עלול לבלבל מתחילים; היסטוריית השפה יצרה כמה התנהגויות לא-אינטואיטיביות (כמו `==` מול `===`) שצריך ללמוד.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • JavaScript היא Single-threaded — מבצעת פקודה אחת בכל רגע נתון
 

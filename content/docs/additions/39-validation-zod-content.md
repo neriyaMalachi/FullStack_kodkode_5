@@ -45,7 +45,7 @@ function validateTask(req, res, next) {
   if (!result.success) {
     return res.status(400).json({ error: result.error.issues });
   }
-  req.body = result.data; // מחליף בגרסה המאומתת והנקייה
+  req.body = result.data; // replace with the validated, clean version
   next();
 }
 
@@ -79,7 +79,7 @@ Validation כ-Middleware — בדיוק כמו `express.json()` או `checkApiKe
 
 עוד ספרייה ועוד קונספט ללמוד; Schema-ים מורכבים (עם קינון עמוק) יכולים להיות קשים לקריאה; שכחת validation Middleware על route מסוים מבטלת את כל ההגנה שם.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • Schema מגדיר את הצורה והחוקים שקלט חייב לעמוד בהם
 

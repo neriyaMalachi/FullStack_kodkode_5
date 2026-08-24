@@ -35,27 +35,27 @@ params:
 • `async`/`await` + `try`/`catch` — טעינת הנתונים מ-API אמיתי, עם טיפול נכון בשגיאת רשת
 
 ```javascript
-// api.js — כל התקשורת עם ה-API במקום אחד
+// api.js — all communication with the API in one place
 export async function fetchBooksBySubject(subject) {
   const res = await fetch(`https://openlibrary.org/subjects/${subject}.json?limit=10`);
-  if (!res.ok) throw new Error(`שגיאת רשת: ${res.status}`);
+  if (!res.ok) throw new Error(`Network error: ${res.status}`);
   const data = await res.json();
-  return data.works; // מערך של אובייקטי ספרים גולמיים מה-API
+  return data.works; // array of raw book objects from the API
 }
 ```
 
 ```javascript
-// library.js — הלוגיקה של "הספרייה" עצמה, בלי לדעת כלום על fetch
+// library.js — the "library" logic itself, knows nothing about fetch
 export function createBook(rawWork) {
-  let timesViewed = 0; // closure — "פרטי", לא נגיש מבחוץ
+  let timesViewed = 0; // closure — "private", not accessible from outside
 
   return {
     title: rawWork.title,
-    author: rawWork.authors?.[0]?.name ?? "לא ידוע",
+    author: rawWork.authors?.[0]?.name ?? "Unknown",
     year: rawWork.first_publish_year ?? null,
     view() {
       timesViewed++;
-      return `${this.title} (נצפה ${timesViewed} פעמים)`;
+      return `${this.title} (viewed ${timesViewed} times)`;
     },
   };
 }
@@ -63,9 +63,9 @@ export function createBook(rawWork) {
 
 ```mermaid
 flowchart RL
-    API["api.js<br/>fetchBooksBySubject()<br/>יודע רק על fetch"] -->|"מערך גולמי"| INDEX["index.js<br/>מרכיב הכל יחד"]
-    LIB["library.js<br/>createBook()<br/>Factory + Closure"] -->|"אובייקט Book"| INDEX
-    INDEX -->|"filter + sort"| OUT["קטלוג ממוין ומסונן<br/>console.log"]
+    API["api.js<br/>fetchBooksBySubject()<br/>knows only about fetch"] -->|"raw array"| INDEX["index.js<br/>assembles everything together"]
+    LIB["library.js<br/>createBook()<br/>Factory + Closure"] -->|"Book object"| INDEX
+    INDEX -->|"filter + sort"| OUT["sorted and filtered catalog<br/>console.log"]
 ```
 
 ## הסבר עיקרי
@@ -76,7 +76,7 @@ Factory + Closure יוצרים "ספר" עם זיכרון משלו — `createBo
 
 async/await עוטף גישה לרשת אמיתית, עם שגיאות אמיתיות — בניגוד לדוגמאות המדומות בשיעורי Promises/Async, כאן ה-`fetch` פונה לשירות אמיתי (Open Library) שיכול **באמת** להיכשל (בלי אינטרנט, שירות למטה, שם נושא שגוי). `try`/`catch` סביב הקריאה ב-`index.js` הוא לא תרגיל תיאורטי — הוא ההבדל בין תוכנית שקורסת לתוכנית שמדפיסה הודעת שגיאה ברורה וממשיכה.
 
-## נקודות חשובות למבחן / ראיון עבודה
+## נקודות חשובות
 
 • פרויקט אמיתי מפוצל למודולים לפי **אחריות**, לא באופן שרירותי — כל קובץ "יודע" דבר אחד
 
