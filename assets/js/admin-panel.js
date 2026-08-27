@@ -23,6 +23,20 @@ function initPasswordToggles(root = document) {
   });
 }
 
+// Visual "this is actually loading" feedback on a button click — spinner
+// replaces the label, disabled so it can't be double-clicked. dataset
+// stores the original label so it comes back correctly afterward.
+function setBtnLoading(btn, loading) {
+  if (loading) {
+    btn.dataset.label = btn.dataset.label || btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+  } else {
+    btn.disabled = false;
+    btn.textContent = btn.dataset.label || btn.textContent;
+  }
+}
+
 function formatDate(iso) {
   if (!iso) return '—';
   return new Date(iso).toLocaleString('he-IL', { dateStyle: 'short', timeStyle: 'short' });
@@ -185,6 +199,7 @@ function initAdmin() {
     delBtn.textContent = 'מחיקה';
     delBtn.addEventListener('click', async () => {
       if (!confirm(`למחוק את ${s.email}? הפעולה בלתי הפיכה.`)) return;
+      setBtnLoading(delBtn, true);
       try {
         const res = await call({ action: 'delete', userId: s.id });
         const data = await res.json();
@@ -193,6 +208,7 @@ function initAdmin() {
         showActionMsg(`${s.email} נמחק`, 'success');
       } catch {
         showActionMsg('שגיאה במחיקה, נסו שוב', 'danger');
+        setBtnLoading(delBtn, false);
       }
     });
     actionsTd.appendChild(delBtn);
@@ -250,6 +266,7 @@ function initAdmin() {
     saveBtn.addEventListener('click', async () => {
       const newEmail = emailInput.value.trim();
       const newPassword = passInput.value;
+      setBtnLoading(saveBtn, true);
       try {
         const res = await call({
           action: 'update',
@@ -260,6 +277,7 @@ function initAdmin() {
         const data = await res.json();
         if (!res.ok) {
           showActionMsg(data.error === 'email_taken' ? 'האימייל כבר תפוס' : 'שגיאה בשמירה', 'danger');
+          setBtnLoading(saveBtn, false);
           return;
         }
         editingUserId = null;
@@ -267,6 +285,7 @@ function initAdmin() {
         showActionMsg('העדכון נשמר', 'success');
       } catch {
         showActionMsg('שגיאה בשמירה, נסו שוב', 'danger');
+        setBtnLoading(saveBtn, false);
       }
     });
     actionsTd.appendChild(saveBtn);
@@ -308,7 +327,7 @@ function initAdmin() {
       showActionMsg('נא למלא אימייל וסיסמה (6+ תווים)', 'danger');
       return;
     }
-    addBtn.disabled = true;
+    setBtnLoading(addBtn, true);
     try {
       const res = await call({ action: 'add', email, newPassword });
       const data = await res.json();
@@ -322,7 +341,7 @@ function initAdmin() {
     } catch {
       showActionMsg('שגיאה בהוספה, נסו שוב', 'danger');
     } finally {
-      addBtn.disabled = false;
+      setBtnLoading(addBtn, false);
     }
   });
 
@@ -331,8 +350,8 @@ function initAdmin() {
     errorEl.classList.remove('d-none');
   }
 
-  async function requestCode() {
-    requestBtn.disabled = true;
+  async function requestCode(btn) {
+    setBtnLoading(btn, true);
     errorEl.classList.add('d-none');
     try {
       const res = await fetch('/api/admin-request-code', { method: 'POST', credentials: 'same-origin' });
@@ -343,19 +362,19 @@ function initAdmin() {
     } catch {
       showError('שגיאה בשליחת הקוד, נסו שוב');
     } finally {
-      requestBtn.disabled = false;
+      setBtnLoading(btn, false);
     }
   }
 
-  requestBtn.addEventListener('click', requestCode);
-  resendBtn.addEventListener('click', requestCode);
+  requestBtn.addEventListener('click', () => requestCode(requestBtn));
+  resendBtn.addEventListener('click', () => requestCode(resendBtn));
 
   verifyForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const code = codeInput.value.trim();
     if (!code) return;
 
-    verifyBtn.disabled = true;
+    setBtnLoading(verifyBtn, true);
     errorEl.classList.add('d-none');
 
     try {
@@ -368,7 +387,7 @@ function initAdmin() {
 
       if (verifyRes.status === 401) {
         showError('קוד שגוי או שפג תוקפו — שלחו קוד חדש');
-        verifyBtn.disabled = false;
+        setBtnLoading(verifyBtn, false);
         return;
       }
       if (!verifyRes.ok) throw new Error('server error');
@@ -382,7 +401,7 @@ function initAdmin() {
       startPolling();
     } catch {
       showError('שגיאה בטעינת הנתונים, נסו שוב');
-      verifyBtn.disabled = false;
+      setBtnLoading(verifyBtn, false);
     }
   });
 

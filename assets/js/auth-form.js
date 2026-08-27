@@ -21,6 +21,20 @@ function showMsg(el, text, kind) {
   el.className = `alert alert-${kind}`;
 }
 
+// Visual "this is actually loading" feedback on a button click — spinner
+// replaces the label, disabled so it can't be double-submitted. dataset
+// stores the original label so it comes back correctly on error/reset.
+function setBtnLoading(btn, loading) {
+  if (loading) {
+    btn.dataset.label = btn.dataset.label || btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+  } else {
+    btn.disabled = false;
+    btn.textContent = btn.dataset.label || btn.textContent;
+  }
+}
+
 function redirectAfterLogin() {
   const params = new URLSearchParams(location.search);
   location.href = params.get('redirect') || '/';
@@ -60,7 +74,7 @@ function initForm() {
           return;
         }
 
-        submitBtn.disabled = true;
+        setBtnLoading(submitBtn, true);
         msg.classList.add('d-none');
 
         const payload = {
@@ -79,26 +93,26 @@ function initForm() {
 
         if (mode === 'signup' && res.status === 409) {
           showMsg(msg, 'כבר קיים חשבון עם אימייל זה', 'danger');
-          submitBtn.disabled = false;
+          setBtnLoading(submitBtn, false);
           return;
         }
 
         if (mode === 'login' && res.status === 401) {
           showMsg(msg, 'אימייל או סיסמה שגויים', 'danger');
-          submitBtn.disabled = false;
+          setBtnLoading(submitBtn, false);
           return;
         }
 
         if (!res.ok) {
           showMsg(msg, 'שגיאה, נסו שוב', 'danger');
-          submitBtn.disabled = false;
+          setBtnLoading(submitBtn, false);
           return;
         }
 
         showSuccessThenRedirect(msg, mode === 'signup' ? 'נרשמת בהצלחה! מעביר אותך פנימה…' : 'התחברת בהצלחה! מעביר אותך פנימה…');
       } catch {
         showMsg(msg, 'שגיאת תקשורת, נסו שוב', 'danger');
-        submitBtn.disabled = false;
+        setBtnLoading(submitBtn, false);
       }
     })();
   });
