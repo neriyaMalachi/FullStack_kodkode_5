@@ -8,6 +8,15 @@
   {{ end }}
 {{ end }}
 
+{{/* path -> page title, for the visit-log modal to show "השיעור/העמוד ש..."
+     instead of a raw URL. Covers every page site-wide (not just lessons) so
+     the homepage, /docs/ hub, category pages etc. also show something
+     readable instead of falling back to the bare path. */}}
+{{ $pathTitles := dict }}
+{{ range site.Pages }}
+  {{ $pathTitles = merge $pathTitles (dict .RelPermalink .Title) }}
+{{ end }}
+
 <div id="admin-login-wrap" class="row justify-content-center">
   <div class="col-md-8 col-lg-6 col-xl-5">
     <div class="card shadow-sm my-4">
@@ -135,6 +144,9 @@
     </table>
   </div>
 </div>
+
+<!-- path -> page title lookup for the visit-log modal (assets/js/admin-panel.js) -->
+<script id="admin-path-titles" type="application/json">{{ $pathTitles | jsonify | safeJS }}</script>
 
 <!-- Per-student visit-log modal — populated on demand when a "לוגים" button
      opens it (see assets/js/admin-panel.js, the modal's show.bs.modal

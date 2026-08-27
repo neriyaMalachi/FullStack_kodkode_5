@@ -38,9 +38,20 @@ function setBtnLoading(btn, loading) {
   }
 }
 
+// The server stores timestamps as SQLite's `datetime('now')` output — UTC,
+// but formatted as "YYYY-MM-DD HH:MM:SS" with no timezone marker. Handing
+// that straight to `new Date()` gets it silently parsed as LOCAL time
+// instead of UTC (off by the browser's UTC offset — this is what made
+// visit-log times look wrong). Converting to real ISO-8601 ("...THH:MM:SSZ")
+// first makes `new Date()` treat it as UTC, so toLocaleString then correctly
+// converts to the viewer's own timezone.
+function parseServerDate(iso) {
+  return new Date(iso.replace(' ', 'T') + 'Z');
+}
+
 function formatDate(iso) {
   if (!iso) return '—';
-  return new Date(iso).toLocaleString('he-IL', { dateStyle: 'short', timeStyle: 'short' });
+  return parseServerDate(iso).toLocaleString('he-IL', { dateStyle: 'short', timeStyle: 'short' });
 }
 
 function buildProgressCell(completed, total) {
@@ -68,6 +79,17 @@ function buildProgressCell(completed, total) {
   return td;
 }
 
+// path -> page title, embedded at build time (layouts/admin/single.html) so
+// the visit log can show a readable lesson name instead of a raw URL.
+function getPathTitles() {
+  try {
+    const el = document.getElementById('admin-path-titles');
+    return el ? JSON.parse(el.textContent) : {};
+  } catch {
+    return {};
+  }
+}
+
 function initAdmin() {
   const loginWrap = document.getElementById('admin-login-wrap');
   const results = document.getElementById('admin-results');
@@ -93,6 +115,7 @@ function initAdmin() {
   const addBtn = document.getElementById('admin-add-btn');
   const logoutBtn = document.getElementById('admin-logout-btn');
   const totalLessons = Number(results.dataset.totalLessons || 0);
+  const pathTitles = getPathTitles();
 
   let pollTimer = null;
   let latestStudents = [];
@@ -489,13 +512,13 @@ function initAdmin() {
     }
     const table = document.createElement('table');
     table.className = 'table table-sm table-hover align-middle';
-    table.innerHTML = '<thead><tr><th>עמוד</th><th>זמן כניסה</th><th>משך זמן בעמוד</th></tr></thead>';
+    table.innerHTML = '<thead><tr><th>נושא</th><th>זמן כניסה</th><th>משך זמן בעמוד</th></tr></thead>';
     const tbody = document.createElement('tbody');
     [...visits].reverse().forEach((v) => {
       const tr = document.createElement('tr');
       const pathTd = document.createElement('td');
       pathTd.className = 'text-break small';
-      pathTd.textContent = v.path;
+      pathTd.textContent = pathTitles[v.path] || v.path;
       const timeTd = document.createElement('td');
       timeTd.className = 'small';
       timeTd.textContent = formatDate(v.visited_at);
