@@ -3,7 +3,9 @@
 // admin-stats.js + admin-manage.js + admin-visit-log.js). Requires a valid
 // admin session (see api/admin-auth.js) on every call.
 // POST { action: 'stats' }                                      -> was /api/admin-stats
-// POST { action: 'visit-log', userId }                          -> was /api/admin-visit-log
+// POST { action: 'visit-log', userId }  -> was /api/admin-visit-log; also
+//   returns completedLessonIds so the panel can build a per-topic learning
+//   breakdown (visited vs. actually marked complete), not just a raw log.
 // POST { action: 'manage', manageAction: 'add', email, newPassword }
 // POST { action: 'manage', manageAction: 'update', userId, email?, newPassword? }
 // POST { action: 'manage', manageAction: 'delete', userId }     -> was /api/admin-manage
@@ -17,6 +19,7 @@ const {
   updateUserPassword,
   deleteUser,
   getUserVisits,
+  getUserProgress,
 } = require('./_db');
 const { getAdminToken, hashPassword } = require('./_auth');
 
@@ -52,7 +55,8 @@ module.exports = async function handler(req, res) {
         return;
       }
       const visits = await getUserVisits(id);
-      res.status(200).json({ visits });
+      const completedLessonIds = await getUserProgress(id);
+      res.status(200).json({ visits, completedLessonIds });
       return;
     }
 

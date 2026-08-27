@@ -79,15 +79,26 @@ function buildProgressCell(completed, total) {
   return td;
 }
 
-// path -> page title, embedded at build time (layouts/admin/single.html) so
-// the visit log can show a readable lesson name instead of a raw URL.
-function getPathTitles() {
+// { pathTitles, categoryTotals } embedded at build time (layouts/admin/single.html)
+// — pathTitles so the visit log can show a readable lesson name instead of a
+// raw URL, categoryTotals (per-category lesson counts) so the per-topic
+// learning breakdown can compute coverage percentages.
+function getAdminMeta() {
   try {
-    const el = document.getElementById('admin-path-titles');
-    return el ? JSON.parse(el.textContent) : {};
+    const el = document.getElementById('admin-meta');
+    return el ? JSON.parse(el.textContent) : { pathTitles: {}, categoryTotals: {} };
   } catch {
-    return {};
+    return { pathTitles: {}, categoryTotals: {} };
   }
+}
+
+// A lesson path looks like "/docs/javascript/8-js-objects-content/" — this
+// pulls out "/docs/javascript/", matching how categoryTotals is keyed
+// (by the category page's own RelPermalink). Non-lesson paths (homepage,
+// /login/, etc.) return null — they don't belong to any topic.
+function categoryKeyOf(path) {
+  const m = path.match(/^(\/docs\/[^/]+\/)/);
+  return m ? m[1] : null;
 }
 
 function initAdmin() {
@@ -115,7 +126,7 @@ function initAdmin() {
   const addBtn = document.getElementById('admin-add-btn');
   const logoutBtn = document.getElementById('admin-logout-btn');
   const totalLessons = Number(results.dataset.totalLessons || 0);
-  const pathTitles = getPathTitles();
+  const { pathTitles, categoryTotals } = getAdminMeta();
 
   let pollTimer = null;
   let latestStudents = [];
@@ -353,6 +364,13 @@ function initAdmin() {
     return tr;
   }
 
+  function unlockPanel(data) {
+    applyData(data);
+    loginWrap.classList.add('d-none');
+    results.classList.remove('d-none');
+    startPolling();
+  }
+
   function startPolling() {
     if (pollTimer) clearInterval(pollTimer);
     pollTimer = setInterval(async () => {
@@ -463,10 +481,7 @@ function initAdmin() {
       const statsRes = await fetchStats();
       if (!statsRes.ok) throw new Error('server error');
 
-      applyData(await statsRes.json());
-      loginWrap.classList.add('d-none');
-      results.classList.remove('d-none');
-      startPolling();
+      unlockPanel(await statsRes.json());
     } catch {
       showError('שגיאה בטעינת הנתונים, נסו שוב');
       setBtnLoading(verifyBtn, false);
@@ -501,15 +516,121 @@ function initAdmin() {
     return `${hours} שעות ${remMinutes} דקות`;
   }
 
+  // Groups this student's visits + completed-lesson marks by topic
+  // (category), against how many lessons that topic actually has, so the
+  // admin can see "knows this well / barely touched that" per subject
+  // instead of just a flat visit list.
+  function buildCategoryAnalysis(visits, completedLessonIds) {
+    const completedSet = new Set(completedLessonIds || []);
+    const visitedByCategory = new Map();
+    const completedByCategory = new Map();
+
+    visits.forEach((v) => {
+      const key = categoryKeyOf(v.path);
+      if (!key) return;
+      if (!visitedByCategory.has(key)) visitedByCategory.set(key, new Set());
+      visitedByCategory.get(key).add(v.path);
+    });
+
+    completedSet.forEach((path) => {
+      const key = categoryKeyOf(path);
+      if (!key) return;
+      completedByCategory.set(key, (completedByCategory.get(key) || 0) + 1);
+    });
+
+    const allKeys = new Set([...Object.keys(categoryTotals), ...visitedByCategory.keys()]);
+    const rows = [...allKeys]
+      .map((key) => ({
+        key,
+        title: pathTitles[key] || key,
+        visitedCount: visitedByCategory.has(key) ? visitedByCategory.get(key).size : 0,
+        completedCount: completedByCategory.get(key) || 0,
+        total: categoryTotals[key] || 0,
+      }))
+      .filter((row) => row.total > 0); // only real topics we can measure coverage for
+
+    rows.sort((a, b) => a.visitedCount / a.total - b.visitedCount / b.total); // weakest first
+    return rows;
+  }
+
+  function insightFor(row) {
+    if (row.visitedCount === 0) return 'לא נגע בכלל בנושא הזה';
+    const visitPct = row.visitedCount / row.total;
+    if (row.completedCount === 0) return 'עיין בחומר אבל עדיין לא סימן אף שיעור כ"נלמד"';
+    if (visitPct >= 0.9 && row.completedCount >= row.total * 0.8) return 'שולט היטב בנושא — כיסה כמעט הכל וסימן את רוב השיעורים כנלמדים';
+    if (visitPct < 0.34) return 'רק התחיל להכיר את הנושא';
+    return 'באמצע הלמידה של הנושא';
+  }
+
+  function renderAnalysisSection(rows) {
+    if (!rows.length) return null;
+    const wrap = document.createElement('div');
+    wrap.className = 'mb-4';
+    const heading = document.createElement('h3');
+    heading.className = 'h6 mb-3';
+    heading.textContent = 'ניתוח למידה לפי נושא';
+    wrap.appendChild(heading);
+
+    rows.forEach((row) => {
+      const pct = Math.round((row.visitedCount / row.total) * 100);
+      const rowWrap = document.createElement('div');
+      rowWrap.className = 'mb-3';
+
+      const label = document.createElement('div');
+      label.className = 'd-flex justify-content-between small mb-1';
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'fw-semibold';
+      nameSpan.textContent = row.title;
+      const countSpan = document.createElement('span');
+      countSpan.className = 'text-body-secondary';
+      countSpan.textContent = `${row.visitedCount}/${row.total} ביקר · ${row.completedCount} סומנו כנלמדים`;
+      label.appendChild(nameSpan);
+      label.appendChild(countSpan);
+
+      const bar = document.createElement('div');
+      bar.className = 'course-progress-bar';
+      bar.style.margin = '0 0 4px';
+      const fill = document.createElement('div');
+      fill.className = 'course-progress-bar-fill';
+      fill.style.width = `${pct}%`;
+      bar.appendChild(fill);
+
+      const insightEl = document.createElement('div');
+      insightEl.className = 'small text-body-secondary';
+      insightEl.textContent = insightFor(row);
+
+      rowWrap.appendChild(label);
+      rowWrap.appendChild(bar);
+      rowWrap.appendChild(insightEl);
+      wrap.appendChild(rowWrap);
+    });
+
+    return wrap;
+  }
+
   const logModal = document.getElementById('admin-log-modal');
   const logModalTitle = document.getElementById('admin-log-modal-title');
   const logModalBody = document.getElementById('admin-log-modal-body');
 
-  function renderLogModal(visits) {
+  function renderLogModal(visits, completedLessonIds) {
+    logModalBody.innerHTML = '';
+
+    const analysisEl = renderAnalysisSection(buildCategoryAnalysis(visits, completedLessonIds));
+    if (analysisEl) logModalBody.appendChild(analysisEl);
+
     if (!visits.length) {
-      logModalBody.innerHTML = '<p class="text-body-secondary mb-0">אין עדיין נתוני ביקורים לסטודנט הזה.</p>';
+      const p = document.createElement('p');
+      p.className = 'text-body-secondary mb-0';
+      p.textContent = 'אין עדיין נתוני ביקורים לסטודנט הזה.';
+      logModalBody.appendChild(p);
       return;
     }
+
+    const logHeading = document.createElement('h3');
+    logHeading.className = 'h6 mb-2';
+    logHeading.textContent = 'יומן ביקורים מפורט';
+    logModalBody.appendChild(logHeading);
+
     const table = document.createElement('table');
     table.className = 'table table-sm table-hover align-middle';
     table.innerHTML = '<thead><tr><th>נושא</th><th>זמן כניסה</th><th>משך זמן בעמוד</th></tr></thead>';
@@ -531,7 +652,6 @@ function initAdmin() {
       tbody.appendChild(tr);
     });
     table.appendChild(tbody);
-    logModalBody.innerHTML = '';
     logModalBody.appendChild(table);
   }
 
@@ -550,11 +670,21 @@ function initAdmin() {
       });
       if (!res.ok) throw new Error('server error');
       const data = await res.json();
-      renderLogModal(data.visits || []);
+      renderLogModal(data.visits || [], data.completedLessonIds || []);
     } catch {
       logModalBody.innerHTML = '<div class="alert alert-danger mb-0">שגיאה בטעינת היומן</div>';
     }
   });
+
+  // Admin sessions last 12h server-side (see _auth.js) — but without this
+  // check the panel always demanded a fresh code on every page load/refresh
+  // regardless of whether the existing cookie was still valid, which is
+  // what actually made it feel like it "disconnects too fast". Silently
+  // try the existing session first; only fall back to the code screen if
+  // there really isn't one.
+  fetchStats()
+    .then((res) => (res.ok ? res.json().then(unlockPanel) : null))
+    .catch(() => {});
 }
 
 if (document.readyState === 'loading') {

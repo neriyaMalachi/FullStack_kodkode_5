@@ -1,10 +1,16 @@
 {{ define "main" }}
 {{/* Same "how many lesson pages exist" count the course hub uses (layouts/docs/list.html)
-     — needed here so the progress column can show "completed / total". */}}
+     — needed here so the progress column can show "completed / total". Also
+     builds a per-category lesson count (keyed by the category's own
+     RelPermalink, e.g. "/docs/javascript/") for the visit-log modal's
+     per-topic learning breakdown. */}}
 {{ $totalLessons := 0 }}
+{{ $categoryTotals := dict }}
 {{ with site.GetPage "/docs" }}
   {{ range .Sections.ByWeight }}
-    {{ $totalLessons = add $totalLessons (len (where .Pages "Slug" "like" "-content$")) }}
+    {{ $count := len (where .Pages "Slug" "like" "-content$") }}
+    {{ $totalLessons = add $totalLessons $count }}
+    {{ $categoryTotals = merge $categoryTotals (dict .RelPermalink $count) }}
   {{ end }}
 {{ end }}
 
@@ -16,6 +22,8 @@
 {{ range site.Pages }}
   {{ $pathTitles = merge $pathTitles (dict .RelPermalink .Title) }}
 {{ end }}
+
+{{ $adminMeta := dict "pathTitles" $pathTitles "categoryTotals" $categoryTotals }}
 
 <div id="admin-login-wrap" class="row justify-content-center">
   <div class="col-md-8 col-lg-6 col-xl-5">
@@ -145,8 +153,8 @@
   </div>
 </div>
 
-<!-- path -> page title lookup for the visit-log modal (assets/js/admin-panel.js) -->
-<script id="admin-path-titles" type="application/json">{{ $pathTitles | jsonify | safeJS }}</script>
+<!-- path titles + per-category lesson totals for the visit-log modal (assets/js/admin-panel.js) -->
+<script id="admin-meta" type="application/json">{{ $adminMeta | jsonify | safeJS }}</script>
 
 <!-- Per-student visit-log modal — populated on demand when a "לוגים" button
      opens it (see assets/js/admin-panel.js, the modal's show.bs.modal
