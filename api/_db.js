@@ -227,6 +227,18 @@ async function createAdminCode(code) {
   await db.execute({ sql: 'INSERT INTO admin_codes (code) VALUES (?)', args: [code] });
 }
 
+// Used to rate-limit /api/admin-request-code so the page can't be used to
+// flood the admin's inbox — counts codes issued (whether ever used or not)
+// in the last N seconds.
+async function countRecentAdminCodes(withinSeconds) {
+  await init();
+  const result = await db.execute({
+    sql: `SELECT COUNT(*) AS c FROM admin_codes WHERE created_at >= datetime('now', ?)`,
+    args: [`-${withinSeconds} seconds`],
+  });
+  return Number(result.rows[0].c);
+}
+
 async function consumeAdminCode(code) {
   await init();
   const result = await db.execute({
@@ -272,6 +284,7 @@ module.exports = {
   updateUserPassword,
   deleteUser,
   createAdminCode,
+  countRecentAdminCodes,
   consumeAdminCode,
   createAdminSession,
   findAdminSession,

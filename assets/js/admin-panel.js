@@ -355,7 +355,18 @@ function initAdmin() {
     errorEl.classList.add('d-none');
     try {
       const res = await fetch('/api/admin-request-code', { method: 'POST', credentials: 'same-origin' });
+
+      if (res.status === 429) {
+        const data = await res.json().catch(() => ({}));
+        showError(
+          data.error === 'hourly_limit'
+            ? 'נשלחו יותר מדי קודים בשעה האחרונה — נסו שוב מאוחר יותר'
+            : 'קוד כבר נשלח לפני רגע — המתינו קצת לפני שמבקשים קוד נוסף',
+        );
+        return;
+      }
       if (!res.ok) throw new Error('server error');
+
       requestStep.classList.add('d-none');
       verifyForm.classList.remove('d-none');
       codeInput.focus();
