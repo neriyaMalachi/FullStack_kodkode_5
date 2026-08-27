@@ -207,6 +207,16 @@ function initAdmin() {
     });
     actionsTd.appendChild(editBtn);
 
+    const logBtn = document.createElement('button');
+    logBtn.type = 'button';
+    logBtn.className = 'btn btn-sm btn-outline-info';
+    logBtn.textContent = 'לוגים';
+    logBtn.setAttribute('data-bs-toggle', 'modal');
+    logBtn.setAttribute('data-bs-target', '#admin-log-modal');
+    logBtn.dataset.userId = s.id;
+    logBtn.dataset.userEmail = s.email;
+    actionsTd.appendChild(logBtn);
+
     const delBtn = document.createElement('button');
     delBtn.type = 'button';
     delBtn.className = 'btn btn-sm btn-outline-danger';
@@ -441,6 +451,74 @@ function initAdmin() {
       // ignore
     }
     location.reload();
+  });
+
+  // Per-student visit log — populated only when the modal is actually
+  // opened (via a "לוגים" button's data-bs-toggle="modal"), never rendered
+  // up front for every student.
+  function formatDuration(seconds) {
+    if (seconds === null || seconds === undefined) return 'עדיין בעמוד / לא ידוע';
+    if (seconds < 60) return `${seconds} שניות`;
+    const minutes = Math.round(seconds / 60);
+    if (minutes < 60) return `${minutes} דקות`;
+    const hours = Math.floor(minutes / 60);
+    const remMinutes = minutes % 60;
+    return `${hours} שעות ${remMinutes} דקות`;
+  }
+
+  const logModal = document.getElementById('admin-log-modal');
+  const logModalTitle = document.getElementById('admin-log-modal-title');
+  const logModalBody = document.getElementById('admin-log-modal-body');
+
+  function renderLogModal(visits) {
+    if (!visits.length) {
+      logModalBody.innerHTML = '<p class="text-body-secondary mb-0">אין עדיין נתוני ביקורים לסטודנט הזה.</p>';
+      return;
+    }
+    const table = document.createElement('table');
+    table.className = 'table table-sm table-hover align-middle';
+    table.innerHTML = '<thead><tr><th>עמוד</th><th>זמן כניסה</th><th>משך זמן בעמוד</th></tr></thead>';
+    const tbody = document.createElement('tbody');
+    [...visits].reverse().forEach((v) => {
+      const tr = document.createElement('tr');
+      const pathTd = document.createElement('td');
+      pathTd.className = 'text-break small';
+      pathTd.textContent = v.path;
+      const timeTd = document.createElement('td');
+      timeTd.className = 'small';
+      timeTd.textContent = formatDate(v.visited_at);
+      const durTd = document.createElement('td');
+      durTd.className = 'small';
+      durTd.textContent = formatDuration(v.duration_seconds);
+      tr.appendChild(pathTd);
+      tr.appendChild(timeTd);
+      tr.appendChild(durTd);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    logModalBody.innerHTML = '';
+    logModalBody.appendChild(table);
+  }
+
+  logModal.addEventListener('show.bs.modal', async (event) => {
+    const btn = event.relatedTarget;
+    const userId = Number(btn.dataset.userId);
+    logModalTitle.textContent = `יומן פעילות — ${btn.dataset.userEmail}`;
+    logModalBody.innerHTML = '<div class="text-center py-4"><span class="spinner-border" role="status" aria-hidden="true"></span></div>';
+
+    try {
+      const res = await fetch('/api/admin-visit-log', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId }),
+      });
+      if (!res.ok) throw new Error('server error');
+      const data = await res.json();
+      renderLogModal(data.visits || []);
+    } catch {
+      logModalBody.innerHTML = '<div class="alert alert-danger mb-0">שגיאה בטעינת היומן</div>';
+    }
   });
 }
 

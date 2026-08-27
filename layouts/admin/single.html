@@ -135,4 +135,19 @@
     </table>
   </div>
 </div>
+
+<!-- Per-student visit-log modal — populated on demand when a "לוגים" button
+     opens it (see assets/js/admin-panel.js, the modal's show.bs.modal
+     listener), not rendered for every student up front. -->
+<div class="modal fade" id="admin-log-modal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="admin-log-modal-title">יומן פעילות</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="סגור"></button>
+      </div>
+      <div class="modal-body" id="admin-log-modal-body"></div>
+    </div>
+  </div>
+</div>
 {{ end }}

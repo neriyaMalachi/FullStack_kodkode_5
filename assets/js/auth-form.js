@@ -1,7 +1,14 @@
 // Login/signup form handler — shared by content/login.md and content/signup.md
 // (layouts/auth/single.html), which render the same markup with a
 // data-auth-mode of "login" or "signup" on #auth-card.
-// Also wires the show/hide-password eye toggle on every password field.
+//
+// Login stays a single step (email+password -> session).
+// Signup is two steps: step 1 (email+password) requests a verification code
+// by email (api/signup-request-code.js) instead of creating the account
+// directly; step 2 confirms that code (api/signup-verify-code.js), which is
+// the only place the real account actually gets created.
+//
+// Also wires the show/hide-password eye toggle on every password/code field.
 
 function initPasswordToggles() {
   document.querySelectorAll('.auth-toggle-password').forEach((btn) => {
@@ -50,8 +57,8 @@ function initForm() {
   if (!card) return;
 
   const mode = card.dataset.authMode;
-  const form = document.getElementById('auth-form');
   const msg = document.getElementById('auth-msg');
+  const stepRequest = document.getElementById('auth-step-request');
   const submitBtn = document.getElementById('auth-submit');
   const emailInput = document.getElementById('auth-email');
   const passwordInput = document.getElementById('auth-password');
@@ -64,55 +71,156 @@ function initForm() {
     })
     .catch(() => {});
 
+  if (mode === 'login') {
+    initLogin({ msg, submitBtn, emailInput, passwordInput });
+  } else {
+    initSignup({ msg, stepRequest, submitBtn, emailInput, passwordInput, password2Input });
+  }
+}
+
+function initLogin({ msg, submitBtn, emailInput, passwordInput }) {
+  const form = document.getElementById('auth-form');
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     (async () => {
+      setBtnLoading(submitBtn, true);
+      msg.classList.add('d-none');
+
       try {
-        if (mode === 'signup' && passwordInput.value !== password2Input.value) {
-          showMsg(msg, 'הסיסמאות לא תואמות', 'danger');
-          return;
-        }
-
-        setBtnLoading(submitBtn, true);
-        msg.classList.add('d-none');
-
-        const payload = {
-          email: emailInput.value.trim(),
-          password: passwordInput.value,
-        };
-
-        const endpoint = mode === 'signup' ? '/api/signup' : '/api/login';
-
-        const res = await fetch(endpoint, {
+        const res = await fetch('/api/login', {
           method: 'POST',
           credentials: 'same-origin',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({ email: emailInput.value.trim(), password: passwordInput.value }),
         });
 
-        if (mode === 'signup' && res.status === 409) {
-          showMsg(msg, 'כבר קיים חשבון עם אימייל זה', 'danger');
-          setBtnLoading(submitBtn, false);
-          return;
-        }
-
-        if (mode === 'login' && res.status === 401) {
+        if (res.status === 401) {
           showMsg(msg, 'אימייל או סיסמה שגויים', 'danger');
           setBtnLoading(submitBtn, false);
           return;
         }
-
         if (!res.ok) {
           showMsg(msg, 'שגיאה, נסו שוב', 'danger');
           setBtnLoading(submitBtn, false);
           return;
         }
 
-        showSuccessThenRedirect(msg, mode === 'signup' ? 'נרשמת בהצלחה! מעביר אותך פנימה…' : 'התחברת בהצלחה! מעביר אותך פנימה…');
+        showSuccessThenRedirect(msg, 'התחברת בהצלחה! מעביר אותך פנימה…');
       } catch {
         showMsg(msg, 'שגיאת תקשורת, נסו שוב', 'danger');
         setBtnLoading(submitBtn, false);
+      }
+    })();
+  });
+}
+
+function initSignup({ msg, stepRequest, submitBtn, emailInput, passwordInput, password2Input }) {
+  const form = document.getElementById('auth-form');
+  const stepVerify = document.getElementById('auth-step-verify');
+  const codeInput = document.getElementById('auth-verify-code');
+  const verifyBtn = document.getElementById('auth-verify-btn');
+  const resendBtn = document.getElementById('auth-resend-btn');
+
+  // Kept from step 1 so "resend" and step 2 don't need the user to retype
+  // anything — the account isn't created until the code round-trips.
+  let pendingEmail = null;
+  let pendingPassword = null;
+
+  async function requestCode(btn) {
+    setBtnLoading(btn, true);
+    msg.classList.add('d-none');
+
+    try {
+      const res = await fetch('/api/signup-request-code', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: pendingEmail, password: pendingPassword }),
+      });
+
+      if (res.status === 429) {
+        showMsg(msg, 'קוד כבר נשלח לפני רגע — המתינו קצת לפני שמבקשים קוד נוסף', 'danger');
+        return false;
+      }
+      if (res.status === 409) {
+        showMsg(msg, 'כבר קיים חשבון עם אימייל זה', 'danger');
+        return false;
+      }
+      if (!res.ok) {
+        showMsg(msg, 'שגיאה בשליחת הקוד, נסו שוב', 'danger');
+        return false;
+      }
+
+      return true;
+    } catch {
+      showMsg(msg, 'שגיאת תקשורת, נסו שוב', 'danger');
+      return false;
+    } finally {
+      setBtnLoading(btn, false);
+    }
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    (async () => {
+      if (passwordInput.value !== password2Input.value) {
+        showMsg(msg, 'הסיסמאות לא תואמות', 'danger');
+        return;
+      }
+
+      pendingEmail = emailInput.value.trim();
+      pendingPassword = passwordInput.value;
+
+      const ok = await requestCode(submitBtn);
+      if (!ok) return;
+
+      stepRequest.classList.add('d-none');
+      stepVerify.classList.remove('d-none');
+      codeInput.focus();
+    })();
+  });
+
+  resendBtn.addEventListener('click', () => requestCode(resendBtn));
+
+  verifyBtn.addEventListener('click', () => {
+    (async () => {
+      const code = codeInput.value.trim();
+      if (!code) return;
+
+      setBtnLoading(verifyBtn, true);
+      msg.classList.add('d-none');
+
+      try {
+        const res = await fetch('/api/signup-verify-code', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: pendingEmail, code }),
+        });
+
+        if (res.status === 401) {
+          showMsg(msg, 'קוד שגוי או שפג תוקפו — שלחו קוד חדש', 'danger');
+          setBtnLoading(verifyBtn, false);
+          return;
+        }
+        if (res.status === 409) {
+          showMsg(msg, 'כבר קיים חשבון עם אימייל זה', 'danger');
+          setBtnLoading(verifyBtn, false);
+          return;
+        }
+        if (!res.ok) {
+          showMsg(msg, 'שגיאה, נסו שוב', 'danger');
+          setBtnLoading(verifyBtn, false);
+          return;
+        }
+
+        showSuccessThenRedirect(msg, 'נרשמת בהצלחה! מעביר אותך פנימה…');
+      } catch {
+        showMsg(msg, 'שגיאת תקשורת, נסו שוב', 'danger');
+        setBtnLoading(verifyBtn, false);
       }
     })();
   });

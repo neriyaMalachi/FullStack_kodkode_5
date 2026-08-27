@@ -51,11 +51,52 @@ function init() {
           completed_at TEXT NOT NULL DEFAULT (datetime('now')),
           PRIMARY KEY (user_id, lesson_id)
         )`,
+        `CREATE TABLE IF NOT EXISTS pending_signups (
+          email TEXT PRIMARY KEY,
+          password_hash TEXT NOT NULL,
+          code TEXT NOT NULL,
+          created_at TEXT NOT NULL DEFAULT (datetime('now'))
+        )`,
       ],
       'write',
     );
   }
   return ready;
+}
+
+async function createPendingSignup(email, passwordHash, code) {
+  await init();
+  await db.execute({
+    sql: `INSERT INTO pending_signups (email, password_hash, code) VALUES (?, ?, ?)
+          ON CONFLICT(email) DO UPDATE SET password_hash = excluded.password_hash, code = excluded.code, created_at = datetime('now')`,
+    args: [email, passwordHash, code],
+  });
+}
+
+// Rate-limits re-requesting a code for the same email (someone could
+// otherwise use the signup form to spam an arbitrary address).
+async function recentPendingSignup(email, withinSeconds) {
+  await init();
+  const result = await db.execute({
+    sql: `SELECT 1 FROM pending_signups WHERE email = ? AND created_at >= datetime('now', ?)`,
+    args: [email, `-${withinSeconds} seconds`],
+  });
+  return !!result.rows[0];
+}
+
+// Verifies the code, and if valid, consumes it (deletes the pending row) and
+// returns the password hash to create the real account with. Returns null on
+// a wrong/expired code — the caller creates nothing in that case.
+async function consumePendingSignup(email, code) {
+  await init();
+  const result = await db.execute({
+    sql: `SELECT password_hash FROM pending_signups
+          WHERE email = ? AND code = ? AND created_at >= datetime('now', '-10 minutes')`,
+    args: [email, code],
+  });
+  if (!result.rows[0]) return null;
+  await db.execute({ sql: 'DELETE FROM pending_signups WHERE email = ?', args: [email] });
+  return result.rows[0].password_hash;
 }
 
 async function createUser(email, passwordHash) {
@@ -116,6 +157,31 @@ async function recordVisit(userId, path) {
     args: [userId, path],
   });
   await touchPresence(userId);
+}
+
+// Full chronological visit log for one student, with an approximate
+// "time spent on this page" computed as the gap to their NEXT recorded
+// visit (whatever page they went to next). This is an approximation from
+// existing page-load timestamps, not exact tab-open time — a student idle
+// on the same page for a long time without navigating won't show that idle
+// time, and the most recent visit's duration is unknown (still null) since
+// there's no "next" visit yet to diff against.
+async function getUserVisits(userId) {
+  await init();
+  const result = await db.execute({
+    sql: 'SELECT path, visited_at FROM visits WHERE user_id = ? ORDER BY visited_at ASC',
+    args: [userId],
+  });
+  const rows = result.rows;
+  return rows.map((r, i) => {
+    const next = rows[i + 1];
+    let durationSeconds = null;
+    if (next) {
+      const toUtc = (s) => new Date(s.replace(' ', 'T') + 'Z');
+      durationSeconds = Math.max(0, Math.round((toUtc(next.visited_at) - toUtc(r.visited_at)) / 1000));
+    }
+    return { path: r.path, visited_at: r.visited_at, duration_seconds: durationSeconds };
+  });
 }
 
 async function touchPresence(userId) {
@@ -280,6 +346,10 @@ module.exports = {
   recordVisit,
   touchPresence,
   getStats,
+  getUserVisits,
+  createPendingSignup,
+  recentPendingSignup,
+  consumePendingSignup,
   updateUserEmail,
   updateUserPassword,
   deleteUser,

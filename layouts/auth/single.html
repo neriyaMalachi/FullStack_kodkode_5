@@ -9,38 +9,62 @@
         <div id="auth-msg" class="alert d-none" role="alert"></div>
 
         <form id="auth-form" novalidate onsubmit="return false">
-          <div class="mb-3">
-            <label for="auth-email" class="form-label">אימייל</label>
-            <input type="email" class="form-control" id="auth-email" autocomplete="email" required>
-          </div>
-
-          <div class="mb-3">
-            <label for="auth-password" class="form-label">סיסמה</label>
-            <div class="input-group">
-              <input type="password" class="form-control" id="auth-password"
-                autocomplete="{{ if $isSignup }}new-password{{ else }}current-password{{ end }}"
-                {{ if $isSignup }}minlength="6"{{ end }} required>
-              <button class="btn btn-outline-secondary auth-toggle-password" type="button" aria-label="הצג סיסמה">
-                <svg class="auth-eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                <svg class="auth-eye-closed d-none" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.8 21.8 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a21.8 21.8 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-              </button>
+          <!-- Step 1: email+password (signup: also sends a verification code
+               instead of creating the account directly) -->
+          <div id="auth-step-request">
+            <div class="mb-3">
+              <label for="auth-email" class="form-label">אימייל</label>
+              <input type="email" class="form-control" id="auth-email" autocomplete="email" required>
             </div>
+
+            <div class="mb-3">
+              <label for="auth-password" class="form-label">סיסמה</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="auth-password"
+                  autocomplete="{{ if $isSignup }}new-password{{ else }}current-password{{ end }}"
+                  {{ if $isSignup }}minlength="6"{{ end }} required>
+                <button class="btn btn-outline-secondary auth-toggle-password" type="button" aria-label="הצג סיסמה">
+                  <svg class="auth-eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  <svg class="auth-eye-closed d-none" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.8 21.8 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a21.8 21.8 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                </button>
+              </div>
+            </div>
+
+            {{ if $isSignup }}
+            <div class="mb-3">
+              <label for="auth-password2" class="form-label">אימות סיסמה</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="auth-password2" autocomplete="new-password" minlength="6" required>
+                <button class="btn btn-outline-secondary auth-toggle-password" type="button" aria-label="הצג סיסמה">
+                  <svg class="auth-eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  <svg class="auth-eye-closed d-none" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.8 21.8 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a21.8 21.8 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                </button>
+              </div>
+            </div>
+            {{ end }}
+
+            <button type="submit" class="btn btn-primary w-100" id="auth-submit">{{ if $isSignup }}שליחת קוד אימות{{ else }}התחברות{{ end }}</button>
           </div>
 
           {{ if $isSignup }}
-          <div class="mb-3">
-            <label for="auth-password2" class="form-label">אימות סיסמה</label>
-            <div class="input-group">
-              <input type="password" class="form-control" id="auth-password2" autocomplete="new-password" minlength="6" required>
-              <button class="btn btn-outline-secondary auth-toggle-password" type="button" aria-label="הצג סיסמה">
-                <svg class="auth-eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                <svg class="auth-eye-closed d-none" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.8 21.8 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a21.8 21.8 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-              </button>
+          <!-- Step 2 (signup only): confirm the emailed code before the
+               account actually gets created — see api/signup-verify-code.js -->
+          <div id="auth-step-verify" class="d-none">
+            <p class="text-body-secondary small mb-3">שלחנו קוד אימות לאימייל שהזנת. תקף ל-10 דקות.</p>
+            <div class="mb-3">
+              <label for="auth-verify-code" class="form-label">קוד בן 6 ספרות</label>
+              <div class="input-group">
+                <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" class="form-control" id="auth-verify-code" autocomplete="one-time-code">
+                <button class="btn btn-outline-secondary auth-toggle-password" type="button" aria-label="הצג קוד">
+                  <svg class="auth-eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  <svg class="auth-eye-closed d-none" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.8 21.8 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a21.8 21.8 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                </button>
+              </div>
             </div>
+            <button type="button" class="btn btn-primary w-100 mb-2" id="auth-verify-btn">אישור והרשמה</button>
+            <button type="button" class="btn btn-link w-100" id="auth-resend-btn">שלח קוד חדש</button>
           </div>
           {{ end }}
-
-          <button type="submit" class="btn btn-primary w-100" id="auth-submit">{{ if $isSignup }}הרשמה{{ else }}התחברות{{ end }}</button>
         </form>
 
         <p class="text-center text-body-secondary mt-4 mb-0">
