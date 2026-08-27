@@ -1,5 +1,5 @@
 // Real auth gate — every course page requires a logged-in session (our own
-// /api/login + SQLite, not a 3rd party). No session -> redirect to /login/.
+// /api/session + SQLite, not a 3rd party). No session -> redirect to /login/.
 // With a session -> log this visit, send periodic heartbeats so /admin can
 // show "online now", and reveal the logged-in-as/logout slot in the navbar
 // (layouts/_partials/header/header.html, #auth-navbar-slot — hidden by
@@ -11,7 +11,7 @@ const HEARTBEAT_MS = 20000;
 
 async function getMe() {
   try {
-    const res = await fetch('/api/me', { credentials: 'same-origin' });
+    const res = await fetch('/api/session', { credentials: 'same-origin' });
     if (!res.ok) return null;
     return await res.json();
   } catch {
@@ -33,7 +33,12 @@ function showNavbarAuthSlot(email) {
   logoutBtn.textContent = 'התנתקות';
   logoutBtn.addEventListener('click', async () => {
     try {
-      await fetch('/api/logout', { method: 'POST', credentials: 'same-origin' });
+      await fetch('/api/session', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'logout' }),
+      });
     } catch {
       // ignore
     }
@@ -47,18 +52,23 @@ function showNavbarAuthSlot(email) {
 }
 
 function track() {
-  fetch('/api/track', {
+  fetch('/api/activity', {
     method: 'POST',
     credentials: 'same-origin',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ path: location.pathname }),
+    body: JSON.stringify({ action: 'track', path: location.pathname }),
     keepalive: true,
   }).catch(() => {});
 }
 
 function startHeartbeat() {
   setInterval(() => {
-    fetch('/api/heartbeat', { method: 'POST', credentials: 'same-origin' }).catch(() => {});
+    fetch('/api/activity', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'heartbeat' }),
+    }).catch(() => {});
   }, HEARTBEAT_MS);
 }
 

@@ -2,11 +2,11 @@
 // (layouts/auth/single.html), which render the same markup with a
 // data-auth-mode of "login" or "signup" on #auth-card.
 //
-// Login stays a single step (email+password -> session).
+// Login stays a single step (email+password -> session, via api/session.js).
 // Signup is two steps: step 1 (email+password) requests a verification code
-// by email (api/signup-request-code.js) instead of creating the account
-// directly; step 2 confirms that code (api/signup-verify-code.js), which is
-// the only place the real account actually gets created.
+// by email (api/signup.js, action "request-code") instead of creating the
+// account directly; step 2 confirms that code (action "verify-code"), which
+// is the only place the real account actually gets created.
 //
 // Also wires the show/hide-password eye toggle on every password/code field.
 
@@ -65,7 +65,7 @@ function initForm() {
   const password2Input = document.getElementById('auth-password2');
 
   // Already logged in? skip straight through.
-  fetch('/api/me', { credentials: 'same-origin' })
+  fetch('/api/session', { credentials: 'same-origin' })
     .then((res) => {
       if (res.ok) redirectAfterLogin();
     })
@@ -89,11 +89,11 @@ function initLogin({ msg, submitBtn, emailInput, passwordInput }) {
       msg.classList.add('d-none');
 
       try {
-        const res = await fetch('/api/login', {
+        const res = await fetch('/api/session', {
           method: 'POST',
           credentials: 'same-origin',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: emailInput.value.trim(), password: passwordInput.value }),
+          body: JSON.stringify({ action: 'login', email: emailInput.value.trim(), password: passwordInput.value }),
         });
 
         if (res.status === 401) {
@@ -133,11 +133,11 @@ function initSignup({ msg, stepRequest, submitBtn, emailInput, passwordInput, pa
     msg.classList.add('d-none');
 
     try {
-      const res = await fetch('/api/signup-request-code', {
+      const res = await fetch('/api/signup', {
         method: 'POST',
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: pendingEmail, password: pendingPassword }),
+        body: JSON.stringify({ action: 'request-code', email: pendingEmail, password: pendingPassword }),
       });
 
       if (res.status === 429) {
@@ -194,11 +194,11 @@ function initSignup({ msg, stepRequest, submitBtn, emailInput, passwordInput, pa
       msg.classList.add('d-none');
 
       try {
-        const res = await fetch('/api/signup-verify-code', {
+        const res = await fetch('/api/signup', {
           method: 'POST',
           credentials: 'same-origin',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: pendingEmail, code }),
+          body: JSON.stringify({ action: 'verify-code', email: pendingEmail, code }),
         });
 
         if (res.status === 401) {

@@ -1,9 +1,10 @@
-// Admin panel — gated by an emailed one-time code (see api/admin-request-code.js
-// + api/admin-verify-code.js), which starts a 12h admin session (HttpOnly
-// cookie). Then live "who's online now" + a management table (filter, add,
-// inline edit, delete — see api/admin-manage.js) of every registered
-// student. Polls /api/admin-stats every few seconds once unlocked so the
-// online list stays current without a manual refresh.
+// Admin panel — gated by an emailed one-time code (api/admin-auth.js,
+// actions "request-code"/"verify-code"), which starts a 12h admin session
+// (HttpOnly cookie). Then live "who's online now" + a management table
+// (filter, add, inline edit, delete, per-student visit log — all via
+// api/admin-data.js) of every registered student. Polls for stats every few
+// seconds once unlocked so the online list stays current without a manual
+// refresh.
 // Also wires the show/hide-password eye toggle (same pattern as auth-form.js).
 
 const POLL_MS = 4000;
@@ -104,20 +105,21 @@ function initAdmin() {
     setTimeout(() => actionMsg.classList.add('d-none'), 4000);
   }
 
-  async function call(body) {
-    return fetch('/api/admin-manage', {
+  async function manage({ action: manageAction, ...rest }) {
+    return fetch('/api/admin-data', {
       method: 'POST',
       credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+      body: JSON.stringify({ action: 'manage', manageAction, ...rest }),
     });
   }
 
   async function fetchStats() {
-    return fetch('/api/admin-stats', {
+    return fetch('/api/admin-data', {
       method: 'POST',
       credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'stats' }),
     });
   }
 
@@ -225,7 +227,7 @@ function initAdmin() {
       if (!confirm(`למחוק את ${s.email}? הפעולה בלתי הפיכה.`)) return;
       setBtnLoading(delBtn, true);
       try {
-        const res = await call({ action: 'delete', userId: s.id });
+        const res = await manage({ action: 'delete', userId: s.id });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'error');
         applyData(data);
@@ -292,7 +294,7 @@ function initAdmin() {
       const newPassword = passInput.value;
       setBtnLoading(saveBtn, true);
       try {
-        const res = await call({
+        const res = await manage({
           action: 'update',
           userId: s.id,
           email: newEmail !== s.email ? newEmail : undefined,
@@ -356,7 +358,7 @@ function initAdmin() {
     }
     setBtnLoading(addBtn, true);
     try {
-      const res = await call({ action: 'add', email, newPassword });
+      const res = await manage({ action: 'add', email, newPassword });
       const data = await res.json();
       if (!res.ok) {
         showActionMsg(data.error === 'email_taken' ? 'כבר קיים חשבון עם אימייל זה' : 'שגיאה בהוספה', 'danger');
@@ -381,7 +383,12 @@ function initAdmin() {
     setBtnLoading(btn, true);
     errorEl.classList.add('d-none');
     try {
-      const res = await fetch('/api/admin-request-code', { method: 'POST', credentials: 'same-origin' });
+      const res = await fetch('/api/admin-auth', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'request-code' }),
+      });
 
       if (res.status === 429) {
         const data = await res.json().catch(() => ({}));
@@ -416,11 +423,11 @@ function initAdmin() {
     errorEl.classList.add('d-none');
 
     try {
-      const verifyRes = await fetch('/api/admin-verify-code', {
+      const verifyRes = await fetch('/api/admin-auth', {
         method: 'POST',
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code }),
+        body: JSON.stringify({ action: 'verify-code', code }),
       });
 
       if (verifyRes.status === 401) {
@@ -446,7 +453,12 @@ function initAdmin() {
   logoutBtn.addEventListener('click', async () => {
     if (pollTimer) clearInterval(pollTimer);
     try {
-      await fetch('/api/admin-logout', { method: 'POST', credentials: 'same-origin' });
+      await fetch('/api/admin-auth', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'logout' }),
+      });
     } catch {
       // ignore
     }
@@ -507,11 +519,11 @@ function initAdmin() {
     logModalBody.innerHTML = '<div class="text-center py-4"><span class="spinner-border" role="status" aria-hidden="true"></span></div>';
 
     try {
-      const res = await fetch('/api/admin-visit-log', {
+      const res = await fetch('/api/admin-data', {
         method: 'POST',
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId }),
+        body: JSON.stringify({ action: 'visit-log', userId }),
       });
       if (!res.ok) throw new Error('server error');
       const data = await res.json();
