@@ -45,50 +45,79 @@
 </div>
 
 <div id="admin-results" class="d-none" data-total-lessons="{{ $totalLessons }}">
-  <div class="d-flex justify-content-between align-items-center mt-4">
-    <h2 class="h4 mb-3">מחוברים עכשיו</h2>
-    <button type="button" class="btn btn-sm btn-outline-secondary mb-3" id="admin-logout-btn">התנתקות</button>
+  <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+    <h1 class="h4 mb-0">כל הסטודנטים הרשומים</h1>
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="collapse" data-bs-target="#admin-add-collapse" aria-expanded="false" aria-controls="admin-add-collapse">+ הוספת סטודנט</button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" id="admin-logout-btn">התנתקות</button>
+    </div>
   </div>
-  <div id="admin-online-list" class="d-flex flex-wrap gap-2 mb-4">
-    <span class="text-body-secondary small">אף אחד לא מחובר כרגע</span>
-  </div>
-
-  <h2 class="h4 mb-1">כל הסטודנטים הרשומים</h2>
-  <p id="admin-summary" class="text-body-secondary small mb-3"></p>
 
   <div id="admin-action-msg" class="alert d-none py-2 small" role="alert"></div>
 
-  <div class="row g-2 align-items-end mb-3">
-    <div class="col-sm-5 col-md-4">
-      <label for="admin-filter" class="form-label small mb-1">סינון לפי אימייל</label>
-      <input type="text" id="admin-filter" class="form-control form-control-sm" placeholder="חפש אימייל…">
+  <!-- Collapsed by default — opens on "+ הוספת סטודנט" instead of always taking up space -->
+  <div class="collapse mb-3" id="admin-add-collapse">
+    <div class="card">
+      <div class="card-body py-3">
+        <h2 class="h6 mb-3">הוספת סטודנט</h2>
+        <form id="admin-add-form" novalidate onsubmit="return false" class="row g-2 align-items-end">
+          <div class="col-sm-5">
+            <label for="admin-add-email" class="form-label small mb-1">אימייל</label>
+            <input type="email" id="admin-add-email" class="form-control form-control-sm" required>
+          </div>
+          <div class="col-sm-4">
+            <label for="admin-add-password" class="form-label small mb-1">סיסמה</label>
+            <div class="input-group input-group-sm">
+              <input type="password" id="admin-add-password" class="form-control form-control-sm" minlength="6" required>
+              <button class="btn btn-outline-secondary auth-toggle-password" type="button" aria-label="הצג סיסמה">
+                <svg class="auth-eye-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <svg class="auth-eye-closed d-none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.8 21.8 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a21.8 21.8 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+              </button>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <button type="submit" class="btn btn-primary btn-sm w-100" id="admin-add-btn">הוספה</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
-  <div class="card mb-3">
-    <div class="card-body py-3">
-      <h3 class="h6 mb-3">הוספת סטודנט</h3>
-      <form id="admin-add-form" novalidate onsubmit="return false" class="row g-2 align-items-end">
-        <div class="col-sm-5">
-          <label for="admin-add-email" class="form-label small mb-1">אימייל</label>
-          <input type="email" id="admin-add-email" class="form-control form-control-sm" required>
-        </div>
-        <div class="col-sm-4">
-          <label for="admin-add-password" class="form-label small mb-1">סיסמה</label>
-          <div class="input-group input-group-sm">
-            <input type="password" id="admin-add-password" class="form-control form-control-sm" minlength="6" required>
-            <button class="btn btn-outline-secondary auth-toggle-password" type="button" aria-label="הצג סיסמה">
-              <svg class="auth-eye-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-              <svg class="auth-eye-closed d-none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.8 21.8 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a21.8 21.8 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-            </button>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <button type="submit" class="btn btn-primary btn-sm w-100" id="admin-add-btn">הוספה</button>
-        </div>
-      </form>
+  <!-- Filters — the ONLY way to see "who's online" / progress breakdown is
+       through here, on demand; nothing is force-displayed all the time. -->
+  <div class="row g-2 align-items-end mb-2">
+    <div class="col-sm-4 col-md-3">
+      <label for="admin-filter" class="form-label small mb-1">חיפוש לפי אימייל</label>
+      <input type="text" id="admin-filter" class="form-control form-control-sm" placeholder="חפש אימייל…">
+    </div>
+    <div class="col-sm-4 col-md-3">
+      <label for="admin-status-filter" class="form-label small mb-1">סטטוס חיבור</label>
+      <select id="admin-status-filter" class="form-select form-select-sm">
+        <option value="all">הכל</option>
+        <option value="online">מחוברים כרגע</option>
+        <option value="offline">לא מחוברים</option>
+      </select>
+    </div>
+    <div class="col-sm-4 col-md-3">
+      <label for="admin-progress-filter" class="form-label small mb-1">התקדמות</label>
+      <select id="admin-progress-filter" class="form-select form-select-sm">
+        <option value="all">הכל</option>
+        <option value="none">עדיין לא התחילו (0%)</option>
+        <option value="started">בתהליך (1%-99%)</option>
+        <option value="done">סיימו (100%)</option>
+      </select>
+    </div>
+    <div class="col-sm-4 col-md-3">
+      <label for="admin-sort" class="form-label small mb-1">מיון לפי</label>
+      <select id="admin-sort" class="form-select form-select-sm">
+        <option value="last_seen">כניסה אחרונה</option>
+        <option value="progress">התקדמות</option>
+        <option value="visit_count">מספר כניסות</option>
+        <option value="email">אימייל</option>
+      </select>
     </div>
   </div>
+  <p id="admin-summary" class="text-body-secondary small mb-3"></p>
 
   <div class="table-responsive">
     <table class="table table-hover align-middle">

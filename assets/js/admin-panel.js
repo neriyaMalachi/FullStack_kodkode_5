@@ -67,20 +67,6 @@ function buildProgressCell(completed, total) {
   return td;
 }
 
-function renderOnline(el, emails) {
-  if (!emails || !emails.length) {
-    el.innerHTML = '<span class="text-body-secondary small">אף אחד לא מחובר כרגע</span>';
-    return;
-  }
-  el.innerHTML = '';
-  for (const email of [...new Set(emails)]) {
-    const badge = document.createElement('span');
-    badge.className = 'badge text-bg-success fw-normal';
-    badge.textContent = email;
-    el.appendChild(badge);
-  }
-}
-
 function initAdmin() {
   const loginWrap = document.getElementById('admin-login-wrap');
   const results = document.getElementById('admin-results');
@@ -93,10 +79,12 @@ function initAdmin() {
   const verifyBtn = document.getElementById('admin-verify-btn');
   const resendBtn = document.getElementById('admin-resend-btn');
   const errorEl = document.getElementById('admin-error');
-  const onlineListEl = document.getElementById('admin-online-list');
   const summaryEl = document.getElementById('admin-summary');
   const rowsEl = document.getElementById('admin-rows');
   const filterInput = document.getElementById('admin-filter');
+  const statusFilter = document.getElementById('admin-status-filter');
+  const progressFilter = document.getElementById('admin-progress-filter');
+  const sortSelect = document.getElementById('admin-sort');
   const actionMsg = document.getElementById('admin-action-msg');
   const addForm = document.getElementById('admin-add-form');
   const addEmailInput = document.getElementById('admin-add-email');
@@ -136,18 +124,43 @@ function initAdmin() {
   function applyData(data) {
     latestStudents = data.students || [];
     latestOnline = data.online || [];
-    renderOnline(onlineListEl, latestOnline);
     renderRows();
   }
 
   function renderRows() {
     const filterText = (filterInput.value || '').trim().toLowerCase();
     const onlineSet = new Set(latestOnline);
-    const filtered = filterText ? latestStudents.filter((s) => s.email.toLowerCase().includes(filterText)) : latestStudents;
 
-    summaryEl.textContent = filterText
-      ? `${filtered.length} מתוך ${latestStudents.length} סטודנטים רשומים`
-      : `${latestStudents.length} סטודנטים רשומים`;
+    let filtered = filterText ? latestStudents.filter((s) => s.email.toLowerCase().includes(filterText)) : latestStudents.slice();
+
+    if (statusFilter.value === 'online') {
+      filtered = filtered.filter((s) => onlineSet.has(s.email));
+    } else if (statusFilter.value === 'offline') {
+      filtered = filtered.filter((s) => !onlineSet.has(s.email));
+    }
+
+    if (progressFilter.value !== 'all' && totalLessons) {
+      filtered = filtered.filter((s) => {
+        const count = s.progress_count || 0;
+        if (progressFilter.value === 'none') return count === 0;
+        if (progressFilter.value === 'done') return count >= totalLessons;
+        return count > 0 && count < totalLessons; // 'started'
+      });
+    }
+
+    const sortKey = sortSelect.value;
+    filtered.sort((a, b) => {
+      if (sortKey === 'progress') return (b.progress_count || 0) - (a.progress_count || 0);
+      if (sortKey === 'visit_count') return (b.visit_count || 0) - (a.visit_count || 0);
+      if (sortKey === 'email') return a.email.localeCompare(b.email);
+      return (b.last_seen || '').localeCompare(a.last_seen || ''); // 'last_seen', newest first
+    });
+
+    const onlineCount = latestStudents.filter((s) => onlineSet.has(s.email)).length;
+    summaryEl.textContent =
+      filtered.length === latestStudents.length
+        ? `${latestStudents.length} סטודנטים רשומים · ${onlineCount} מחוברים כרגע`
+        : `${filtered.length} מתוך ${latestStudents.length} סטודנטים · ${onlineCount} מחוברים כרגע`;
 
     rowsEl.innerHTML = '';
     for (const s of filtered) {
@@ -158,6 +171,7 @@ function initAdmin() {
 
   function buildViewRow(s, isOnline) {
     const tr = document.createElement('tr');
+    if (isOnline) tr.classList.add('table-warning');
 
     const emailTd = document.createElement('td');
     emailTd.textContent = s.email;
@@ -173,7 +187,7 @@ function initAdmin() {
 
     const statusTd = document.createElement('td');
     const badge = document.createElement('span');
-    badge.className = `badge fw-normal ${isOnline ? 'text-bg-success' : 'text-bg-secondary'}`;
+    badge.className = `badge fw-normal ${isOnline ? 'text-bg-warning' : 'text-bg-secondary'}`;
     badge.textContent = isOnline ? 'מחובר' : 'לא מחובר';
     statusTd.appendChild(badge);
     tr.appendChild(statusTd);
@@ -319,6 +333,9 @@ function initAdmin() {
   }
 
   filterInput.addEventListener('input', renderRows);
+  statusFilter.addEventListener('change', renderRows);
+  progressFilter.addEventListener('change', renderRows);
+  sortSelect.addEventListener('change', renderRows);
 
   addForm.addEventListener('submit', async () => {
     const email = addEmailInput.value.trim();
