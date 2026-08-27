@@ -13,13 +13,16 @@
     "dev": ".tools\\hugo.exe server --disableFastRender --noHTTPCache",
     "format": "prettier **/** -w -c",
     "build": "if [ \"$VERCEL_ENV\" = \"production\" ] || [ -z \"$VERCEL_URL\" ]; then SITE_BASEURL=\"https://kodkode-fs.nm-ambition.com/\"; else SITE_BASEURL=\"https://$VERCEL_URL/\"; fi && hugo --minify --gc --baseURL \"$SITE_BASEURL\"",
-    "preview": "vite preview --outDir public"  },
+    "preview": "vite preview --outDir public"
+  },
   "dependencies": {
+    "@libsql/client": "^0.17.4",
     "@tabler/icons": "^3.36.1",
     "@thulite/doks-core": "^1.9.3",
     "@thulite/images": "^3.3.4",
     "@thulite/inline-svg": "^1.2.2",
     "@thulite/seo": "^2.4.3",
+    "nodemailer": "^9.0.5",
     "thulite": "^2.6.5"
   },
   "overrides": {

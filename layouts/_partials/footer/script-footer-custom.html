@@ -9,6 +9,24 @@
 {{/* Only one docs sidebar category open at a time — see assets/js/sidebar-accordion.js */}}
 {{ partial "footer/esbuild" (dict "src" "js/sidebar-accordion.js" "load" "async" "transpile" false) -}}
 
+{{/* Auth gate: requires login, logs visits, live presence — see assets/js/auth-gate.js.
+     Skipped on login/signup (or every visitor gets redirected away before
+     they can type credentials) and on admin (its own separate password
+     gate — not tied to a student account). */}}
+{{ if not (in (slice "auth" "admin") .Type) -}}
+  {{ partial "footer/esbuild" (dict "src" "js/auth-gate.js" "load" "async" "transpile" false) -}}
+{{ end -}}
+
+{{/* Login/signup form logic + show-password toggle — see assets/js/auth-form.js */}}
+{{ if eq .Type "auth" -}}
+  {{ partial "footer/esbuild" (dict "src" "js/auth-form.js" "load" "async" "transpile" false) -}}
+{{ end -}}
+
+{{/* Admin panel: password gate + live stats — see assets/js/admin-panel.js */}}
+{{ if eq .Type "admin" -}}
+  {{ partial "footer/esbuild" (dict "src" "js/admin-panel.js" "load" "async" "transpile" false) -}}
+{{ end -}}
+
 {{/* EXAMPLE - only load script for production
 {{ if eq (hugo.Environment) "production" -}}
   {{ partial "footer/esbuild" (dict "src" "js/instantpage.js" "load" "async" "transpile" false) -}}

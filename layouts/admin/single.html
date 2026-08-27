@@ -1,0 +1,109 @@
+{{ define "main" }}
+{{/* Same "how many lesson pages exist" count the course hub uses (layouts/docs/list.html)
+     — needed here so the progress column can show "completed / total". */}}
+{{ $totalLessons := 0 }}
+{{ with site.GetPage "/docs" }}
+  {{ range .Sections.ByWeight }}
+    {{ $totalLessons = add $totalLessons (len (where .Pages "Slug" "like" "-content$")) }}
+  {{ end }}
+{{ end }}
+
+<div id="admin-login-wrap" class="row justify-content-center">
+  <div class="col-md-8 col-lg-6 col-xl-5">
+    <div class="card shadow-sm my-4">
+      <div class="card-body p-4 p-md-5">
+        <h1 class="h3 text-center mb-4">{{ .Title }}</h1>
+
+        <div id="admin-error" class="alert alert-danger d-none" role="alert"></div>
+
+        <!-- Step 1: request a code by email -->
+        <div id="admin-request-step">
+          <p class="text-body-secondary small mb-3">קוד כניסה חד-פעמי יישלח למייל האדמין.</p>
+          <button type="button" class="btn btn-primary w-100" id="admin-request-btn">שליחת קוד למייל</button>
+        </div>
+
+        <!-- Step 2: enter the emailed code -->
+        <form id="admin-verify-form" novalidate onsubmit="return false" class="d-none">
+          <p class="text-body-secondary small mb-3">קוד נשלח למייל האדמין. תקף ל-10 דקות.</p>
+          <div class="mb-3">
+            <label for="admin-code" class="form-label">קוד בן 6 ספרות</label>
+            <div class="input-group">
+              <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" class="form-control" id="admin-code" autocomplete="one-time-code" required>
+              <button class="btn btn-outline-secondary auth-toggle-password" type="button" aria-label="הצג קוד">
+                <svg class="auth-eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <svg class="auth-eye-closed d-none" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.8 21.8 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a21.8 21.8 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 mb-2" id="admin-verify-btn">כניסה</button>
+          <button type="button" class="btn btn-link w-100" id="admin-resend-btn">שלח קוד חדש</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="admin-results" class="d-none" data-total-lessons="{{ $totalLessons }}">
+  <div class="d-flex justify-content-between align-items-center mt-4">
+    <h2 class="h4 mb-3">מחוברים עכשיו</h2>
+    <button type="button" class="btn btn-sm btn-outline-secondary mb-3" id="admin-logout-btn">התנתקות</button>
+  </div>
+  <div id="admin-online-list" class="d-flex flex-wrap gap-2 mb-4">
+    <span class="text-body-secondary small">אף אחד לא מחובר כרגע</span>
+  </div>
+
+  <h2 class="h4 mb-1">כל הסטודנטים הרשומים</h2>
+  <p id="admin-summary" class="text-body-secondary small mb-3"></p>
+
+  <div id="admin-action-msg" class="alert d-none py-2 small" role="alert"></div>
+
+  <div class="row g-2 align-items-end mb-3">
+    <div class="col-sm-5 col-md-4">
+      <label for="admin-filter" class="form-label small mb-1">סינון לפי אימייל</label>
+      <input type="text" id="admin-filter" class="form-control form-control-sm" placeholder="חפש אימייל…">
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-body py-3">
+      <h3 class="h6 mb-3">הוספת סטודנט</h3>
+      <form id="admin-add-form" novalidate onsubmit="return false" class="row g-2 align-items-end">
+        <div class="col-sm-5">
+          <label for="admin-add-email" class="form-label small mb-1">אימייל</label>
+          <input type="email" id="admin-add-email" class="form-control form-control-sm" required>
+        </div>
+        <div class="col-sm-4">
+          <label for="admin-add-password" class="form-label small mb-1">סיסמה</label>
+          <div class="input-group input-group-sm">
+            <input type="password" id="admin-add-password" class="form-control form-control-sm" minlength="6" required>
+            <button class="btn btn-outline-secondary auth-toggle-password" type="button" aria-label="הצג סיסמה">
+              <svg class="auth-eye-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              <svg class="auth-eye-closed d-none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.8 21.8 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a21.8 21.8 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+            </button>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <button type="submit" class="btn btn-primary btn-sm w-100" id="admin-add-btn">הוספה</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>אימייל</th>
+          <th>כניסות</th>
+          <th>כניסה אחרונה</th>
+          <th>מחובר?</th>
+          <th>התקדמות</th>
+          <th>פעולות</th>
+        </tr>
+      </thead>
+      <tbody id="admin-rows"></tbody>
+    </table>
+  </div>
+</div>
+{{ end }}

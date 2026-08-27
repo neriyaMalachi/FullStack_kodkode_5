@@ -16,6 +16,17 @@ html {
   direction: rtl;
 }
 
+// Edge auto-injects its own "reveal password" eye icon inside every
+// type="password" field. It visually overlaps our custom show/hide button
+// in .input-group (see layouts/auth/single.html) — a click can land on
+// Edge's icon instead of ours, or the two icons compete for the same
+// corner, making the custom toggle look broken. Disable Edge's built-in one
+// so there's only ever one eye icon to click.
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
 body {
   font-family:
     "Segoe UI",

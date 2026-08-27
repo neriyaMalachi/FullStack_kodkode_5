@@ -1,9 +1,22 @@
-// Client-side, localStorage-only progress tracking — no server, no accounts.
-// One browser = one student's progress. Every read/write of localStorage
-// goes through the functions in this first section; nothing else in the
-// file (or the rest of the site) touches localStorage directly.
+// Client-side progress tracking. localStorage is still the source of truth
+// for this browser's own UI (instant, works even logged out) — every read
+// goes through getAll()/isComplete() below, unchanged. Writes additionally
+// fire a background sync to the server (api/progress.js) so a logged-in
+// student's progress is visible to the instructor in /admin. If there's no
+// session (401) or the request fails, this is swallowed — it never affects
+// the local UI, which already updated from localStorage.
 
 const STORAGE_KEY = "courseProgress:v1";
+
+function syncToServer(body) {
+  fetch("/api/progress", {
+    method: "POST",
+    credentials: "same-origin",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+    keepalive: true,
+  }).catch(() => {});
+}
 
 function getAll() {
   try {
@@ -31,12 +44,14 @@ function markComplete(id) {
   const all = getAll();
   all[id] = new Date().toISOString();
   save(all);
+  syncToServer({ lessonId: id, completed: true });
 }
 
 function markIncomplete(id) {
   const all = getAll();
   delete all[id];
   save(all);
+  syncToServer({ lessonId: id, completed: false });
 }
 
 function toggle(id) {
@@ -59,6 +74,7 @@ function resetAll() {
   } catch {
     // ignore
   }
+  syncToServer({ reset: true });
 }
 
 // --- DOM painting — reads current storage state, updates the page. Safe to

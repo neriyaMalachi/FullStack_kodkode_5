@@ -1,6 +1,9 @@
 .env
+.env.local
 .netlify
 .hugo_build.lock
 node_modules
 public
 resources
+local.db
+local.db-*
